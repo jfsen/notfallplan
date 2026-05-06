@@ -1148,23 +1148,42 @@
 
             function handleDragStart(e) {
                 draggedIndex = parseInt(e.currentTarget.dataset.index);
-                e.currentTarget.style.opacity = "0.5";
+                e.currentTarget.style.opacity = "0.4";
                 e.dataTransfer.effectAllowed = "move";
             }
 
             function handleDragOver(e) {
-                e.preventDefault(); // Allow drop
+                e.preventDefault();
                 e.dataTransfer.dropEffect = "move";
 
+                // Clear ALL highlights first
+                document
+                    .querySelectorAll(".section-manage-item")
+                    .forEach((item) => {
+                        item.style.borderTop = "";
+                        item.style.borderBottom = "";
+                    });
+
                 const target = e.currentTarget;
-                if (parseInt(target.dataset.index) !== draggedIndex) {
-                    target.style.borderTop = "2px solid #34d399";
+                const targetIndex = parseInt(target.dataset.index);
+
+                if (targetIndex === draggedIndex) return;
+
+                // Better visual feedback: show border on top or bottom depending on mouse position
+                const rect = target.getBoundingClientRect();
+                const midpoint = rect.top + rect.height / 2;
+
+                if (e.clientY < midpoint) {
+                    target.style.borderTop = "3px solid #34d399";
+                } else {
+                    target.style.borderBottom = "3px solid #34d399";
                 }
             }
 
             function handleDragEnd(e) {
                 e.currentTarget.style.opacity = "1";
-                // Remove highlight from all items
+
+                // Clear all highlights
                 document
                     .querySelectorAll(".section-manage-item")
                     .forEach((item) => {
@@ -1175,17 +1194,31 @@
 
             function handleDrop(e) {
                 e.preventDefault();
-                const targetIndex = parseInt(e.currentTarget.dataset.index);
 
+                const targetIndex = parseInt(e.currentTarget.dataset.index);
                 if (draggedIndex === null || draggedIndex === targetIndex)
                     return;
 
-                // Reorder the array
-                const [movedItem] = SECTION_CONFIG.splice(draggedIndex, 1);
-                SECTION_CONFIG.splice(targetIndex, 0, movedItem);
+                const rect = e.currentTarget.getBoundingClientRect();
+                const midpoint = rect.top + rect.height / 2;
 
-                // Refresh the list
-                showManageModal(); // simple way - re-renders everything
+                let dropIndex = targetIndex;
+
+                // Adjust insertion point based on mouse position
+                if (e.clientY > midpoint) {
+                    dropIndex = targetIndex + 1;
+                }
+
+                // Reorder array
+                const [movedItem] = SECTION_CONFIG.splice(draggedIndex, 1);
+
+                // If dragging downwards, adjust index after splice
+                if (draggedIndex < dropIndex) dropIndex--;
+
+                SECTION_CONFIG.splice(dropIndex, 0, movedItem);
+
+                // Refresh modal
+                showManageModal();
             }
 
             function showAddSectionModal() {
