@@ -1538,91 +1538,101 @@
             }
 
             function showExportInstructions() {
-                // Erstelle ein Modal mit Anweisungen
                 const modal = document.createElement("div");
                 modal.style.cssText = `
-                position: fixed; inset: 0;
-                background: rgba(0,0,0,0.85);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 300;
-            `;
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(0,0,0,0.85);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 300;
+                `;
 
                 const content = document.createElement("div");
                 content.style.cssText = `
-                background: #27272a;
-                border-radius: 24px;
-                width: 90%;
-                max-width: 500px;
-                max-height: 90vh;
-                overflow-y: auto;
-                padding: 32px 24px;
-                color: #e4e4e7;
-            `;
+                    background: #27272a;
+                    border-radius: 24px;
+                    width: 90%;
+                    max-width: 500px;
+                    max-height: 90vh;
+                    display: flex;
+                    flex-direction: column;
+                    overflow: hidden;
+                    color: #e4e4e7;
+                `;
 
                 content.innerHTML = `
-                <h2 style="color: #34d399; margin-bottom: 24px; font-size: 1.5rem;">
-                    ✓ Notfallplan erfolgreich exportiert!
-                </h2>
+                    <div style="padding: 32px 24px; overflow-y: auto; flex: 1;">
+                        <h2 style="color: #34d399; margin-bottom: 24px; font-size: 1.5rem;">
+                            ✓ Notfallplan erfolgreich exportiert!
+                        </h2>
 
-                <div style="background: #18181b; border-radius: 16px; padding: 20px; margin-bottom: 24px; border: 1px solid #3f3f46;">
-                    <p style="margin-bottom: 16px; font-weight: 500;">Die Datei "Mein-Notfallplan.html" wurde heruntergeladen.</p>
-                    <p style="color: #C2C2C7; font-size: 0.9rem;">Speichere diese Datei an einem sicheren Ort, wo du schnell darauf zugreifen kannst!</p>
-                </div>
+                        <div style="background: #18181b; border-radius: 16px; padding: 20px; margin-bottom: 24px; border: 1px solid #3f3f46;">
+                            <p style="margin-bottom: 16px; font-weight: 500;">Die Datei "Mein-Notfallplan.html" wurde heruntergeladen.</p>
+                            <p style="color: #C2C2C7; font-size: 0.9rem;">Speichere diese Datei an einem sicheren Ort, wo du schnell darauf zugreifen kannst!</p>
+                        </div>
 
-                <h3 style="color: #34d399; margin-bottom: 16px; margin-top: 24px; font-weight: 600;">
-                    💻 Auf dem PC
-                </h3>
-                <ul style="margin-bottom: 20px; padding-left: 20px; color: #C2C2C7;">
-                    <li style="margin-bottom: 8px;"><strong>Speichern:</strong> Die Datei ist in deinem "Downloads"-Ordner. Verschiebe sie z.B. auf den Desktop oder in einen "Notfallplan"-Ordner.</li>
-                    <li style="margin-bottom: 8px;"><strong>Öffnen:</strong> Doppelklick auf die Datei → öffnet sich automatisch im Browser.</li>
-                    <li><strong>Lesezeichen:</strong> Im Browser (Strg+D oder Cmd+D): Speichere sie als Lesezeichen für schnellen Zugriff.</li>
-                </ul>
-
-                <h3 style="color: #34d399; margin-bottom: 16px; margin-top: 24px; font-weight: 600;">
-                    📱 Auf dem Smartphone
-                </h3>
-                <ul style="margin-bottom: 20px; padding-left: 20px; color: #C2C2C7;">
-                    <li style="margin-bottom: 12px;"><strong>iOS (iPhone/iPad):</strong>
-                        <ul style="margin-top: 6px; padding-left: 16px;">
-                            <li>1. Öffne die <strong>Dateien-App</strong></li>
-                            <li>2. Gehe zu "Downloads" und tippe auf deine Notfallplan-Datei</li>
-                            <li>3. Tippe oben rechts auf das <strong>Share-Symbol</strong> (Quadrat mit Pfeil)</li>
-                            <li>4. Wähle <strong>"Zu Home-Bildschirm hinzufügen"</strong></li>
-                            <li>5. Gib den Namen "Notfallplan" ein → Hinzufügen</li>
+                        <h3 style="color: #34d399; margin-bottom: 16px; margin-top: 24px; font-weight: 600;">
+                            💻 Auf dem PC
+                        </h3>
+                        <ul style="margin-bottom: 20px; padding-left: 20px; color: #C2C2C7;">
+                            <li style="margin-bottom: 8px;"><strong>Speichern:</strong> Die Datei ist in deinem "Downloads"-Ordner. Verschiebe sie z.B. auf den Desktop oder in einen "Notfallplan"-Ordner.</li>
+                            <li style="margin-bottom: 8px;"><strong>Öffnen:</strong> Doppelklick auf die Datei → öffnet sich automatisch im Browser.</li>
+                            <li><strong>Lesezeichen:</strong> Im Browser (Strg+D oder Cmd+D): Speichere sie als Lesezeichen für schnellen Zugriff.</li>
                         </ul>
-                    </li>
 
-                    <li style="margin-top: 16px;"><strong>Android:</strong>
-                        <ul style="margin-top: 6px; padding-left: 16px;">
-                            <li>1. Öffne die <strong>Dateien-App</strong> oder "Downloads"</li>
-                            <li>2. Tippe auf die Datei "Mein-Notfallplan.html"</li>
-                            <li>3. Tippe auf die drei Punkte (⋮) → <strong>"Zum Startbildschirm hinzufügen"</strong> oder "Shortcut erstellen"</li>
-                            <li>Oder: Datei in Chrome öffnen → Drei-Punkte-Menü → "Zum Startbildschirm hinzufügen"</li>
+                        <h3 style="color: #34d399; margin-bottom: 16px; margin-top: 24px; font-weight: 600;">
+                            📱 Auf dem Smartphone
+                        </h3>
+                        <ul style="margin-bottom: 20px; padding-left: 20px; color: #C2C2C7;">
+                            <li style="margin-bottom: 12px;"><strong>iOS (iPhone/iPad):</strong>
+                                <ul style="margin-top: 6px; padding-left: 16px;">
+                                    <li>1. Öffne die <strong>Dateien-App</strong></li>
+                                    <li>2. Gehe zu "Downloads" und tippe auf deine Notfallplan-Datei</li>
+                                    <li>3. Tippe oben rechts auf das <strong>Share-Symbol</strong> (Quadrat mit Pfeil)</li>
+                                    <li>4. Wähle <strong>"Zu Home-Bildschirm hinzufügen"</strong></li>
+                                    <li>5. Gib den Namen "Notfallplan" ein → Hinzufügen</li>
+                                </ul>
+                            </li>
+
+                            <li style="margin-top: 16px;"><strong>Android:</strong>
+                                <ul style="margin-top: 6px; padding-left: 16px;">
+                                    <li>1. Öffne die <strong>Dateien-App</strong> oder "Downloads"</li>
+                                    <li>2. Tippe auf die Datei "Mein-Notfallplan.html"</li>
+                                    <li>3. Tippe auf die drei Punkte (⋮) → <strong>"Zum Startbildschirm hinzufügen"</strong> oder "Shortcut erstellen"</li>
+                                    <li>Oder: Datei in Chrome öffnen → Drei-Punkte-Menü → "Zum Startbildschirm hinzufügen"</li>
+                                </ul>
+                            </li>
                         </ul>
-                    </li>
-                </ul>
 
-                <div style="background: #1b5e50; border-radius: 16px; padding: 16px; margin-bottom: 20px; border: 1px solid #10b981;">
-                    <p style="color: #34d399; font-weight: 600; margin-bottom: 8px;">💡 Tipp:</p>
-                    <p style="font-size: 0.9rem;">Speichere die Datei auch:</p>
-                    <ul style="margin-top: 8px; padding-left: 20px;">
-                        <li>In der Cloud (Google Drive, OneDrive, Dropbox) - so hast du Zugriff überall</li>
-                        <li>Als E-Mail an dich selbst als Backup</li>
-                        <li>An einem sicheren, privaten Ort den nur du kennst</li>
-                    </ul>
-                </div>
+                        <div style="background: #1b5e50; border-radius: 16px; padding: 16px; margin-bottom: 20px; border: 1px solid #10b981;">
+                            <p style="color: #34d399; font-weight: 600; margin-bottom: 8px;">💡 Tipp:</p>
+                            <p style="font-size: 0.9rem;">Speichere die Datei auch:</p>
+                            <ul style="margin-top: 8px; padding-left: 20px;">
+                                <li>In der Cloud (Google Drive, OneDrive, Dropbox) - so hast du Zugriff überall</li>
+                                <li>Als E-Mail an dich selbst als Backup</li>
+                                <li>An einem sicheren, privaten Ort den nur du kennst</li>
+                            </ul>
+                        </div>
 
-                <div style="background: #3f3f46; border-radius: 16px; padding: 16px; margin-bottom: 20px; border-left: 4px solid #ef4444;">
-                    <p style="color: #e4e4e7; font-weight: 600; margin-bottom: 8px;">⚠️ Wichtig:</p>
-                    <p style="font-size: 0.9rem;">Wenn du deine Daten aktualisierst (neue Kontakte, Inhalte ändern), musst du die Datei neu exportieren, damit die Änderungen gespeichert werden.</p>
-                </div>
+                        <div style="background: #3f3f46; border-radius: 16px; padding: 16px; margin-bottom: 20px; border-left: 4px solid #ef4444;">
+                            <p style="color: #e4e4e7; font-weight: 600; margin-bottom: 8px;">⚠️ Wichtig:</p>
+                            <p style="font-size: 0.9rem;">Wenn du deine Daten aktualisierst (neue Kontakte, Inhalte ändern), musst du die Datei neu exportieren, damit die Änderungen gespeichert werden.</p>
+                        </div>
+                    </div>
 
-                <button onclick="this.parentElement.parentElement.remove()" style="width: 100%; padding: 16px; background: #34d399; border: none; border-radius: 16px; color: white; font-weight: 600; font-size: 1.05rem; cursor: pointer;">
-                    Verstanden
-                </button>
-            `;
+                    <!-- Sticky Button -->
+                    <div style="padding: 16px 24px; background: #27272a; border-top: 1px solid #3f3f46;">
+                        <button onclick="this.closest('.modal-content').parentElement.remove()"
+                                style="width: 100%; padding: 16px; background: #34d399; border: none; border-radius: 16px; color: white; font-weight: 600; font-size: 1.05rem; cursor: pointer;">
+                            Verstanden
+                        </button>
+                    </div>
+                `;
+
+                // Hilfsklasse für den Button-Zugriff
+                content.classList.add("modal-content");
 
                 modal.appendChild(content);
                 document.body.appendChild(modal);
