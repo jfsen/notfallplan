@@ -1,485 +1,842 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
-<head>
-    <meta name="theme-color" content="#18181b">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mein Notfallplan</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23ffffff'/%3E%3Crect x='20' y='38' width='60' height='24' rx='4' fill='%2334d399'/%3E%3Crect x='38' y='20' width='24' height='60' rx='4' fill='%2334d399'/%3E%3C/svg%3E" type="image/svg+xml">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: #18181b;
-            color: #e4e4e7;
-            line-height: 1.6;
-            padding-bottom: 120px;
-        }
-        .container { max-width: 640px; margin: 0 auto; padding: 0 20px; }
-        header {
-            background: #18181b;
-            border-bottom: 1px solid #3f3f46;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-        .header-content {
-            padding: 12px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        h1 { font-size: 2.1rem; font-weight: 700; letter-spacing: -0.04em; color: #34d399; }
+    <head>
+        <meta name="theme-color" content="#18181b" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+        <title>Mein Notfallplan</title>
+        <link
+            rel="icon"
+            href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23ffffff'/%3E%3Crect x='20' y='38' width='60' height='24' rx='4' fill='%2334d399'/%3E%3Crect x='38' y='20' width='24' height='60' rx='4' fill='%2334d399'/%3E%3C/svg%3E"
+            type="image/svg+xml"
+        />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: "Inter", system-ui, sans-serif;
+                background: #18181b;
+                color: #e4e4e7;
+                line-height: 1.6;
+                padding-bottom: 120px;
+            }
+            .container {
+                max-width: 640px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+            header {
+                background: #18181b;
+                border-bottom: 1px solid #3f3f46;
+                position: sticky;
+                top: 0;
+                z-index: 50;
+            }
+            .header-content {
+                padding: 12px 0;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            h1 {
+                font-size: 2.1rem;
+                font-weight: 700;
+                letter-spacing: -0.04em;
+                color: #34d399;
+            }
 
-        .manage-btn {
-            background: #3f3f46;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            cursor: pointer;
-        }
+            .manage-btn {
+                background: #3f3f46;
+                color: white;
+                border: none;
+                padding: 8px 14px;
+                border-radius: 12px;
+                font-size: 0.95rem;
+                cursor: pointer;
+            }
 
-        .counter {
-            background: #27272a;
-            border: 1px solid #34d39940;
-            border-radius: 16px;
-            padding: 8px 20px;
-            text-align: center;
-            line-height: 1.2;
-        }
+            .counter {
+                background: #27272a;
+                border: 1px solid #34d39940;
+                border-radius: 16px;
+                padding: 8px 20px;
+                text-align: center;
+                line-height: 1.2;
+            }
 
-        .fab {
-            position: fixed;
-            bottom: 24px; right: 24px;
-            background: #34d399;
-            color: #ffffff;
-            width: 64px; height: 64px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            box-shadow: 0 10px 30px -10px rgba(52,211,153,0.6);
-            z-index: 100;
-            border: none;
-            cursor: pointer;
-        }
+            .fab {
+                position: fixed;
+                bottom: 24px;
+                right: 24px;
+                background: #34d399;
+                color: #ffffff;
+                width: 64px;
+                height: 64px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 28px;
+                box-shadow: 0 10px 30px -10px rgba(52, 211, 153, 0.6);
+                z-index: 100;
+                border: none;
+                cursor: pointer;
+            }
 
-        .section {
-            background: #27272a;
-            border: 1px solid #3f3f46;
-            border-radius: 24px;
-            margin-bottom: 28px;
-            overflow: hidden;
-        }
-        .section-header {
-            background: linear-gradient(135deg, #10b981, #34d399);
-            color: white;
-            padding: 16px 24px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+            .section {
+                background: #27272a;
+                border: 1px solid #3f3f46;
+                border-radius: 24px;
+                margin-bottom: 28px;
+                overflow: hidden;
+            }
+            .section-header {
+                background: linear-gradient(135deg, #10b981, #34d399);
+                color: white;
+                padding: 16px 24px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
 
-        .collapsible-section .section-header {
-            cursor: pointer;
-            user-select: none;
-        }
+            .collapsible-section .section-header {
+                cursor: pointer;
+                user-select: none;
+            }
 
-        .collapsible-section .section-header:hover {
-            filter: brightness(1.08);
-        }
+            .collapsible-section .section-header:hover {
+                filter: brightness(1.08);
+            }
 
-        .collapse-icon {
-            font-size: 1.8rem;
-            transition: transform 0.3s ease;
-            margin-left: 8px;
-        }
+            .collapse-icon {
+                font-size: 1.8rem;
+                transition: transform 0.3s ease;
+                margin-left: 8px;
+            }
 
-        .collapsible-section .section-header:hover .collapse-icon {
-            transform: rotate(90deg);
-            opacity: 0.9;
-        }
+            .collapsible-section .section-header:hover .collapse-icon {
+                transform: rotate(90deg);
+                opacity: 0.9;
+            }
 
-        button {
-            cursor: pointer;
-        }
+            button {
+                cursor: pointer;
+            }
 
-        .edit-btn {
-            background: rgba(255,255,255,0.25);
-            border: none;
-            color: white;
-            width: 34px; height: 34px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
+            .edit-btn {
+                background: rgba(255, 255, 255, 0.25);
+                border: none;
+                color: white;
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 18px;
+                transition: all 0.2s;
+                flex-shrink: 0;
+            }
 
-        .edit-btn:hover { background: rgba(255,255,255,0.4); transform: scale(1.05); }
-        .edit-btn.saving { background: #10b981; }
+            .edit-btn:hover {
+                background: rgba(255, 255, 255, 0.4);
+                transform: scale(1.05);
+            }
+            .edit-btn.saving {
+                background: #10b981;
+            }
 
-        .section-content { padding: 24px; }
-        
-        textarea {
-            width: 100%;
-            background: #18181b;
-            border: 2px solid #34d399;
-            border-radius: 16px;
-            padding: 18px;
-            color: #e4e4e7;
-            font-family: inherit;
-            font-size: 1rem;
-            line-height: 1.65;
-            min-height: 180px;
-            resize: vertical;
-        }
+            .section-content {
+                padding: 24px;
+            }
 
-        .content-display {
-            background: #18181b;
-            border: 1px solid #52525b;
-            border-radius: 16px;
-            padding: 18px;
-            min-height: 160px;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
+            textarea {
+                width: 100%;
+                background: #18181b;
+                border: 2px solid #34d399;
+                border-radius: 16px;
+                padding: 18px;
+                color: #e4e4e7;
+                font-family: inherit;
+                font-size: 1rem;
+                line-height: 1.65;
+                min-height: 180px;
+                resize: vertical;
+            }
 
-        .breathing-section {
-            background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(45,212,191,0.06));
-            border: 1px solid rgba(52,211,153,0.3);
-            border-radius: 28px;
-            margin-bottom: 28px;
-            padding: 32px 24px;
-            text-align: center;
-        }
-        .breathing-section.active { border-color: rgba(52,211,153,0.7); }
-        .breathing-section.intense { background: linear-gradient(135deg, rgba(16,185,129,0.32), rgba(45,212,191,0.2)) !important; }
+            .content-display {
+                background: #18181b;
+                border: 1px solid #52525b;
+                border-radius: 16px;
+                padding: 18px;
+                min-height: 160px;
+                white-space: pre-wrap;
+                word-break: break-word;
+            }
 
-        .breathing-btn {
-            width: 100%;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid #34d39930;
-            color: white;
-            font-size: 1.35rem;
-            font-weight: 500;
-            padding: 28px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-        }
+            .breathing-section {
+                background: linear-gradient(
+                    135deg,
+                    rgba(16, 185, 129, 0.1),
+                    rgba(45, 212, 191, 0.06)
+                );
+                border: 1px solid rgba(52, 211, 153, 0.3);
+                border-radius: 28px;
+                margin-bottom: 28px;
+                padding: 32px 24px;
+                text-align: center;
+            }
+            .breathing-section.active {
+                border-color: rgba(52, 211, 153, 0.7);
+            }
+            .breathing-section.intense {
+                background: linear-gradient(
+                    135deg,
+                    rgba(16, 185, 129, 0.32),
+                    rgba(45, 212, 191, 0.2)
+                ) !important;
+            }
 
-        .contact-item {
-            background: #18181b;
-            border: 1px solid #3f3f46;
-            border-radius: 16px;
-            padding: 16px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        .add-contact {
-            width: 100%;
-            padding: 14px;
-            background: #3f3f46;
-            border: none;
-            border-radius: 16px;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-        }
+            .breathing-btn {
+                width: 100%;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid #34d39930;
+                color: white;
+                font-size: 1.35rem;
+                font-weight: 500;
+                padding: 28px 20px;
+                border-radius: 20px;
+                cursor: pointer;
+            }
 
-        .contact-call-btn {
-            background: #34d399;
-            color: white;
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            text-decoration: none;
-        }
+            .contact-item {
+                background: #18181b;
+                border: 1px solid #3f3f46;
+                border-radius: 16px;
+                padding: 16px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+            }
+            .add-contact {
+                width: 100%;
+                padding: 14px;
+                background: #3f3f46;
+                border: none;
+                border-radius: 16px;
+                color: white;
+                font-weight: 500;
+                cursor: pointer;
+            }
 
-        .modal {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.85);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-        }
-        .modal-content {
-            background: #27272a;
-            border-radius: 24px;
-            width: 90%;
-            max-width: 420px;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 24px;
-        }
+            .contact-call-btn {
+                background: #34d399;
+                color: white;
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                text-decoration: none;
+            }
 
-        .section-manage-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #18181b;
-            padding: 12px 16px;
-            border-radius: 12px;
-            margin-bottom: 8px;
-        }
+            .modal {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.85);
+                display: none;
+                align-items: center;
+                justify-content: center;
+                z-index: 200;
+            }
+            .modal-content {
+                background: #27272a;
+                border-radius: 24px;
+                width: 90%;
+                max-width: 420px;
+                max-height: 85vh;
+                overflow-y: auto;
+                padding: 24px;
+            }
 
-        .add-section-btn {
-            width: 100%;
-            padding: 16px;
-            background: #3f3f46;
-            border: 2px dashed #52525b;
-            color: #a1a1aa;
-            font-weight: 500;
-            border-radius: 20px;
-            cursor: pointer;
-            margin: 20px 0 40px 0;
-            transition: all 0.2s;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <div class="header-content">
-                <div style="display:flex; align-items:center; gap:16px;">
-                    <svg width="64" height="64" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="46" fill="#ffffff" stroke="#18181b" stroke-width="7"></circle>
-                        <rect x="22" y="38" width="56" height="24" rx="4" fill="#34d399"></rect>
-                        <rect x="38" y="22" width="24" height="56" rx="4" fill="#34d399"></rect>
-                    </svg>
-                    <h1>Mein Notfallplan</h1>
-                </div>
+            .section-manage-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                background: #18181b;
+                padding: 12px 16px;
+                border-radius: 12px;
+                margin-bottom: 8px;
+            }
 
-                <div id="counter-wrapper" style="display: none;">
-                    <div class="counter">
-                        <div style="font-size:0.75rem; letter-spacing:1px; color:#34d399; font-weight:500;">TAGE ABSTINENT</div>
-                        <div id="days-count" style="font-size:2.2rem; font-weight:700; color:white;">0</div>
-                        <div style="display:flex; align-items:center; gap:4px; justify-content:center;">
-                            <span style="font-size:0.7rem; color:#888;">seit</span>
-                            <input type="date" id="start-date" class="date-input" onchange="updateStartDate(this.value)">
+            .add-section-btn {
+                width: 100%;
+                padding: 16px;
+                background: #3f3f46;
+                border: 2px dashed #52525b;
+                color: #a1a1aa;
+                font-weight: 500;
+                border-radius: 20px;
+                cursor: pointer;
+                margin: 20px 0 40px 0;
+                transition: all 0.2s;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <div class="header-content">
+                    <div style="display: flex; align-items: center; gap: 16px">
+                        <svg
+                            width="64"
+                            height="64"
+                            viewBox="0 0 100 100"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <circle
+                                cx="50"
+                                cy="50"
+                                r="46"
+                                fill="#ffffff"
+                                stroke="#18181b"
+                                stroke-width="7"
+                            ></circle>
+                            <rect
+                                x="22"
+                                y="38"
+                                width="56"
+                                height="24"
+                                rx="4"
+                                fill="#34d399"
+                            ></rect>
+                            <rect
+                                x="38"
+                                y="22"
+                                width="24"
+                                height="56"
+                                rx="4"
+                                fill="#34d399"
+                            ></rect>
+                        </svg>
+                        <h1>Mein Notfallplan</h1>
+                    </div>
+
+                    <div id="counter-wrapper" style="display: none">
+                        <div class="counter">
+                            <div
+                                style="
+                                    font-size: 0.75rem;
+                                    letter-spacing: 1px;
+                                    color: #34d399;
+                                    font-weight: 500;
+                                "
+                            >
+                                TAGE ABSTINENT
+                            </div>
+                            <div
+                                id="days-count"
+                                style="
+                                    font-size: 2.2rem;
+                                    font-weight: 700;
+                                    color: white;
+                                "
+                            >
+                                0
+                            </div>
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 4px;
+                                    justify-content: center;
+                                "
+                            >
+                                <span style="font-size: 0.7rem; color: #888"
+                                    >seit</span
+                                >
+                                <input
+                                    type="date"
+                                    id="start-date"
+                                    class="date-input"
+                                    onchange="updateStartDate(this.value)"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </header>
+            </header>
 
-        <div style="display:flex; gap:12px; margin: 28px 0 16px 0;">
-            <button onclick="showManageModal()" 
-                    style="flex:1; padding:14px; background:#3f3f46; border:none; border-radius:16px; color:white; font-weight:500; font-size:1.02rem; display:flex; align-items:center; justify-content:center; gap:8px;">
-                <span id="icon-gear"></span>
-                Sektionen verwalten
-            </button>
-            
-            <button onclick="showAddSectionModal()" 
-                    style="flex:1; padding:14px; background:#3f3f46; border:none; border-radius:16px; color:white; font-weight:600; font-size:1.02rem;">
-                + Neue Sektion
-            </button>
-        </div>
+            <div style="display: flex; gap: 12px; margin: 28px 0 16px 0">
+                <button
+                    onclick="showManageModal()"
+                    style="
+                        flex: 1;
+                        padding: 14px;
+                        background: #3f3f46;
+                        border: none;
+                        border-radius: 16px;
+                        color: white;
+                        font-weight: 500;
+                        font-size: 1.02rem;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 8px;
+                    "
+                >
+                    <span id="icon-gear"></span>
+                    Sektionen verwalten
+                </button>
 
-        <div id="main-content" style="margin-top:32px;"></div>
-
-    </div>
-
-    <button class="fab" onclick="exportCleanHTML()" title="Notfallplan exportieren">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-    </button>
-
-    <!-- Manage Modal -->
-    <div class="modal" id="manage-modal">
-        <div class="modal-content" style="display:flex; flex-direction:column; max-height:85vh;">
-            <h3 style="margin-bottom:20px;color:#34d399; flex-shrink:0;">Sektionen verwalten</h3>
-            
-            <!-- Scrollbarer Bereich -->
-            <div id="manage-list" style="flex:1; overflow-y:auto; padding-right:8px; margin-bottom:20px;">
-                <!-- Hier kommen die Sektionen per JS rein -->
-            </div>
-            
-            <!-- Fixierter Footer-Button -->
-            <div style="flex-shrink:0; padding-top:16px; border-top:1px solid #3f3f46;">
-                <button onclick="hideManageModal()" 
-                        style="width:100%; padding:16px; background:#34d399; border:none; border-radius:16px; color:white; font-weight:600; font-size:1.05rem;">
-                    Fertig
+                <button
+                    onclick="showAddSectionModal()"
+                    style="
+                        flex: 1;
+                        padding: 14px;
+                        background: #3f3f46;
+                        border: none;
+                        border-radius: 16px;
+                        color: white;
+                        font-weight: 600;
+                        font-size: 1.02rem;
+                    "
+                >
+                    + Neue Sektion
                 </button>
             </div>
+
+            <div id="main-content" style="margin-top: 32px"></div>
         </div>
-    </div>
 
-    <!-- Custom Section Modal -->
-    <div class="modal" id="custom-section-modal">
-        <div class="modal-content">
-            <h3 style="margin-bottom:20px;color:#34d399;">Neue Sektion erstellen</h3>
-            <input type="text" id="new-section-title" placeholder="Titel der Sektion" onkeypress="if(event.key==='Enter') createCustomSection()" style="width:100%; padding:14px; margin-bottom:16px; background:#18181b; border:1px solid #52525b; border-radius:12px; color:white;">
-            
-            <div style="margin-bottom:20px;">
-                <label style="display:block; margin-bottom:8px; color:#a1a1aa;">Icon auswählen:</label>
-                <div id="icon-picker" style="display:grid; grid-template-columns: repeat(4, 1fr); gap:12px;"></div>
-            </div>
+        <button
+            class="fab"
+            onclick="exportCleanHTML()"
+            title="Notfallplan exportieren"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+        </button>
 
-            <label style="display:flex; align-items:center; gap:10px; margin-bottom:24px; cursor:pointer;">
-                <input type="checkbox" id="new-section-collapsible">
-                <span>Als aufklappbare Sektion</span>
-            </label>
+        <!-- Manage Modal -->
+        <div class="modal" id="manage-modal">
+            <div
+                class="modal-content"
+                style="display: flex; flex-direction: column; max-height: 85vh"
+            >
+                <h3 style="margin-bottom: 20px; color: #34d399; flex-shrink: 0">
+                    Sektionen verwalten
+                </h3>
 
-            <div style="display:flex; gap:12px;">
-                <button onclick="hideAddSectionModal()" style="flex:1; padding:14px; background:#3f3f46; border:none; border-radius:12px; color:white;">Abbrechen</button>
-                <button onclick="createCustomSection()" style="flex:1; padding:14px; background:#34d399; border:none; border-radius:12px; color:white; font-weight:600;">Erstellen</button>
+                <!-- Scrollbarer Bereich -->
+                <div
+                    id="manage-list"
+                    style="
+                        flex: 1;
+                        overflow-y: auto;
+                        padding-right: 8px;
+                        margin-bottom: 20px;
+                    "
+                >
+                    <!-- Hier kommen die Sektionen per JS rein -->
+                </div>
+
+                <!-- Fixierter Footer-Button -->
+                <div
+                    style="
+                        flex-shrink: 0;
+                        padding-top: 16px;
+                        border-top: 1px solid #3f3f46;
+                    "
+                >
+                    <button
+                        onclick="hideManageModal()"
+                        style="
+                            width: 100%;
+                            padding: 16px;
+                            background: #34d399;
+                            border: none;
+                            border-radius: 16px;
+                            color: white;
+                            font-weight: 600;
+                            font-size: 1.05rem;
+                        "
+                    >
+                        Fertig
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Contact Modal -->
-    <div class="modal" id="contact-modal">
-        <div class="modal-content">
-            <h3 style="margin-bottom:16px;color:#34d399;">Neuen Kontakt hinzufügen</h3>
-            <input type="text" id="modal-name" placeholder="Name" onkeypress="if(event.key==='Enter') addContactConfirm()" style="width:100%;padding:12px;margin-bottom:12px;background:#18181b;border:1px solid #52525b;border-radius:12px;color:white;">
-            <input type="tel" id="modal-tel" placeholder="Telefonnummer" onkeypress="if(event.key==='Enter') addContactConfirm()" style="width:100%;padding:12px;margin-bottom:20px;background:#18181b;border:1px solid #52525b;border-radius:12px;color:white;">
-            <div style="display:flex;gap:12px;">
-                <button onclick="hideAddContactModal()" style="flex:1;padding:12px;background:#3f3f46;border:none;border-radius:12px;color:white;">Abbrechen</button>
-                <button onclick="addContactConfirm()" style="flex:1;padding:12px;background:#34d399;border:none;border-radius:12px;color:white;font-weight:600;">Hinzufügen</button>
+        <!-- Custom Section Modal -->
+        <div class="modal" id="custom-section-modal">
+            <div class="modal-content">
+                <h3 style="margin-bottom: 20px; color: #34d399">
+                    Neue Sektion erstellen
+                </h3>
+                <input
+                    type="text"
+                    id="new-section-title"
+                    placeholder="Titel der Sektion"
+                    onkeypress="
+                        if (event.key === 'Enter') createCustomSection();
+                    "
+                    style="
+                        width: 100%;
+                        padding: 14px;
+                        margin-bottom: 16px;
+                        background: #18181b;
+                        border: 1px solid #52525b;
+                        border-radius: 12px;
+                        color: white;
+                    "
+                />
+
+                <div style="margin-bottom: 20px">
+                    <label
+                        style="
+                            display: block;
+                            margin-bottom: 8px;
+                            color: #a1a1aa;
+                        "
+                        >Icon auswählen:</label
+                    >
+                    <div
+                        id="icon-picker"
+                        style="
+                            display: grid;
+                            grid-template-columns: repeat(4, 1fr);
+                            gap: 12px;
+                        "
+                    ></div>
+                </div>
+
+                <label
+                    style="
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        margin-bottom: 24px;
+                        cursor: pointer;
+                    "
+                >
+                    <input type="checkbox" id="new-section-collapsible" />
+                    <span>Als aufklappbare Sektion</span>
+                </label>
+
+                <div style="display: flex; gap: 12px">
+                    <button
+                        onclick="hideAddSectionModal()"
+                        style="
+                            flex: 1;
+                            padding: 14px;
+                            background: #3f3f46;
+                            border: none;
+                            border-radius: 12px;
+                            color: white;
+                        "
+                    >
+                        Abbrechen
+                    </button>
+                    <button
+                        onclick="createCustomSection()"
+                        style="
+                            flex: 1;
+                            padding: 14px;
+                            background: #34d399;
+                            border: none;
+                            border-radius: 12px;
+                            color: white;
+                            font-weight: 600;
+                        "
+                    >
+                        Erstellen
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        // ==================== CONFIG ====================
-        let SECTION_CONFIG = [
-            {id: "counter", title: "Abstinenzzähler", type: "counter", visible: true},
-            {id: "breathing", title: "Boxatmung", type: "breathing", visible: true},
-            {id: "ausloeser", title: "Auslöser & Stressoren", type: "default", visible: true},
-            {id: "gruende", title: "Gute Gründe, abstinent zu bleiben", type: "default", visible: true},
-            {id: "kontakte", title: "Meine Notfallkontakte", type: "contacts", visible: true},
-            {id: "skills", title: "Bewältigungsmechanismen, Skills & Ablenkung", type: "default", visible: true},
-            {id: "staerken", title: "Meine Stärken", type: "default", visible: true},
-            {id: "mottos", title: "Hilfreiche Gedanken & Mottos", type: "default", visible: true},
-            {id: "angenehmes", title: "Angenehme Aktivitäten", type: "default", visible: true},
-        ];
+        <!-- Contact Modal -->
+        <div class="modal" id="contact-modal">
+            <div class="modal-content">
+                <h3 style="margin-bottom: 16px; color: #34d399">
+                    Neuen Kontakt hinzufügen
+                </h3>
+                <input
+                    type="text"
+                    id="modal-name"
+                    placeholder="Name"
+                    onkeypress="if (event.key === 'Enter') addContactConfirm();"
+                    style="
+                        width: 100%;
+                        padding: 12px;
+                        margin-bottom: 12px;
+                        background: #18181b;
+                        border: 1px solid #52525b;
+                        border-radius: 12px;
+                        color: white;
+                    "
+                />
+                <input
+                    type="tel"
+                    id="modal-tel"
+                    placeholder="Telefonnummer"
+                    onkeypress="if (event.key === 'Enter') addContactConfirm();"
+                    style="
+                        width: 100%;
+                        padding: 12px;
+                        margin-bottom: 20px;
+                        background: #18181b;
+                        border: 1px solid #52525b;
+                        border-radius: 12px;
+                        color: white;
+                    "
+                />
+                <div style="display: flex; gap: 12px">
+                    <button
+                        onclick="hideAddContactModal()"
+                        style="
+                            flex: 1;
+                            padding: 12px;
+                            background: #3f3f46;
+                            border: none;
+                            border-radius: 12px;
+                            color: white;
+                        "
+                    >
+                        Abbrechen
+                    </button>
+                    <button
+                        onclick="addContactConfirm()"
+                        style="
+                            flex: 1;
+                            padding: 12px;
+                            background: #34d399;
+                            border: none;
+                            border-radius: 12px;
+                            color: white;
+                            font-weight: 600;
+                        "
+                    >
+                        Hinzufügen
+                    </button>
+                </div>
+            </div>
+        </div>
 
-        let DATA = {
-            startDate: "",
-            ausloeser: "",
-            gruende: "",
-            skills: "",
-            staerken: "",
-            mottos: "",
-            angenehmes: `* Spazieren gehen in der Natur\n`
-                      + `* Heißes Bad oder Dusche\n`
-                      + `* Lieblingsmusik hören\n`
-                      + `* Mit dem Hund spielen\n`
-                      + `* Gutes Buch lesen\n`
-                      + `* Kaffee/Tee in Ruhe trinken\n`
-                      + `* Serie oder Film schauen\n`
-                      + `* Freunde/Familie anrufen\n`
-                      + `* Sport machen oder Dehnen\n`
-                      + `* Etwas Kreatives (Malen, Musik, etc.)`
-        };
+        <script>
+            // ==================== CONFIG ====================
+            let SECTION_CONFIG = [
+                {
+                    id: "counter",
+                    title: "Abstinenzzähler",
+                    type: "counter",
+                    visible: true,
+                },
+                {
+                    id: "breathing",
+                    title: "Boxatmung",
+                    type: "breathing",
+                    visible: true,
+                },
+                {
+                    id: "ausloeser",
+                    title: "Auslöser & Stressoren",
+                    type: "default",
+                    visible: true,
+                },
+                {
+                    id: "gruende",
+                    title: "Gute Gründe, abstinent zu bleiben",
+                    type: "default",
+                    visible: true,
+                },
+                {
+                    id: "kontakte",
+                    title: "Meine Notfallkontakte",
+                    type: "contacts",
+                    visible: true,
+                },
+                {
+                    id: "skills",
+                    title: "Bewältigungsmechanismen, Skills & Ablenkung",
+                    type: "default",
+                    visible: true,
+                },
+                {
+                    id: "staerken",
+                    title: "Meine Stärken",
+                    type: "default",
+                    visible: true,
+                },
+                {
+                    id: "mottos",
+                    title: "Hilfreiche Gedanken & Mottos",
+                    type: "default",
+                    visible: true,
+                },
+                {
+                    id: "angenehmes",
+                    title: "Angenehme Aktivitäten",
+                    type: "default",
+                    visible: true,
+                },
+            ];
 
-        let KONTAKTE = [];
-        let CUSTOM_SECTIONS = [];
-        let selectedCustomIcon = "bolt";
-        let currentlyEditing = null;
+            let DATA = {
+                startDate: "",
+                ausloeser: "",
+                gruende: "",
+                skills: "",
+                staerken: "",
+                mottos: "",
+                angenehmes:
+                    `* Spazieren gehen in der Natur\n` +
+                    `* Heißes Bad oder Dusche\n` +
+                    `* Lieblingsmusik hören\n` +
+                    `* Mit dem Hund spielen\n` +
+                    `* Gutes Buch lesen\n` +
+                    `* Kaffee/Tee in Ruhe trinken\n` +
+                    `* Serie oder Film schauen\n` +
+                    `* Freunde/Familie anrufen\n` +
+                    `* Sport machen oder Dehnen\n` +
+                    `* Etwas Kreatives (Malen, Musik, etc.)`,
+            };
 
-        const SVGs = { /* ... alle deine SVGs ... */ 
-            wind: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="28" height="28"><path fill="currentColor" d="M156.7 256H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h142.2c15.9 0 30.8 10.9 33.4 26.6 3.3 20-12.1 37.4-31.6 37.4-14.1 0-26.1-9.2-30.4-21.9-2.1-6.3-8.6-10.1-15.2-10.1H81.6c-9.8 0-17.7 8.8-15.9 18.4 8.6 44.1 47.6 77.6 94.2 77.6 57.1 0 102.7-50.1 95.2-108.6C249 291 205.4 256 156.7 256zM16 224h336c59.7 0 106.8-54.8 93.8-116.7-7.6-36.2-36.9-65.5-73.1-73.1-55.4-11.6-105.1 24.9-114.9 75.5-1.9 9.6 6.1 18.3 15.8 18.3h32.8c6.7 0 13.1-3.8 15.2-10.1C325.9 105.2 337.9 96 352 96c19.4 0 34.9 17.4 31.6 37.4-2.6 15.7-17.4 26.6-33.4 26.6H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16zm384 32H243.7c19.3 16.6 33.2 38.8 39.8 64H400c26.5 0 48 21.5 48 48s-21.5 48-48 48c-17.9 0-33.3-9.9-41.6-24.4-2.9-5-8.7-7.6-14.5-7.6h-33.8c-10.9 0-19 10.8-15.3 21.1 17.8 50.6 70.5 84.8 129.4 72.3 41.2-8.7 75.1-41.6 84.7-82.7C526 321.5 470.5 256 400 256z"/></svg>`,
-            bolt: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="24" height="24"><path fill="currentColor" d="M296 160H180.6l42.6-129.8C227.2 15 215.7 0 200 0H56C44 0 33.8 8.9 32.2 20.8l-32 240C-1.7 275.2 9.5 288 24 288h118.7L96.6 482.5c-3.6 15.2 8 29.5 23.3 29.5 8.4 0 16.4-4.4 20.8-12l176-304c9.3-15.9-2.2-36-20.7-36z"/></svg>`,
-            heart: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24"><path fill="currentColor" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>`,
-            phone: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24"><path fill="currentColor" d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"/></svg>`,
-            toolbox: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24"><path fill="currentColor" d="M502.63 214.63l-45.25-45.25c-6-6-14.14-9.37-22.63-9.37H384V80c0-26.51-21.49-48-48-48H176c-26.51 0-48 21.49-48 48v80H77.25c-8.49 0-16.62 3.37-22.63 9.37L9.37 214.63c-6 6-9.37 14.14-9.37 22.63V320h128v-16c0-8.84 7.16-16 16-16h32c8.84 0 16 7.16 16 16v16h128v-16c0-8.84 7.16-16 16-16h32c8.84 0 16 7.16 16 16v16h128v-82.75c0-8.48-3.37-16.62-9.37-22.62zM320 160H192V96h128v64zm64 208c0 8.84-7.16 16-16 16h-32c-8.84 0-16-7.16-16-16v-16H192v16c0 8.84-7.16 16-16 16h-32c-8.84 0-16-7.16-16-16v-16H0v96c0 17.67 14.33 32 32 32h448c17.67 0 32-14.33 32-32v-96H384v16z"/></svg>`,
-            dumbbell: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="24" height="24"><path fill="currentColor" d="M104 96H56c-13.3 0-24 10.7-24 24v104H8c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h24v104c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V120c0-13.3-10.7-24-24-24zm528 128h-24V120c0-13.3-10.7-24-24-24h-48c-13.3 0-24 10.7-24 24v272c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V288h24c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zM456 32h-48c-13.3 0-24 10.7-24 24v168H256V56c0-13.3-10.7-24-24-24h-48c-13.3 0-24 10.7-24 24v400c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V288h128v168c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24z"/></svg>`,
-            quote: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24"><path fill="currentColor" d="M464 256h-80v-64c0-35.3 28.7-64 64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8c-88.4 0-160 71.6-160 160v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zm-288 0H96v-64c0-35.3 28.7-64 64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8C71.6 32 0 103.6 0 192v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48z"/></svg>`,
-            gear: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="24" height="24"><path fill="currentColor" d="M259.1 73.5C262.1 58.7 275.2 48 290.4 48L350.2 48C365.4 48 378.5 58.7 381.5 73.5L396 143.5C410.1 149.5 423.3 157.2 435.3 166.3L503.1 143.8C517.5 139 533.3 145 540.9 158.2L570.8 210C578.4 223.2 575.7 239.8 564.3 249.9L511 297.3C511.9 304.7 512.3 312.3 512.3 320C512.3 327.7 511.8 335.3 511 342.7L564.4 390.2C575.8 400.3 578.4 417 570.9 430.1L541 481.9C533.4 495 517.6 501.1 503.2 496.3L435.4 473.8C423.3 482.9 410.1 490.5 396.1 496.6L381.7 566.5C378.6 581.4 365.5 592 350.4 592L290.6 592C275.4 592 262.3 581.3 259.3 566.5L244.9 496.6C230.8 490.6 217.7 482.9 205.6 473.8L137.5 496.3C123.1 501.1 107.3 495.1 99.7 481.9L69.8 430.1C62.2 416.9 64.9 400.3 76.3 390.2L129.7 342.7C128.8 335.3 128.4 327.7 128.4 320C128.4 312.3 128.9 304.7 129.7 297.3L76.3 249.8C64.9 239.7 62.3 223 69.8 209.9L99.7 158.1C107.3 144.9 123.1 138.9 137.5 143.7L205.3 166.2C217.4 157.1 230.6 149.5 244.6 143.4L259.1 73.5zM320.3 400C364.5 399.8 400.2 363.9 400 319.7C399.8 275.5 363.9 239.8 319.7 240C275.5 240.2 239.8 276.1 240 320.3C240.2 364.5 276.1 400.2 320.3 400z"/></svg>`
-        };
+            let KONTAKTE = [];
+            let CUSTOM_SECTIONS = [];
+            let selectedCustomIcon = "bolt";
+            let currentlyEditing = null;
 
-        function formatBullets(text) {
-            if (!text || typeof text !== 'string') return '';
+            const SVGs = {
+                /* ... alle deine SVGs ... */
+                wind: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="28" height="28"><path fill="currentColor" d="M156.7 256H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h142.2c15.9 0 30.8 10.9 33.4 26.6 3.3 20-12.1 37.4-31.6 37.4-14.1 0-26.1-9.2-30.4-21.9-2.1-6.3-8.6-10.1-15.2-10.1H81.6c-9.8 0-17.7 8.8-15.9 18.4 8.6 44.1 47.6 77.6 94.2 77.6 57.1 0 102.7-50.1 95.2-108.6C249 291 205.4 256 156.7 256zM16 224h336c59.7 0 106.8-54.8 93.8-116.7-7.6-36.2-36.9-65.5-73.1-73.1-55.4-11.6-105.1 24.9-114.9 75.5-1.9 9.6 6.1 18.3 15.8 18.3h32.8c6.7 0 13.1-3.8 15.2-10.1C325.9 105.2 337.9 96 352 96c19.4 0 34.9 17.4 31.6 37.4-2.6 15.7-17.4 26.6-33.4 26.6H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16zm384 32H243.7c19.3 16.6 33.2 38.8 39.8 64H400c26.5 0 48 21.5 48 48s-21.5 48-48 48c-17.9 0-33.3-9.9-41.6-24.4-2.9-5-8.7-7.6-14.5-7.6h-33.8c-10.9 0-19 10.8-15.3 21.1 17.8 50.6 70.5 84.8 129.4 72.3 41.2-8.7 75.1-41.6 84.7-82.7C526 321.5 470.5 256 400 256z"/></svg>`,
+                bolt: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="24" height="24"><path fill="currentColor" d="M296 160H180.6l42.6-129.8C227.2 15 215.7 0 200 0H56C44 0 33.8 8.9 32.2 20.8l-32 240C-1.7 275.2 9.5 288 24 288h118.7L96.6 482.5c-3.6 15.2 8 29.5 23.3 29.5 8.4 0 16.4-4.4 20.8-12l176-304c9.3-15.9-2.2-36-20.7-36z"/></svg>`,
+                heart: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24"><path fill="currentColor" d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></svg>`,
+                phone: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24"><path fill="currentColor" d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"/></svg>`,
+                toolbox: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24"><path fill="currentColor" d="M502.63 214.63l-45.25-45.25c-6-6-14.14-9.37-22.63-9.37H384V80c0-26.51-21.49-48-48-48H176c-26.51 0-48 21.49-48 48v80H77.25c-8.49 0-16.62 3.37-22.63 9.37L9.37 214.63c-6 6-9.37 14.14-9.37 22.63V320h128v-16c0-8.84 7.16-16 16-16h32c8.84 0 16 7.16 16 16v16h128v-16c0-8.84 7.16-16 16-16h32c8.84 0 16 7.16 16 16v16h128v-82.75c0-8.48-3.37-16.62-9.37-22.62zM320 160H192V96h128v64zm64 208c0 8.84-7.16 16-16 16h-32c-8.84 0-16-7.16-16-16v-16H192v16c0 8.84-7.16 16-16 16h-32c-8.84 0-16-7.16-16-16v-16H0v96c0 17.67 14.33 32 32 32h448c17.67 0 32-14.33 32-32v-96H384v16z"/></svg>`,
+                dumbbell: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="24" height="24"><path fill="currentColor" d="M104 96H56c-13.3 0-24 10.7-24 24v104H8c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h24v104c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V120c0-13.3-10.7-24-24-24zm528 128h-24V120c0-13.3-10.7-24-24-24h-48c-13.3 0-24 10.7-24 24v272c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V288h24c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zM456 32h-48c-13.3 0-24 10.7-24 24v168H256V56c0-13.3-10.7-24-24-24h-48c-13.3 0-24 10.7-24 24v400c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V288h128v168c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24z"/></svg>`,
+                quote: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24"><path fill="currentColor" d="M464 256h-80v-64c0-35.3 28.7-64 64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8c-88.4 0-160 71.6-160 160v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zm-288 0H96v-64c0-35.3 28.7-64 64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8C71.6 32 0 103.6 0 192v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48z"/></svg>`,
+                gear: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="24" height="24"><path fill="currentColor" d="M259.1 73.5C262.1 58.7 275.2 48 290.4 48L350.2 48C365.4 48 378.5 58.7 381.5 73.5L396 143.5C410.1 149.5 423.3 157.2 435.3 166.3L503.1 143.8C517.5 139 533.3 145 540.9 158.2L570.8 210C578.4 223.2 575.7 239.8 564.3 249.9L511 297.3C511.9 304.7 512.3 312.3 512.3 320C512.3 327.7 511.8 335.3 511 342.7L564.4 390.2C575.8 400.3 578.4 417 570.9 430.1L541 481.9C533.4 495 517.6 501.1 503.2 496.3L435.4 473.8C423.3 482.9 410.1 490.5 396.1 496.6L381.7 566.5C378.6 581.4 365.5 592 350.4 592L290.6 592C275.4 592 262.3 581.3 259.3 566.5L244.9 496.6C230.8 490.6 217.7 482.9 205.6 473.8L137.5 496.3C123.1 501.1 107.3 495.1 99.7 481.9L69.8 430.1C62.2 416.9 64.9 400.3 76.3 390.2L129.7 342.7C128.8 335.3 128.4 327.7 128.4 320C128.4 312.3 128.9 304.7 129.7 297.3L76.3 249.8C64.9 239.7 62.3 223 69.8 209.9L99.7 158.1C107.3 144.9 123.1 138.9 137.5 143.7L205.3 166.2C217.4 157.1 230.6 149.5 244.6 143.4L259.1 73.5zM320.3 400C364.5 399.8 400.2 363.9 400 319.7C399.8 275.5 363.9 239.8 319.7 240C275.5 240.2 239.8 276.1 240 320.3C240.2 364.5 276.1 400.2 320.3 400z"/></svg>`,
+            };
 
-            const lines = text.trim().split('\n');
-            let html = '';
-            let inList = false;
+            function formatBullets(text) {
+                if (!text || typeof text !== "string") return "";
 
-            for (let line of lines) {
-                const trimmed = line.trim();
+                const lines = text.trim().split("\n");
+                let html = "";
+                let inList = false;
 
-                // Zeile ist ein Bullet-Point (- oder *)
-                if (/^[-*]\s+/.test(line)) {
-                    const content = trimmed.replace(/^[-*]\s+/, '').trim();
+                for (let line of lines) {
+                    const trimmed = line.trim();
 
-                    if (!inList) {
-                        html += '<ul style="margin: 12px 0 12px 8px; padding-left: 20px;">';
-                        inList = true;
+                    // Zeile ist ein Bullet-Point (- oder *)
+                    if (/^[-*]\s+/.test(line)) {
+                        const content = trimmed.replace(/^[-*]\s+/, "").trim();
+
+                        if (!inList) {
+                            html +=
+                                '<ul style="margin: 12px 0 12px 8px; padding-left: 20px;">';
+                            inList = true;
+                        }
+
+                        html += `<li style="margin-bottom: 6px; color: #e4e4e7;">${content}</li>`;
                     }
+                    // Normale Zeile / Absatz
+                    else {
+                        if (inList) {
+                            html += "</ul>";
+                            inList = false;
+                        }
 
-                    html += `<li style="margin-bottom: 6px; color: #e4e4e7;">${content}</li>`;
-                } 
-                // Normale Zeile / Absatz
-                else {
-                    if (inList) {
-                        html += '</ul>';
-                        inList = false;
-                    }
-
-                    if (trimmed === '') {
-                        html += '<br>';
-                    } else {
-                        html += `<p style="margin: 10px 0;">${trimmed}</p>`;
+                        if (trimmed === "") {
+                            html += "<br>";
+                        } else {
+                            html += `<p style="margin: 10px 0;">${trimmed}</p>`;
+                        }
                     }
                 }
+
+                // Liste am Ende schließen, falls offen
+                if (inList) html += "</ul>";
+
+                // Fallback: falls gar keine Listen erkannt wurden
+                return html || text.replace(/\n/g, "<br>");
             }
 
-            // Liste am Ende schließen, falls offen
-            if (inList) html += '</ul>';
+            function saveToLocalStorage() {
+                localStorage.setItem(
+                    "notfallplan_config",
+                    JSON.stringify(SECTION_CONFIG),
+                );
+                localStorage.setItem("notfallplan_data", JSON.stringify(DATA));
+                localStorage.setItem(
+                    "notfallplan_kontakte",
+                    JSON.stringify(KONTAKTE),
+                );
+                localStorage.setItem(
+                    "notfallplan_custom",
+                    JSON.stringify(CUSTOM_SECTIONS),
+                );
+            }
 
-            // Fallback: falls gar keine Listen erkannt wurden
-            return html || text.replace(/\n/g, '<br>');
-        }
+            function loadFromLocalStorage() {
+                if (localStorage.getItem("notfallplan_config"))
+                    SECTION_CONFIG = JSON.parse(
+                        localStorage.getItem("notfallplan_config"),
+                    );
+                if (localStorage.getItem("notfallplan_data"))
+                    DATA = JSON.parse(localStorage.getItem("notfallplan_data"));
+                if (localStorage.getItem("notfallplan_kontakte"))
+                    KONTAKTE = JSON.parse(
+                        localStorage.getItem("notfallplan_kontakte"),
+                    );
+                if (localStorage.getItem("notfallplan_custom"))
+                    CUSTOM_SECTIONS = JSON.parse(
+                        localStorage.getItem("notfallplan_custom"),
+                    );
+            }
 
-        function saveToLocalStorage() {
-            localStorage.setItem('notfallplan_config', JSON.stringify(SECTION_CONFIG));
-            localStorage.setItem('notfallplan_data', JSON.stringify(DATA));
-            localStorage.setItem('notfallplan_kontakte', JSON.stringify(KONTAKTE));
-            localStorage.setItem('notfallplan_custom', JSON.stringify(CUSTOM_SECTIONS));
-        }
+            // ==================== RENDER MAIN CONTENT ====================
+            function renderAllSections() {
+                const container = document.getElementById("main-content");
+                container.innerHTML = "";
 
-        function loadFromLocalStorage() {
-            if (localStorage.getItem('notfallplan_config')) SECTION_CONFIG = JSON.parse(localStorage.getItem('notfallplan_config'));
-            if (localStorage.getItem('notfallplan_data')) DATA = JSON.parse(localStorage.getItem('notfallplan_data'));
-            if (localStorage.getItem('notfallplan_kontakte')) KONTAKTE = JSON.parse(localStorage.getItem('notfallplan_kontakte'));
-            if (localStorage.getItem('notfallplan_custom')) CUSTOM_SECTIONS = JSON.parse(localStorage.getItem('notfallplan_custom'));
-        }
+                SECTION_CONFIG.forEach((config) => {
+                    if (!config.visible) return;
 
-        // ==================== RENDER MAIN CONTENT ====================
-        function renderAllSections() {
-            const container = document.getElementById('main-content');
-            container.innerHTML = '';
+                    if (config.type === "counter") {
+                        return; // Nicht als Sektion rendern (wird separat im Header behandelt)
+                    }
 
-            SECTION_CONFIG.forEach(config => {
-                if (!config.visible) return;
-
-                if (config.type === "counter") {
-                    return; // Nicht als Sektion rendern (wird separat im Header behandelt)
-                }
-
-                if (config.type === "breathing") {
-                    container.innerHTML += `
+                    if (config.type === "breathing") {
+                        container.innerHTML += `
                         <div class="breathing-section" id="breathing-section">
                             <button onclick="toggleBoxBreathing()" id="breathing-btn" class="breathing-btn">
                                 <span id="breathing-icon">${SVGs.wind}</span>
@@ -487,90 +844,114 @@
                             </button>
                             <div id="breathing-text" style="margin-top:24px; min-height:48px; font-weight:600; color:#34d399; font-size:1.2rem;"></div>
                         </div>`;
-                } 
-                else if (config.type === "custom") {
-                    const sec = CUSTOM_SECTIONS.find(s => s.id === config.id);
-                    if (sec) renderCustomSection(sec, container);
-                } 
-                else {
-                    container.innerHTML += createDefaultSection(config);
-                }
-            });
+                    } else if (config.type === "custom") {
+                        const sec = CUSTOM_SECTIONS.find(
+                            (s) => s.id === config.id,
+                        );
+                        if (sec) renderCustomSection(sec, container);
+                    } else {
+                        container.innerHTML += createDefaultSection(config);
+                    }
+                });
 
-            setDefaultIcons();
-            renderContacts();
-            renderCounter();
-            populateAllDisplays();
-        }
-
-        function renderCounter() {
-            const wrapper = document.getElementById('counter-wrapper');
-            const config = SECTION_CONFIG.find(s => s.id === "counter");
-            
-            if (wrapper && config) {
-                wrapper.style.display = config.visible ? 'block' : 'none';
+                setDefaultIcons();
+                renderContacts();
+                renderCounter();
+                populateAllDisplays();
             }
-        }
 
-        function setDefaultIcons() {
-            const iconMap = {
-                ausloeser: SVGs.bolt,
-                gruende: SVGs.heart,
-                kontakte: SVGs.phone,
-                skills: SVGs.toolbox,
-                staerken: SVGs.dumbbell,
-                mottos: SVGs.quote,
-                angenehmes: SVGs.toolbox,
-                gear: SVGs.gear
-            };
+            function renderCounter() {
+                const wrapper = document.getElementById("counter-wrapper");
+                const config = SECTION_CONFIG.find((s) => s.id === "counter");
 
-            Object.keys(iconMap).forEach(key => {
-                const iconElement = document.getElementById(`icon-${key}`);
-                if (iconElement) {
-                    iconElement.innerHTML = iconMap[key];
+                if (wrapper && config) {
+                    wrapper.style.display = config.visible ? "block" : "none";
                 }
-            });
-        }
+            }
 
-        function populateAllDisplays() {
-            // Standard-Sektionen
-            ['ausloeser', 'gruende', 'skills', 'staerken', 'mottos', 'angenehmes'].forEach(key => {
-                const display = document.getElementById(key + '-display');
-                if (display) {
-                    display.innerHTML = formatBullets(DATA[key] || '');
-                }
-            });
+            function setDefaultIcons() {
+                const iconMap = {
+                    ausloeser: SVGs.bolt,
+                    gruende: SVGs.heart,
+                    kontakte: SVGs.phone,
+                    skills: SVGs.toolbox,
+                    staerken: SVGs.dumbbell,
+                    mottos: SVGs.quote,
+                    angenehmes: SVGs.toolbox,
+                    gear: SVGs.gear,
+                };
 
-            // Custom Sections
-            CUSTOM_SECTIONS.forEach(section => {
-                const display = document.getElementById(`display-${section.id}`);
-                if (display) {
-                    display.innerHTML = formatBullets(section.content || '');
-                }
-            });
-        }
+                Object.keys(iconMap).forEach((key) => {
+                    const iconElement = document.getElementById(`icon-${key}`);
+                    if (iconElement) {
+                        iconElement.innerHTML = iconMap[key];
+                    }
+                });
+            }
 
-        function refreshAllContent() {
-            // Default Felder
-            ['ausloeser','gruende','skills','staerken','mottos','angenehmes'].forEach(key => {
-                const display = document.getElementById(key + '-display');
-                if (display) display.innerHTML = formatBullets(DATA[key] || '');
-            });
+            function populateAllDisplays() {
+                // Standard-Sektionen
+                [
+                    "ausloeser",
+                    "gruende",
+                    "skills",
+                    "staerken",
+                    "mottos",
+                    "angenehmes",
+                ].forEach((key) => {
+                    const display = document.getElementById(key + "-display");
+                    if (display) {
+                        display.innerHTML = formatBullets(DATA[key] || "");
+                    }
+                });
 
-            // Custom Sections
-            CUSTOM_SECTIONS.forEach(section => {
-                const display = document.getElementById(`display-${section.id}`);
-                if (display) display.innerHTML = formatBullets(section.content || '');
-            });
+                // Custom Sections
+                CUSTOM_SECTIONS.forEach((section) => {
+                    const display = document.getElementById(
+                        `display-${section.id}`,
+                    );
+                    if (display) {
+                        display.innerHTML = formatBullets(
+                            section.content || "",
+                        );
+                    }
+                });
+            }
 
-            renderContacts();
-        }
+            function refreshAllContent() {
+                // Default Felder
+                [
+                    "ausloeser",
+                    "gruende",
+                    "skills",
+                    "staerken",
+                    "mottos",
+                    "angenehmes",
+                ].forEach((key) => {
+                    const display = document.getElementById(key + "-display");
+                    if (display)
+                        display.innerHTML = formatBullets(DATA[key] || "");
+                });
 
-        function createDefaultSection(config) {
-            const key = config.id;
-            
-            if (key === 'kontakte') {
-                return `
+                // Custom Sections
+                CUSTOM_SECTIONS.forEach((section) => {
+                    const display = document.getElementById(
+                        `display-${section.id}`,
+                    );
+                    if (display)
+                        display.innerHTML = formatBullets(
+                            section.content || "",
+                        );
+                });
+
+                renderContacts();
+            }
+
+            function createDefaultSection(config) {
+                const key = config.id;
+
+                if (key === "kontakte") {
+                    return `
                 <div class="section" id="section-kontakte">
                     <div class="section-header">
                         <div style="display:flex; align-items:center; gap:12px;">
@@ -581,42 +962,46 @@
                     </div>
                     <div class="section-content" id="kontakte-list"></div>
                 </div>`;
-            }
+                }
 
-            const isCollapsible = key === 'angenehmes';
-            
-            return `
-            <div class="section ${isCollapsible ? 'collapsible-section' : ''}" id="section-${key}">
-                <div class="section-header" ${isCollapsible ? `onclick="toggleCollapse('${key}')"` : ''}>
+                const isCollapsible = key === "angenehmes";
+
+                return `
+            <div class="section ${isCollapsible ? "collapsible-section" : ""}" id="section-${key}">
+                <div class="section-header" ${isCollapsible ? `onclick="toggleCollapse('${key}')"` : ""}>
                     <div style="display:flex; align-items:center; gap:12px;">
                         <span id="icon-${key}"></span>
                         <span>${config.title}</span>
                     </div>
                     <div style="display:flex; align-items:center; gap:8px;">
-                        ${isCollapsible ? `
-                        <button class="edit-btn collapse-edit-btn" id="btn-${key}" 
-                                onclick="event.stopImmediatePropagation(); toggleEdit('${key}');" 
+                        ${
+                            isCollapsible
+                                ? `
+                        <button class="edit-btn collapse-edit-btn" id="btn-${key}"
+                                onclick="event.stopImmediatePropagation(); toggleEdit('${key}');"
                                 style="display:none;">✎</button>
                         <span class="collapse-icon" data-target="${key}">›</span>
-                        ` : `
-                        <button class="edit-btn" id="btn-${key}" onclick="toggleEdit('${key}')">✎</button>`}
+                        `
+                                : `
+                        <button class="edit-btn" id="btn-${key}" onclick="toggleEdit('${key}')">✎</button>`
+                        }
                     </div>
                 </div>
-                <div class="section-content ${isCollapsible ? 'collapsible-content' : ''}" 
-                     id="content-${key}" 
-                     ${isCollapsible ? 'style="display:none;"' : ''}>
+                <div class="section-content ${isCollapsible ? "collapsible-content" : ""}"
+                     id="content-${key}"
+                     ${isCollapsible ? 'style="display:none;"' : ""}>
                     <div id="${key}-display" class="content-display"></div>
                     <textarea id="${key}-edit" style="display:none;"></textarea>
                 </div>
             </div>`;
-        }
+            }
 
-        function renderCustomSection(section, container) {
-            const iconSVG = SVGs[section.icon] || SVGs.bolt;
-            let html = `<div class="section custom-section ${section.isCollapsible ? 'collapsible-section' : ''}" id="section-${section.id}">`;
+            function renderCustomSection(section, container) {
+                const iconSVG = SVGs[section.icon] || SVGs.bolt;
+                let html = `<div class="section custom-section ${section.isCollapsible ? "collapsible-section" : ""}" id="section-${section.id}">`;
 
-            if (section.isCollapsible) {
-                html += `
+                if (section.isCollapsible) {
+                    html += `
                     <div class="section-header" onclick="toggleCustomCollapse('${section.id}')">
                         <div style="display:flex; align-items:center; gap:12px;">
                             <span>${iconSVG}</span>
@@ -632,8 +1017,8 @@
                         <div id="display-${section.id}" class="content-display">${formatBullets(section.content)}</div>
                         <textarea id="edit-${section.id}" style="display:none;"></textarea>
                     </div>`;
-            } else {
-                html += `
+                } else {
+                    html += `
                     <div class="section-header">
                         <div style="display:flex; align-items:center; gap:12px;">
                             <span>${iconSVG}</span>
@@ -648,23 +1033,23 @@
                         <div id="display-${section.id}" class="content-display">${formatBullets(section.content)}</div>
                         <textarea id="edit-${section.id}" style="display:none;"></textarea>
                     </div>`;
+                }
+                html += `</div>`;
+                container.innerHTML += html;
             }
-            html += `</div>`;
-            container.innerHTML += html;
-        }
 
-        function renderContacts() {
-            const container = document.getElementById('kontakte-list');
-            if (!container) return;
-            container.innerHTML = '';
+            function renderContacts() {
+                const container = document.getElementById("kontakte-list");
+                if (!container) return;
+                container.innerHTML = "";
 
-            if (KONTAKTE.length === 0) {
-                container.innerHTML = `<p style="color:#888; text-align:center; padding:40px 20px;">Noch keine Notfallkontakte hinzugefügt.</p>`;
-            } else {
-                KONTAKTE.forEach((k, i) => {
-                    const div = document.createElement('div');
-                    div.className = 'contact-item';
-                    div.innerHTML = `
+                if (KONTAKTE.length === 0) {
+                    container.innerHTML = `<p style="color:#888; text-align:center; padding:40px 20px;">Noch keine Notfallkontakte hinzugefügt.</p>`;
+                } else {
+                    KONTAKTE.forEach((k, i) => {
+                        const div = document.createElement("div");
+                        div.className = "contact-item";
+                        div.innerHTML = `
                         <div>
                             <div style="font-weight:500;">${k.name}</div>
                             <a href="tel:${k.tel}" style="color:#34d399;">${k.tel}</a>
@@ -673,274 +1058,322 @@
                             <a href="tel:${k.tel}" class="contact-call-btn">${SVGs.phone}</a>
                             <button onclick="deleteContact(${i})" style="background:#ef4444;color:white;border:none;width:44px;height:44px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;">🗑</button>
                         </div>`;
-                    container.appendChild(div);
-                });
+                        container.appendChild(div);
+                    });
+                }
+
+                const addBtn = document.createElement("button");
+                addBtn.className = "add-contact";
+                addBtn.textContent = "+ Neuen Kontakt hinzufügen";
+                addBtn.onclick = showAddContactModal;
+                container.appendChild(addBtn);
             }
 
-            const addBtn = document.createElement('button');
-            addBtn.className = 'add-contact';
-            addBtn.textContent = '+ Neuen Kontakt hinzufügen';
-            addBtn.onclick = showAddContactModal;
-            container.appendChild(addBtn);
-        }
+            // ==================== MANAGE MODAL ====================
+            function showManageModal() {
+                const list = document.getElementById("manage-list");
+                list.innerHTML = "";
 
-        // ==================== MANAGE MODAL ====================
-        function showManageModal() {
-            const list = document.getElementById('manage-list');
-            list.innerHTML = '';
-
-            SECTION_CONFIG.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = 'section-manage-item';
-                div.innerHTML = `
-                    <input type="checkbox" ${item.visible ? 'checked' : ''} onchange="toggleVisibility('${item.id}', this.checked)">
+                SECTION_CONFIG.forEach((item, index) => {
+                    const div = document.createElement("div");
+                    div.className = "section-manage-item";
+                    div.innerHTML = `
+                    <input type="checkbox" ${item.visible ? "checked" : ""} onchange="toggleVisibility('${item.id}', this.checked)">
                     <div style="flex:1; font-weight:500;">${item.title}</div>
                     <button onclick="moveSection(${index}, -1)" style="min-width:36px;height:36px;background:#3f3f46;border:none;border-radius:8px;color:white;">↑</button>
                     <button onclick="moveSection(${index}, 1)" style="min-width:36px;height:36px;background:#3f3f46;border:none;border-radius:8px;color:white;">↓</button>
                 `;
-                if (item.type === 'custom') {
-                    div.innerHTML += `<button onclick="deleteCustomSection('${item.id}')" style="background:#ef4444;color:white;border:none;border-radius:8px;padding:0 10px;">🗑</button>`;
-                }
-                list.appendChild(div);
-            });
-            document.getElementById('manage-modal').style.display = 'flex';
-        }
+                    if (item.type === "custom") {
+                        div.innerHTML += `<button onclick="deleteCustomSection('${item.id}')" style="background:#ef4444;color:white;border:none;border-radius:8px;padding:0 10px;">🗑</button>`;
+                    }
+                    list.appendChild(div);
+                });
+                document.getElementById("manage-modal").style.display = "flex";
+            }
 
-        function hideManageModal() {
-            document.getElementById('manage-modal').style.display = 'none';
-            renderAllSections();
-            renderCounter();
-            saveToLocalStorage();
-        }
+            function hideManageModal() {
+                document.getElementById("manage-modal").style.display = "none";
+                renderAllSections();
+                renderCounter();
+                saveToLocalStorage();
+            }
 
-        function toggleVisibility(id, visible) {
-            const item = SECTION_CONFIG.find(s => s.id === id);
-            if (item) item.visible = visible;
-        }
+            function toggleVisibility(id, visible) {
+                const item = SECTION_CONFIG.find((s) => s.id === id);
+                if (item) item.visible = visible;
+            }
 
-        function moveSection(index, dir) {
-            const newIdx = index + dir;
-            if (newIdx < 0 || newIdx >= SECTION_CONFIG.length) return;
-            [SECTION_CONFIG[index], SECTION_CONFIG[newIdx]] = [SECTION_CONFIG[newIdx], SECTION_CONFIG[index]];
-            showManageModal();
-        }
+            function moveSection(index, dir) {
+                const newIdx = index + dir;
+                if (newIdx < 0 || newIdx >= SECTION_CONFIG.length) return;
+                [SECTION_CONFIG[index], SECTION_CONFIG[newIdx]] = [
+                    SECTION_CONFIG[newIdx],
+                    SECTION_CONFIG[index],
+                ];
+                showManageModal();
+            }
 
-        function showAddSectionModal() {
-            document.getElementById('new-section-title').value = '';
-            document.getElementById('new-section-collapsible').checked = false;
-            selectedCustomIcon = "bolt";
-            document.getElementById('custom-section-modal').style.display = 'flex';
-            populateIconPicker();
-        }
+            function showAddSectionModal() {
+                document.getElementById("new-section-title").value = "";
+                document.getElementById("new-section-collapsible").checked =
+                    false;
+                selectedCustomIcon = "bolt";
+                document.getElementById("custom-section-modal").style.display =
+                    "flex";
+                populateIconPicker();
+            }
 
-        function hideAddSectionModal() { document.getElementById('custom-section-modal').style.display = 'none'; }
+            function hideAddSectionModal() {
+                document.getElementById("custom-section-modal").style.display =
+                    "none";
+            }
 
-        function populateIconPicker() {
-            const container = document.getElementById('icon-picker');
-            container.innerHTML = '';
-            Object.keys(SVGs).forEach(key => {
-                const div = document.createElement('div');
-                div.style.cssText = `width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#18181b;border:2px solid ${key===selectedCustomIcon?'#34d399':'transparent'};border-radius:12px;cursor:pointer;`;
-                div.innerHTML = SVGs[key];
-                div.onclick = () => {
-                    selectedCustomIcon = key;
-                    populateIconPicker();
+            function populateIconPicker() {
+                const container = document.getElementById("icon-picker");
+                container.innerHTML = "";
+                Object.keys(SVGs).forEach((key) => {
+                    const div = document.createElement("div");
+                    div.style.cssText = `width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#18181b;border:2px solid ${key === selectedCustomIcon ? "#34d399" : "transparent"};border-radius:12px;cursor:pointer;`;
+                    div.innerHTML = SVGs[key];
+                    div.onclick = () => {
+                        selectedCustomIcon = key;
+                        populateIconPicker();
+                    };
+                    container.appendChild(div);
+                });
+            }
+
+            function createCustomSection() {
+                const title = document
+                    .getElementById("new-section-title")
+                    .value.trim();
+                if (!title) return alert("Titel eingeben!");
+                const isCollapsible = document.getElementById(
+                    "new-section-collapsible",
+                ).checked;
+
+                const newSection = {
+                    id: "custom-" + Date.now(),
+                    title: title,
+                    icon: selectedCustomIcon,
+                    isCollapsible: isCollapsible,
+                    content: "",
                 };
-                container.appendChild(div);
-            });
-        }
+                CUSTOM_SECTIONS.push(newSection);
+                SECTION_CONFIG.push({
+                    id: newSection.id,
+                    title: title,
+                    type: "custom",
+                    visible: true,
+                });
 
-        function createCustomSection() {
-            const title = document.getElementById('new-section-title').value.trim();
-            if (!title) return alert("Titel eingeben!");
-            const isCollapsible = document.getElementById('new-section-collapsible').checked;
-
-            const newSection = {
-                id: 'custom-' + Date.now(),
-                title: title,
-                icon: selectedCustomIcon,
-                isCollapsible: isCollapsible,
-                content: ''
-            };
-            CUSTOM_SECTIONS.push(newSection);
-            SECTION_CONFIG.push({id: newSection.id, title: title, type: "custom", visible: true});
-
-            hideAddSectionModal();
-            renderAllSections();
-            saveToLocalStorage();
-        }
-
-        function deleteCustomSection(id) {
-            if (!confirm("Sektion löschen?")) return;
-            CUSTOM_SECTIONS = CUSTOM_SECTIONS.filter(s => s.id !== id);
-            SECTION_CONFIG = SECTION_CONFIG.filter(s => s.id !== id);
-            renderAllSections();
-            saveToLocalStorage();
-            showManageModal();
-        }
-
-        function toggleCustomEdit(id) { /* ... deine Originalfunktion ... */ 
-            const section = CUSTOM_SECTIONS.find(s => s.id === id);
-            if (!section) return;
-            const display = document.getElementById(`display-${id}`);
-            const textarea = document.getElementById(`edit-${id}`);
-            const btn = document.getElementById(`editbtn-${id}`);
-
-            if (textarea.style.display === 'block') {
-                section.content = textarea.value.trim();
-                display.innerHTML = formatBullets(section.content);
-                display.style.display = 'block';
-                textarea.style.display = 'none';
-                btn.innerHTML = '✎';
+                hideAddSectionModal();
+                renderAllSections();
                 saveToLocalStorage();
-            } else {
-                textarea.value = section.content;
-                display.style.display = 'none';
-                textarea.style.display = 'block';
-                btn.innerHTML = '✓';
             }
-        }
 
-        function toggleCustomCollapse(id) {
-            const content = document.getElementById(`content-${id}`);
-            const icon = document.getElementById(`collapse-icon-${id}`);
-            const isHidden = content.style.display === 'none';
-            content.style.display = isHidden ? 'block' : 'none';
-            icon.style.transform = isHidden ? 'rotate(90deg)' : 'rotate(0deg)';
-            document.getElementById(`editbtn-${id}`).style.display = isHidden ? 'flex' : 'none';
-        }
-
-        function toggleEdit(key) { /* deine Original toggleEdit */ 
-            const display = document.getElementById(key + '-display');
-            const textarea = document.getElementById(key + '-edit');
-            const btn = document.getElementById('btn-' + key);
-
-            if (currentlyEditing === key) {
-                DATA[key] = textarea.value.trim();
-                display.innerHTML = formatBullets(DATA[key]);
-                display.style.display = 'block';
-                textarea.style.display = 'none';
-                btn.innerHTML = '✎';
-                currentlyEditing = null;
+            function deleteCustomSection(id) {
+                if (!confirm("Sektion löschen?")) return;
+                CUSTOM_SECTIONS = CUSTOM_SECTIONS.filter((s) => s.id !== id);
+                SECTION_CONFIG = SECTION_CONFIG.filter((s) => s.id !== id);
+                renderAllSections();
                 saveToLocalStorage();
-            } else {
-                if (currentlyEditing) toggleEdit(currentlyEditing);
-                textarea.value = DATA[key];
-                display.style.display = 'none';
-                textarea.style.display = 'block';
-                btn.innerHTML = '✓';
-                btn.classList.add('saving');
-                currentlyEditing = key;
-                textarea.focus();
+                showManageModal();
             }
-        }
 
-        function toggleCollapse(key) {
-            const content = document.getElementById(`content-${key}`);
-            const icon = document.querySelector(`.collapse-icon[data-target="${key}"]`);
-            const isHidden = content.style.display === 'none';
-            content.style.display = isHidden ? 'block' : 'none';
-            if (icon) icon.style.transform = isHidden ? 'rotate(90deg)' : 'rotate(0deg)';
-            const editBtn = document.getElementById(`btn-${key}`);
-            if (editBtn) editBtn.style.display = isHidden ? 'flex' : 'none';
-        }
+            function toggleCustomEdit(id) {
+                /* ... deine Originalfunktion ... */
+                const section = CUSTOM_SECTIONS.find((s) => s.id === id);
+                if (!section) return;
+                const display = document.getElementById(`display-${id}`);
+                const textarea = document.getElementById(`edit-${id}`);
+                const btn = document.getElementById(`editbtn-${id}`);
 
-        // Contact Funktionen
-        function showAddContactModal() { document.getElementById('contact-modal').style.display = 'flex'; }
-        function hideAddContactModal() { document.getElementById('contact-modal').style.display = 'none'; }
+                if (textarea.style.display === "block") {
+                    section.content = textarea.value.trim();
+                    display.innerHTML = formatBullets(section.content);
+                    display.style.display = "block";
+                    textarea.style.display = "none";
+                    btn.innerHTML = "✎";
+                    saveToLocalStorage();
+                } else {
+                    textarea.value = section.content;
+                    display.style.display = "none";
+                    textarea.style.display = "block";
+                    btn.innerHTML = "✓";
+                }
+            }
 
-        function addContactConfirm() {
-            const name = document.getElementById('modal-name').value.trim();
-            const tel = document.getElementById('modal-tel').value.trim();
-            if (name && tel) {
-                KONTAKTE.push({name, tel});
+            function toggleCustomCollapse(id) {
+                const content = document.getElementById(`content-${id}`);
+                const icon = document.getElementById(`collapse-icon-${id}`);
+                const isHidden = content.style.display === "none";
+                content.style.display = isHidden ? "block" : "none";
+                icon.style.transform = isHidden
+                    ? "rotate(90deg)"
+                    : "rotate(0deg)";
+                document.getElementById(`editbtn-${id}`).style.display =
+                    isHidden ? "flex" : "none";
+            }
+
+            function toggleEdit(key) {
+                /* deine Original toggleEdit */
+                const display = document.getElementById(key + "-display");
+                const textarea = document.getElementById(key + "-edit");
+                const btn = document.getElementById("btn-" + key);
+
+                if (currentlyEditing === key) {
+                    DATA[key] = textarea.value.trim();
+                    display.innerHTML = formatBullets(DATA[key]);
+                    display.style.display = "block";
+                    textarea.style.display = "none";
+                    btn.innerHTML = "✎";
+                    currentlyEditing = null;
+                    saveToLocalStorage();
+                } else {
+                    if (currentlyEditing) toggleEdit(currentlyEditing);
+                    textarea.value = DATA[key];
+                    display.style.display = "none";
+                    textarea.style.display = "block";
+                    btn.innerHTML = "✓";
+                    btn.classList.add("saving");
+                    currentlyEditing = key;
+                    textarea.focus();
+                }
+            }
+
+            function toggleCollapse(key) {
+                const content = document.getElementById(`content-${key}`);
+                const icon = document.querySelector(
+                    `.collapse-icon[data-target="${key}"]`,
+                );
+                const isHidden = content.style.display === "none";
+                content.style.display = isHidden ? "block" : "none";
+                if (icon)
+                    icon.style.transform = isHidden
+                        ? "rotate(90deg)"
+                        : "rotate(0deg)";
+                const editBtn = document.getElementById(`btn-${key}`);
+                if (editBtn) editBtn.style.display = isHidden ? "flex" : "none";
+            }
+
+            // Contact Funktionen
+            function showAddContactModal() {
+                document.getElementById("contact-modal").style.display = "flex";
+            }
+            function hideAddContactModal() {
+                document.getElementById("contact-modal").style.display = "none";
+            }
+
+            function addContactConfirm() {
+                const name = document.getElementById("modal-name").value.trim();
+                const tel = document.getElementById("modal-tel").value.trim();
+                if (name && tel) {
+                    KONTAKTE.push({ name, tel });
+                    renderContacts();
+                    saveToLocalStorage();
+                    hideAddContactModal();
+                }
+            }
+
+            function deleteContact(index) {
+                KONTAKTE.splice(index, 1);
                 renderContacts();
                 saveToLocalStorage();
-                hideAddContactModal();
             }
-        }
 
-        function deleteContact(index) {
-            KONTAKTE.splice(index, 1);
-            renderContacts();
-            saveToLocalStorage();
-        }
+            // Breathing
+            let breathingTimeout = null;
+            let isBreathing = false;
 
-        // Breathing
-        let breathingTimeout = null;
-        let isBreathing = false;
-
-        function setBreathingPhase(phase) {
-            const phases = ["Einatmen...", "Halten...", "Ausatmen...", "Halten..."];
-            document.getElementById('breathing-text').textContent = phases[phase];
-            document.getElementById('breathing-section').classList.toggle('intense', phase < 2);
-        }
-
-        function startBoxBreathing() {
-            if (breathingTimeout) clearTimeout(breathingTimeout);
-            let phase = 0;
-            function cycle() {
-                if (!isBreathing) return;
-                setBreathingPhase(phase);
-                phase = (phase + 1) % 4;
-                breathingTimeout = setTimeout(cycle, 4000);
+            function setBreathingPhase(phase) {
+                const phases = [
+                    "Einatmen...",
+                    "Halten...",
+                    "Ausatmen...",
+                    "Halten...",
+                ];
+                document.getElementById("breathing-text").textContent =
+                    phases[phase];
+                document
+                    .getElementById("breathing-section")
+                    .classList.toggle("intense", phase < 2);
             }
-            cycle();
-        }
 
-        function toggleBoxBreathing() {
-            const btnText = document.getElementById('breathing-btn-text');
-            const section = document.getElementById('breathing-section');
-            if (isBreathing) {
-                clearTimeout(breathingTimeout);
-                section.classList.remove("active", "intense");
-                btnText.textContent = "Boxatmung starten";
-                document.getElementById('breathing-text').textContent = "";
-                isBreathing = false;
-            } else {
-                section.classList.add("active");
-                btnText.textContent = "Boxatmung stoppen";
-                isBreathing = true;
-                startBoxBreathing();
-                setTimeout(() => { if (isBreathing) toggleBoxBreathing(); }, 180000);
+            function startBoxBreathing() {
+                if (breathingTimeout) clearTimeout(breathingTimeout);
+                let phase = 0;
+                function cycle() {
+                    if (!isBreathing) return;
+                    setBreathingPhase(phase);
+                    phase = (phase + 1) % 4;
+                    breathingTimeout = setTimeout(cycle, 4000);
+                }
+                cycle();
             }
-        }
 
-        function calculateDays() {
-            const start = new Date(DATA.startDate);
-            const today = new Date();
-            today.setHours(0,0,0,0);
-            const diff = Math.floor((today - start) / 86400000);
-            document.getElementById('days-count').textContent = Math.max(0, diff);
-        }
+            function toggleBoxBreathing() {
+                const btnText = document.getElementById("breathing-btn-text");
+                const section = document.getElementById("breathing-section");
+                if (isBreathing) {
+                    clearTimeout(breathingTimeout);
+                    section.classList.remove("active", "intense");
+                    btnText.textContent = "Boxatmung starten";
+                    document.getElementById("breathing-text").textContent = "";
+                    isBreathing = false;
+                } else {
+                    section.classList.add("active");
+                    btnText.textContent = "Boxatmung stoppen";
+                    isBreathing = true;
+                    startBoxBreathing();
+                    setTimeout(() => {
+                        if (isBreathing) toggleBoxBreathing();
+                    }, 180000);
+                }
+            }
 
-        function updateStartDate(val) {
-            DATA.startDate = val;
-            calculateDays();
-            saveToLocalStorage();
-        }
+            function calculateDays() {
+                const start = new Date(DATA.startDate);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const diff = Math.floor((today - start) / 86400000);
+                document.getElementById("days-count").textContent = Math.max(
+                    0,
+                    diff,
+                );
+            }
 
-        // === Export Funktion ===
-        function exportCleanHTML() {
-            // Get styles
-            const styleEl = document.querySelector('style');
-            const styleContent = styleEl ? styleEl.innerHTML : '';
+            function updateStartDate(val) {
+                DATA.startDate = val;
+                calculateDays();
+                saveToLocalStorage();
+            }
 
-            // Create temporary container with current state
-            const tempContainer = document.createElement('div');
+            // === Export Funktion ===
+            function exportCleanHTML() {
+                // Get styles
+                const styleEl = document.querySelector("style");
+                const styleContent = styleEl ? styleEl.innerHTML : "";
 
-            // Header + main content mit Abstand
-            const headerHTML = document.querySelector('header').outerHTML;
-            const mainContentHTML = document.getElementById('main-content').innerHTML;
+                // Create temporary container with current state
+                const tempContainer = document.createElement("div");
 
-            tempContainer.innerHTML = headerHTML + 
-                `<div id="main-content" style="margin-top:32px;">${mainContentHTML}</div>`;
+                // Header + main content mit Abstand
+                const headerHTML = document.querySelector("header").outerHTML;
+                const mainContentHTML =
+                    document.getElementById("main-content").innerHTML;
 
-            // Clean up the temporary container
-            tempContainer.querySelectorAll(`
+                tempContainer.innerHTML =
+                    headerHTML +
+                    `<div id="main-content" style="margin-top:32px;">${mainContentHTML}</div>`;
+
+                // Clean up the temporary container
+                tempContainer
+                    .querySelectorAll(
+                        `
                 .edit-btn,
-                .add-contact, 
-                .add-section-btn, 
+                .add-contact,
+                .add-section-btn,
                 .manage-btn,
                 button[onclick*="deleteCustomSection"],
                 button[onclick*="showAddContactModal"],
@@ -1138,36 +1571,85 @@
                     <p style="color: #C2C2C7; font-size: 0.9rem;">Speichere diese Datei an einem sicheren Ort, wo du schnell darauf zugreifen kannst!</p>
                 </div>
 
-            const finalHTML = htmlParts.join('\n');
+                <h3 style="color: #34d399; margin-bottom: 16px; margin-top: 24px; font-weight: 600;">
+                    💻 Auf dem PC
+                </h3>
+                <ul style="margin-bottom: 20px; padding-left: 20px; color: #C2C2C7;">
+                    <li style="margin-bottom: 8px;"><strong>Speichern:</strong> Die Datei ist in deinem "Downloads"-Ordner. Verschiebe sie z.B. auf den Desktop oder in einen "Notfallplan"-Ordner.</li>
+                    <li style="margin-bottom: 8px;"><strong>Öffnen:</strong> Doppelklick auf die Datei → öffnet sich automatisch im Browser.</li>
+                    <li><strong>Lesezeichen:</strong> Im Browser (Strg+D oder Cmd+D): Speichere sie als Lesezeichen für schnellen Zugriff.</li>
+                </ul>
 
-            const blob = new Blob([finalHTML], { type: 'text/html; charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Mein-Notfallplan.html';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
+                <h3 style="color: #34d399; margin-bottom: 16px; margin-top: 24px; font-weight: 600;">
+                    📱 Auf dem Smartphone
+                </h3>
+                <ul style="margin-bottom: 20px; padding-left: 20px; color: #C2C2C7;">
+                    <li style="margin-bottom: 8px;"><strong>iOS (iPhone/iPad):</strong>
+                        <ul style="margin-top: 4px; padding-left: 16px;">
+                            <li>1. Öffne Safari</li>
+                            <li>2. Drücke das Share-Symbol (Quadrat mit Pfeil)</li>
+                            <li>3. Wähle "Zu Home-Bildschirm hinzufügen"</li>
+                            <li>4. App-Name: "Notfallplan" → Hinzufügen</li>
+                        </ul>
+                    </li>
+                    <li style="margin-top: 12px;"><strong>Android:</strong>
+                        <ul style="margin-top: 4px; padding-left: 16px;">
+                            <li>1. Öffne Chrome/Firefox</li>
+                            <li>2. Halte länger auf die Datei → "Auf Home-Bildschirm installieren"</li>
+                            <li>Oder: 3 Punkte (Menü) → "Zu Home-Bildschirm hinzufügen"</li>
+                        </ul>
+                    </li>
+                </ul>
 
-        // ==================== INIT ====================
-        window.onload = function() {
-            loadFromLocalStorage();
-            renderAllSections();
-            renderCounter();
-            renderContacts();
-            populateAllDisplays();
+                <div style="background: #1b5e50; border-radius: 16px; padding: 16px; margin-bottom: 20px; border: 1px solid #10b981;">
+                    <p style="color: #34d399; font-weight: 600; margin-bottom: 8px;">💡 Tipp:</p>
+                    <p style="font-size: 0.9rem;">Speichere die Datei auch:</p>
+                    <ul style="margin-top: 8px; padding-left: 20px;">
+                        <li>In der Cloud (Google Drive, OneDrive, Dropbox) - so hast du Zugriff überall</li>
+                        <li>Als E-Mail an dich selbst als Backup</li>
+                        <li>An einem sicheren, privaten Ort den nur du kennst</li>
+                    </ul>
+                </div>
 
-            // Icons für Default-Sektionen
-            const icons = {ausloeser:'bolt', gruende:'heart', kontakte:'phone', skills:'toolbox', staerken:'dumbbell', mottos:'quote', angenehmes:'toolbox'};
-            Object.keys(icons).forEach(key => {
-                const el = document.getElementById('icon-' + key);
-                if (el) el.innerHTML = SVGs[icons[key]];
-            });
+                <div style="background: #3f3f46; border-radius: 16px; padding: 16px; margin-bottom: 20px; border-left: 4px solid #ef4444;">
+                    <p style="color: #e4e4e7; font-weight: 600; margin-bottom: 8px;">⚠️ Wichtig:</p>
+                    <p style="font-size: 0.9rem;">Wenn du deine Daten aktualisierst (neue Kontakte, Inhalte ändern), musst du die Datei neu exportieren, damit die Änderungen gespeichert werden.</p>
+                </div>
 
-            calculateDays();
-        };
-    </script>
-</body>
+                <button onclick="this.parentElement.parentElement.remove()" style="width: 100%; padding: 16px; background: #34d399; border: none; border-radius: 16px; color: white; font-weight: 600; font-size: 1.05rem; cursor: pointer;">
+                    Verstanden
+                </button>
+            `;
+
+                modal.appendChild(content);
+                document.body.appendChild(modal);
+            }
+
+            // ==================== INIT ====================
+            window.onload = function () {
+                loadFromLocalStorage();
+                renderAllSections();
+                renderCounter();
+                renderContacts();
+                populateAllDisplays();
+
+                // Icons für Default-Sektionen
+                const icons = {
+                    ausloeser: "bolt",
+                    gruende: "heart",
+                    kontakte: "phone",
+                    skills: "toolbox",
+                    staerken: "dumbbell",
+                    mottos: "quote",
+                    angenehmes: "toolbox",
+                };
+                Object.keys(icons).forEach((key) => {
+                    const el = document.getElementById("icon-" + key);
+                    if (el) el.innerHTML = SVGs[icons[key]];
+                });
+
+                calculateDays();
+            };
+        </script>
+    </body>
 </html>
