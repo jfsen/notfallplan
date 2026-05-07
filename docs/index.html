@@ -1438,20 +1438,61 @@
             }
 
             function calculateDays() {
-                const start = new Date(DATA.startDate);
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const diff = Math.floor((today - start) / 86400000);
+                if (!DATA.startDate) {
+                    document.getElementById("days-count").textContent = "0";
+                    return;
+                }
+
+                // Parse start date (YYYY-MM-DD) as Berlin midnight
+                const start = new Date(DATA.startDate + "T00:00:00"); // Local parse
+
+                // Get current Berlin time
+                const now = new Date();
+
+                // Simple but effective Berlin adjustment (handles CET/CEST)
+                const berlinOffset = getBerlinOffset(now);
+                const berlinNow = new Date(now.getTime() + berlinOffset);
+
+                // Normalize both to midnight
+                start.setHours(0, 0, 0, 0);
+                berlinNow.setHours(0, 0, 0, 0);
+
+                const diffTime = berlinNow - start;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
                 document.getElementById("days-count").textContent = Math.max(
                     0,
-                    diff,
+                    diffDays,
                 );
             }
 
+            // Helper for Berlin timezone (CET/CEST)
+            function getBerlinOffset(date) {
+                // Very reliable approximation for Germany
+                const year = date.getFullYear();
+                // CEST (UTC+2) from last Sunday March to last Sunday October
+                const marchLastSunday = new Date(
+                    year,
+                    2,
+                    31 - (new Date(year, 3, 0).getDay() || 7) + 1,
+                );
+                const octLastSunday = new Date(
+                    year,
+                    9,
+                    31 - (new Date(year, 10, 0).getDay() || 7) + 1,
+                );
+
+                const isSummerTime =
+                    date >= marchLastSunday && date < octLastSunday;
+                return (isSummerTime ? 2 : 1) * 60 * 60 * 1000; // ms offset from UTC
+            }
+
             function updateStartDate(val) {
-                DATA.startDate = val;
-                calculateDays();
-                saveToLocalStorage();
+                if (val) {
+                    DATA.startDate = val;
+                    calculateDays();
+                    saveToLocalStorage();
+                }
             }
 
             // === Export Funktion ===
@@ -1547,12 +1588,36 @@
                     "  let isBreathing = false;",
                     "  ",
                     "  function calculateDays() {",
-                    "    const start = new Date(START_DATE);",
-                    "    const today = new Date();",
-                    "    today.setHours(0,0,0,0);",
-                    "    const diff = Math.floor((today - start) / 86400000);",
+                    "    if (!START_DATE) {",
+                    '      const daysEl = document.getElementById("days-count");',
+                    '      if (daysEl) daysEl.textContent = "0";',
+                    "      return;",
+                    "    }",
+                    "",
+                    "    // Berlin time aware day count",
+                    '    const start = new Date(START_DATE + "T00:00:00");',
+                    "    const now = new Date();",
+                    "",
+                    "    // Get Berlin offset (CET/CEST)",
+                    "    const berlinOffset = getBerlinOffset(now);",
+                    "    const berlinNow = new Date(now.getTime() + berlinOffset);",
+                    "",
+                    "    start.setHours(0, 0, 0, 0);",
+                    "    berlinNow.setHours(0, 0, 0, 0);",
+                    "",
+                    "    const diffTime = berlinNow - start;",
+                    "    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));",
+                    "",
                     '    const daysEl = document.getElementById("days-count");',
-                    "    if (daysEl) daysEl.textContent = Math.max(0, diff);",
+                    "    if (daysEl) daysEl.textContent = Math.max(0, diffDays);",
+                    "  }",
+                    "",
+                    "  function getBerlinOffset(date) {",
+                    "    const year = date.getFullYear();",
+                    "    const marchLastSunday = new Date(year, 2, 31 - (new Date(year, 3, 0).getDay() || 7) + 1);",
+                    "    const octLastSunday = new Date(year, 9, 31 - (new Date(year, 10, 0).getDay() || 7) + 1);",
+                    "    const isSummerTime = date >= marchLastSunday && date < octLastSunday;",
+                    "    return (isSummerTime ? 2 : 1) * 60 * 60 * 1000;",
                     "  }",
                     "  ",
                     "  function setBreathingPhase(phase) {",
