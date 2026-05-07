@@ -91,6 +91,47 @@
                 cursor: pointer;
             }
 
+            #editor-textarea {
+                background: #18181b;
+                border: 2px solid #34d399;
+                border-radius: 16px;
+                padding: 20px;
+                color: #e4e4e7;
+                font-family: inherit;
+                font-size: 1.05rem;
+                line-height: 1.7;
+            }
+
+            .modal-cancel-btn {
+                padding: 12px 24px;
+                background: #3f3f46;
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-size: 1.02rem;
+                cursor: pointer;
+            }
+
+            .modal-save-btn {
+                padding: 12px 28px;
+                background: #34d399;
+                color: #18181b;
+                font-weight: 600;
+                border: none;
+                border-radius: 12px;
+                font-size: 1.02rem;
+                cursor: pointer;
+            }
+
+            .modal-cancel-btn:hover {
+                background: #52525b;
+            }
+
+            .modal-save-btn:hover {
+                background: #10b981;
+                transform: scale(1.03);
+            }
+
             .section {
                 background: #27272a;
                 border: 1px solid #3f3f46;
@@ -598,6 +639,69 @@
             </div>
         </div>
 
+        <!-- Editor Modal -->
+        <div class="modal" id="editor-modal">
+            <div class="modal-content" style="max-width: 560px; width: 95%">
+                <div
+                    style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 20px;
+                    "
+                >
+                    <h3 id="editor-title" style="margin: 0; color: #34d399">
+                        Sektion bearbeiten
+                    </h3>
+                    <button
+                        onclick="closeEditor()"
+                        style="
+                            background: none;
+                            border: none;
+                            font-size: 2rem;
+                            color: #888;
+                            cursor: pointer;
+                            line-height: 1;
+                        "
+                    >
+                        ×
+                    </button>
+                </div>
+
+                <textarea id="editor-textarea" rows="12"></textarea>
+
+                <div
+                    style="
+                        margin-top: 20px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    "
+                >
+                    <div
+                        id="editor-status"
+                        style="
+                            font-size: 1.1rem;
+                            font-weight: 500;
+                            color: #34d399;
+                        "
+                    ></div>
+
+                    <div style="display: flex; gap: 12px">
+                        <button
+                            onclick="closeEditor()"
+                            class="modal-cancel-btn"
+                        >
+                            Abbrechen
+                        </button>
+                        <button onclick="closeEditor()" class="modal-save-btn">
+                            Fertig
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Contact Modal -->
         <div class="modal" id="contact-modal">
             <div class="modal-content">
@@ -967,48 +1071,54 @@
 
                 if (key === "kontakte") {
                     return `
-                <div class="section" id="section-kontakte">
-                    <div class="section-header">
-                        <div style="display:flex; align-items:center; gap:12px;">
-                            <span id="icon-kontakte">${SVGs.phone}</span>
-                            <span>${config.title}</span>
+                    <div class="section" id="section-kontakte">
+                        <div class="section-header">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <span id="icon-kontakte">${SVGs.phone}</span>
+                                <span>${config.title}</span>
+                            </div>
+                            <button class="edit-btn" onclick="showAddContactModal()">+</button>
                         </div>
-                        <button class="edit-btn" onclick="showAddContactModal()">+</button>
-                    </div>
-                    <div class="section-content" id="kontakte-list"></div>
-                </div>`;
+                        <div class="section-content" id="kontakte-list"></div>
+                    </div>`;
                 }
 
-                const isCollapsible = key === "angenehmes";
+                // Special case for "Angenehmes" - collapsible + new modal editor
+                if (key === "angenehmes") {
+                    return `
+                    <div class="section collapsible-section" id="section-${key}">
+                        <div class="section-header" onclick="toggleCollapse('${key}')">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <span id="icon-${key}"></span>
+                                <span>${config.title}</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <button class="edit-btn" onclick="event.stopImmediatePropagation(); openEditor('${key}')">
+                                    ✎
+                                </button>
+                                <span class="collapse-icon" data-target="${key}">›</span>
+                            </div>
+                        </div>
+                        <div class="section-content collapsible-content" id="content-${key}" style="display:none;">
+                            <div id="${key}-display" class="content-display"></div>
+                        </div>
+                    </div>`;
+                }
 
+                // All other default sections (non-collapsible)
                 return `
-            <div class="section ${isCollapsible ? "collapsible-section" : ""}" id="section-${key}">
-                <div class="section-header" ${isCollapsible ? `onclick="toggleCollapse('${key}')"` : ""}>
-                    <div style="display:flex; align-items:center; gap:12px;">
-                        <span id="icon-${key}"></span>
-                        <span>${config.title}</span>
+                <div class="section" id="section-${key}">
+                    <div class="section-header">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span id="icon-${key}"></span>
+                            <span>${config.title}</span>
+                        </div>
+                        <button class="edit-btn" onclick="openEditor('${key}')">✎</button>
                     </div>
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        ${
-                            isCollapsible
-                                ? `
-                        <button class="edit-btn collapse-edit-btn" id="btn-${key}"
-                                onclick="event.stopImmediatePropagation(); toggleEdit('${key}');"
-                                style="display:none;">✎</button>
-                        <span class="collapse-icon" data-target="${key}">›</span>
-                        `
-                                : `
-                        <button class="edit-btn" id="btn-${key}" onclick="toggleEdit('${key}')">✎</button>`
-                        }
+                    <div class="section-content">
+                        <div id="${key}-display" class="content-display"></div>
                     </div>
-                </div>
-                <div class="section-content ${isCollapsible ? "collapsible-content" : ""}"
-                     id="content-${key}"
-                     ${isCollapsible ? 'style="display:none;"' : ""}>
-                    <div id="${key}-display" class="content-display"></div>
-                    <textarea id="${key}-edit" style="display:none;"></textarea>
-                </div>
-            </div>`;
+                </div>`;
             }
 
             function renderCustomSection(section, container) {
@@ -1023,7 +1133,7 @@
                             <span>${section.title}</span>
                         </div>
                         <div style="display:flex; align-items:center; gap:8px;">
-                            <button class="edit-btn" id="editbtn-${section.id}" onclick="event.stopImmediatePropagation(); toggleCustomEdit('${section.id}');" style="display:none;">✎</button>
+                            <button class="edit-btn" onclick="openEditor('${section.id}', true)">✎</button>
                             <button class="edit-btn" style="background:#ef4444;" onclick="event.stopImmediatePropagation(); deleteCustomSection('${section.id}')">🗑</button>
                             <span id="collapse-icon-${section.id}" class="collapse-icon">›</span>
                         </div>
@@ -1040,7 +1150,7 @@
                             <span>${section.title}</span>
                         </div>
                         <div style="display:flex; gap:8px;">
-                            <button class="edit-btn" id="editbtn-${section.id}" onclick="toggleCustomEdit('${section.id}')">✎</button>
+                            <button class="edit-btn" onclick="openEditor('${section.id}', true)">✎</button>
                             <button class="edit-btn" style="background:#ef4444;" onclick="deleteCustomSection('${section.id}')">🗑</button>
                         </div>
                     </div>
@@ -1265,6 +1375,74 @@
                     };
                     container.appendChild(div);
                 });
+            }
+
+            let currentEditingId = null;
+            let isCustom = false;
+            let saveTimeout = null;
+
+            function openEditor(id, custom = false) {
+                currentEditingId = id;
+                isCustom = custom;
+
+                const textarea = document.getElementById("editor-textarea");
+                const titleEl = document.getElementById("editor-title");
+                const statusEl = document.getElementById("editor-status");
+
+                if (custom) {
+                    const section = CUSTOM_SECTIONS.find((s) => s.id === id);
+                    textarea.value = section ? section.content || "" : "";
+                    titleEl.textContent = section
+                        ? section.title
+                        : "Bearbeiten";
+                } else {
+                    textarea.value = DATA[id] || "";
+                    const config = SECTION_CONFIG.find((s) => s.id === id);
+                    titleEl.textContent = config ? config.title : "Bearbeiten";
+                }
+
+                statusEl.innerHTML = '<span style="color:#34d399;">✓</span>';
+
+                document.getElementById("editor-modal").style.display = "flex";
+                textarea.focus();
+
+                // Auto-save with debounce
+                textarea.oninput = () => {
+                    statusEl.innerHTML =
+                        '<span style="color:#fbbf24;">●</span>';
+
+                    clearTimeout(saveTimeout);
+                    saveTimeout = setTimeout(autoSaveEditor, 700);
+                };
+            }
+
+            function autoSaveEditor() {
+                if (!currentEditingId) return;
+
+                const value = document
+                    .getElementById("editor-textarea")
+                    .value.trim();
+
+                if (isCustom) {
+                    const section = CUSTOM_SECTIONS.find(
+                        (s) => s.id === currentEditingId,
+                    );
+                    if (section) section.content = value;
+                } else {
+                    DATA[currentEditingId] = value;
+                }
+
+                document.getElementById("editor-status").innerHTML =
+                    '<span style="color:#34d399;">✓</span>';
+
+                saveToLocalStorage();
+                refreshAllContent(); // Live update in background
+            }
+
+            function closeEditor() {
+                autoSaveEditor(); // Final save
+                document.getElementById("editor-modal").style.display = "none";
+                currentEditingId = null;
             }
 
             function createCustomSection() {
