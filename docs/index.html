@@ -1280,12 +1280,24 @@
             }
 
             function deleteCustomSection(id) {
-                if (!confirm("Sektion löschen?")) return;
+                const section = SECTION_CONFIG.find((s) => s.id === id);
+                if (!section) return;
+
+                const confirmMsg = `Sektion "${section.title}" wirklich löschen?`;
+
+                if (!confirm(confirmMsg)) return;
+
                 CUSTOM_SECTIONS = CUSTOM_SECTIONS.filter((s) => s.id !== id);
                 SECTION_CONFIG = SECTION_CONFIG.filter((s) => s.id !== id);
+
                 renderAllSections();
                 saveToLocalStorage();
-                showManageModal();
+
+                // Only refresh manage modal if it's currently visible
+                const manageModal = document.getElementById("manage-modal");
+                if (manageModal?.style.display === "flex") {
+                    showManageModal();
+                }
             }
 
             function toggleCustomEdit(id) {
