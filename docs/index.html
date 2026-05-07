@@ -214,24 +214,99 @@
             .breathing-section {
                 background: linear-gradient(
                     135deg,
-                    rgba(16, 185, 129, 0.1),
-                    rgba(45, 212, 191, 0.06)
+                    rgba(16, 185, 129, 0.08),
+                    rgba(45, 212, 191, 0.04)
                 );
+                margin-bottom: 24px;
                 border: 1px solid rgba(52, 211, 153, 0.3);
                 border-radius: 28px;
-                margin-bottom: 28px;
-                padding: 32px 24px;
+                padding: 40px 24px 8px;
                 text-align: center;
+                transition: all 0.5s ease;
             }
-            .breathing-section.active {
-                border-color: rgba(52, 211, 153, 0.7);
+
+            .breathing-circle-btn {
+                background: none;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
+
+            /* Aktiver Zustand */
+            .breathing-section.active #breathing-btn-text {
+                color: #10b981;
+            }
+
+            /* Text under the circle */
+            #breathing-btn-text {
+                transition: all 0.3s ease;
+            }
+
+            /* Intensiver Zustand (Einatmen + Halten) */
             .breathing-section.intense {
                 background: linear-gradient(
                     135deg,
-                    rgba(16, 185, 129, 0.32),
-                    rgba(45, 212, 191, 0.2)
+                    rgba(16, 185, 129, 0.28),
+                    rgba(45, 212, 191, 0.18)
                 ) !important;
+            }
+
+            /* The animated circle */
+            .breathing-circle {
+                width: 148px;
+                height: 148px;
+                border-radius: 50%;
+                border: 7px solid rgba(52, 211, 153, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                transition: all 4s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 0 10px 40px -10px rgba(52, 211, 153, 0.4);
+                background: rgba(255, 255, 255, 0.06);
+            }
+
+            .breathing-circle::after {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                background: radial-gradient(
+                    circle,
+                    rgba(52, 211, 153, 0.25) 20%,
+                    transparent 70%
+                );
+                animation: pulse 4s infinite ease-in-out;
+            }
+
+            .breathing-circle::before {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                background: radial-gradient(
+                    circle,
+                    rgba(52, 211, 153, 0.25) 0%,
+                    transparent 70%
+                );
+                animation: pulse 4s infinite ease-in-out;
+            }
+
+            .breathing-circle.in {
+                transform: scale(1.18);
+                border-color: #34d399;
+                box-shadow: 0 15px 50px -5px rgba(52, 211, 153, 0.6);
+            }
+
+            .breathing-circle.out {
+                transform: scale(0.82);
+                border-color: rgba(52, 211, 153, 0.35);
             }
 
             .breathing-btn {
@@ -930,11 +1005,15 @@
                     if (config.type === "breathing") {
                         container.innerHTML += `
                         <div class="breathing-section" id="breathing-section">
-                            <button onclick="toggleBoxBreathing()" id="breathing-btn" class="breathing-btn">
-                                <span id="breathing-icon">${SVGs.wind}</span>
-                                <span id="breathing-btn-text">Boxatmung starten</span>
+                            <button onclick="toggleBoxBreathing()" id="breathing-circle-btn" class="breathing-circle-btn">
+                                <div id="breathing-circle" class="breathing-circle">
+                                    <span id="breathing-icon" style="font-size: 2.8rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">${SVGs.wind}</span>
+                                </div>
+                                <div id="breathing-btn-text" style="margin-top: 16px; font-weight: 600; font-size: 1.25rem; color: #34d399;">
+                                </div>
                             </button>
-                            <div id="breathing-text" style="margin-top:24px; min-height:48px; font-weight:600; color:#34d399; font-size:1.2rem;"></div>
+
+                            <div id="breathing-text" style="margin-top: 28px; font-weight: 600; color:#34d399; font-size: 1.3rem;"></div>
                         </div>`;
                     } else if (config.type === "custom") {
                         const sec = CUSTOM_SECTIONS.find(
@@ -1572,21 +1651,37 @@
             let isBreathing = false;
 
             function setBreathingPhase(phase) {
+                const textEl = document.getElementById("breathing-text");
+                const circle = document.getElementById("breathing-circle");
                 const phases = [
                     "Einatmen...",
                     "Halten...",
                     "Ausatmen...",
                     "Halten...",
                 ];
-                document.getElementById("breathing-text").textContent =
-                    phases[phase];
-                document
-                    .getElementById("breathing-section")
-                    .classList.toggle("intense", phase < 2);
+
+                textEl.textContent = phases[phase];
+
+                if (phase === 0 || phase === 1) {
+                    // Einatmen + Halten
+                    circle.classList.add("in");
+                    circle.classList.remove("out");
+                    document
+                        .getElementById("breathing-section")
+                        .classList.add("intense");
+                } else {
+                    // Ausatmen + Halten
+                    circle.classList.add("out");
+                    circle.classList.remove("in");
+                    document
+                        .getElementById("breathing-section")
+                        .classList.remove("intense");
+                }
             }
 
             function startBoxBreathing() {
                 if (breathingTimeout) clearTimeout(breathingTimeout);
+
                 let phase = 0;
                 function cycle() {
                     if (!isBreathing) return;
@@ -1598,19 +1693,25 @@
             }
 
             function toggleBoxBreathing() {
-                const btnText = document.getElementById("breathing-btn-text");
                 const section = document.getElementById("breathing-section");
+                const btnText = document.getElementById("breathing-btn-text");
+
                 if (isBreathing) {
+                    // Stop
                     clearTimeout(breathingTimeout);
                     section.classList.remove("active", "intense");
-                    btnText.textContent = "Boxatmung starten";
+                    document
+                        .getElementById("breathing-circle")
+                        .classList.remove("in", "out");
                     document.getElementById("breathing-text").textContent = "";
                     isBreathing = false;
                 } else {
+                    // Start
                     section.classList.add("active");
-                    btnText.textContent = "Boxatmung stoppen";
                     isBreathing = true;
                     startBoxBreathing();
+
+                    // Auto-stop after 3 minutes
                     setTimeout(() => {
                         if (isBreathing) toggleBoxBreathing();
                     }, 180000);
