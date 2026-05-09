@@ -865,7 +865,7 @@
                 },
                 {
                     id: "skills",
-                    title: "Bewältigungs-Mechanismen, Skills & Ablenkung",
+                    title: "Bewältigungsmechanismen, Skills & Ablenkung",
                     type: "default",
                     visible: true,
                 },
@@ -1356,7 +1356,6 @@
                             </div>
                         `;
                         // Visual hint that it can't be moved
-                        div.style.opacity = "0.85";
                         div.style.cursor = "default";
                     }
                     // Normal sections
@@ -1364,18 +1363,25 @@
                         div.draggable = true;
                         div.dataset.index = index;
 
-                        div.innerHTML = `
+                        let itemHTML = `
                             <input type="checkbox" ${item.visible ? "checked" : ""}
                                    onchange="toggleVisibility('${item.id}', this.checked)">
-                            <div style="flex:1; font-weight:500;">${item.title}</div>
-
-                            <button onclick="moveSection(${index}, -1)" style="min-width:36px;height:36px;background:#3f3f46;border:none;border-radius:8px;color:white;">↑</button>
-                            <button onclick="moveSection(${index}, 1)" style="min-width:36px;height:36px;background:#3f3f46;border:none;border-radius:8px;color:white;">↓</button>
+                            <div style="flex:1; font-weight:500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</div>
                         `;
 
+                        // Add delete button first for custom sections
                         if (item.type === "custom") {
-                            div.innerHTML += `<button onclick="deleteCustomSection('${item.id}')" style="background:#ef4444;color:white;border:none;border-radius:8px;padding:0 10px;">🗑</button>`;
+                            itemHTML += `<button onclick="deleteCustomSection('${item.id}')"
+                                                 style="min-width:32px;height:36px;background:#ef4444;color:white;border:none;border-radius:8px;padding:0 10px; margin-right:4px;">🗑</button>`;
                         }
+
+                        // Add movement buttons
+                        itemHTML += `
+                            <button onclick="moveSection(${index}, -1)" style="min-width:32px;height:36px;background:#3f3f46;border:none;border-radius:8px;color:white;">↑</button>
+                            <button onclick="moveSection(${index}, 1)" style="min-width:32px;height:36px;background:#3f3f46;border:none;border-radius:8px;color:white;">↓</button>
+                        `;
+
+                        div.innerHTML = itemHTML;
 
                         // Drag & Drop only for normal items
                         div.addEventListener("dragstart", handleDragStart);
