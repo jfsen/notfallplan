@@ -1351,9 +1351,7 @@
                         div.innerHTML = `
                             <input type="checkbox" ${item.visible ? "checked" : ""}
                                    onchange="toggleVisibility('${item.id}', this.checked)">
-                            <div style="flex:1; font-weight:500; color:#34d399;">
-                                ${item.title} <span style="font-size:0.8rem; color:#888;">(fest im Header)</span>
-                            </div>
+                            <div style="flex:1; font-weight:500; color:#34d399;">${item.title}</div>
                         `;
                         // Visual hint that it can't be moved
                         div.style.cursor = "default";
@@ -1372,7 +1370,7 @@
                         // Add delete button first for custom sections
                         if (item.type === "custom") {
                             itemHTML += `<button onclick="deleteCustomSection('${item.id}')"
-                                                 style="min-width:32px;height:36px;background:#ef4444;color:white;border:none;border-radius:8px;padding:0 10px; margin-right:4px;">🗑</button>`;
+                                                 style="min-width:32px;height:36px;background:#ef4444;color:white;border:none;border-radius:8px;">🗑</button>`;
                         }
 
                         // Add movement buttons
@@ -1408,13 +1406,26 @@
                 if (item) item.visible = visible;
             }
 
+            function isFixedSection(id) {
+                return id === "counter";
+            }
+
             function moveSection(index, dir) {
                 const newIdx = index + dir;
                 if (newIdx < 0 || newIdx >= SECTION_CONFIG.length) return;
+
+                if (
+                    isFixedSection(SECTION_CONFIG[index].id) ||
+                    isFixedSection(SECTION_CONFIG[newIdx].id)
+                ) {
+                    return;
+                }
+
                 [SECTION_CONFIG[index], SECTION_CONFIG[newIdx]] = [
                     SECTION_CONFIG[newIdx],
                     SECTION_CONFIG[index],
                 ];
+
                 showManageModal();
             }
 
