@@ -276,33 +276,24 @@
                     >
                         1. Nummeriert
                     </button>
-                    <span
-                        style="
-                            color: #52525b;
-                            font-size: 0.8rem;
-                            margin-left: 2px;
-                        "
+                    <button
+                        onclick="insertInlineFormat('bold')"
+                        class="format-btn"
                     >
-                        Zeile mit
-                        <code
-                            style="
-                                background: #27272a;
-                                padding: 1px 5px;
-                                border-radius: 4px;
-                            "
-                            >-</code
-                        >
-                        oder
-                        <code
-                            style="
-                                background: #27272a;
-                                padding: 1px 5px;
-                                border-radius: 4px;
-                            "
-                            >1.</code
-                        >
-                        beginnen
-                    </span>
+                        B
+                    </button>
+                    <button
+                        onclick="insertInlineFormat('italic')"
+                        class="format-btn"
+                    >
+                        I
+                    </button>
+                    <button
+                        onclick="insertInlineFormat('underline')"
+                        class="format-btn"
+                    >
+                        U
+                    </button>
                 </div>
                 <textarea id="editor-textarea" rows="12"></textarea>
                 <div

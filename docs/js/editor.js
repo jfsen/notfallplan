@@ -141,3 +141,52 @@ function insertFormatting(type) {
   ta.focus();
   ta.dispatchEvent(new Event("input"));
 }
+
+function insertInlineFormat(type) {
+  const ta = document.getElementById("editor-textarea");
+  let start = ta.selectionStart;
+  let end = ta.selectionEnd;
+  let text = ta.value;
+
+  let wrapper;
+  switch (type) {
+    case "bold":
+      wrapper = "**";
+      break;
+    case "italic":
+      wrapper = "*";
+      break;
+    case "underline":
+      wrapper = "__";
+      break;
+    default:
+      return;
+  }
+
+  const selected = text.substring(start, end);
+
+  // If nothing selected, insert example
+  if (!selected) {
+    const example =
+      type === "bold" ? "fett" : type === "italic" ? "kursiv" : "unterstrichen";
+    const insert = wrapper + example + wrapper;
+    ta.value = text.substring(0, start) + insert + text.substring(end);
+    ta.selectionStart = start + wrapper.length;
+    ta.selectionEnd = start + wrapper.length + example.length;
+  }
+  // Toggle: if already wrapped, remove it; else wrap it
+  else if (selected.startsWith(wrapper) && selected.endsWith(wrapper)) {
+    const inner = selected.slice(wrapper.length, -wrapper.length);
+    ta.value = text.substring(0, start) + inner + text.substring(end);
+    ta.selectionStart = start;
+    ta.selectionEnd = start + inner.length;
+  } else {
+    const wrapped = wrapper + selected + wrapper;
+    ta.value = text.substring(0, start) + wrapped + text.substring(end);
+    ta.selectionStart = start;
+    ta.selectionEnd = start + wrapped.length;
+  }
+
+  ta.focus();
+  ta.dispatchEvent(new Event("input"));
+}

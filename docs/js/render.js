@@ -3,8 +3,10 @@
 function formatBullets(text) {
   if (!text || typeof text !== "string") return "";
 
-  const lines = text.trim().split("\n");
   let html = "";
+
+  // First handle block-level (lists + paragraphs)
+  const lines = text.trim().split("\n");
   let inUL = false;
   let inOL = false;
 
@@ -21,35 +23,52 @@ function formatBullets(text) {
 
   for (const line of lines) {
     const trimmed = line.trim();
+
     if (/^[-*]\s+/.test(trimmed)) {
-      if (inOL) {
-        html += "</ol>";
-        inOL = false;
-      }
+      closeOpenList();
       if (!inUL) {
         html += '<ul style="margin: 12px 0 12px 8px; padding-left: 20px;">';
         inUL = true;
       }
-      html += `<li style="margin-bottom: 6px; color: #e4e4e7;">${trimmed.replace(/^[-*]\s+/, "")}</li>`;
+      let content = trimmed.replace(/^[-*]\s+/, "");
+      content = applyInlineFormatting(content);
+      html += `<li style="margin-bottom: 6px; color: #e4e4e7;">${content}</li>`;
     } else if (/^\d+[.)]\s+/.test(trimmed)) {
-      if (inUL) {
-        html += "</ul>";
-        inUL = false;
-      }
+      closeOpenList();
       if (!inOL) {
         html += '<ol style="margin: 12px 0 12px 8px; padding-left: 20px;">';
         inOL = true;
       }
-      html += `<li style="margin-bottom: 6px; color: #e4e4e7;">${trimmed.replace(/^\d+[.)]\s+/, "")}</li>`;
+      let content = trimmed.replace(/^\d+[.)]\s+/, "");
+      content = applyInlineFormatting(content);
+      html += `<li style="margin-bottom: 6px; color: #e4e4e7;">${content}</li>`;
     } else {
       closeOpenList();
-      html +=
-        trimmed === "" ? "<br>" : `<p style="margin: 10px 0;">${trimmed}</p>`;
+      if (trimmed === "") {
+        html += "<br>";
+      } else {
+        let content = applyInlineFormatting(trimmed);
+        html += `<p style="margin: 10px 0;">${content}</p>`;
+      }
     }
   }
 
   closeOpenList();
+
   return html || text.replace(/\n/g, "<br>");
+}
+
+// Helper: apply inline markdown
+function applyInlineFormatting(str) {
+  if (!str) return "";
+
+  // Order is important: bold before italic
+  str = str.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>"); // **bold**
+  str = str.replace(/__(.+?)__/g, "<u>$1</u>"); // __underline__
+  str = str.replace(/\*([^*]+?)\*/g, "<em>$1</em>"); // *italic*
+  str = str.replace(/_([^_]+?)_/g, "<em>$1</em>"); // _italic_ (alternative)
+
+  return str;
 }
 
 // ==================== RENDER ====================
