@@ -1,14 +1,13 @@
 // ==================== FORMATTING ====================
 
-function formatBullets(text) {
+function formatContent(text) {
   if (!text || typeof text !== "string") return "";
 
+  const lines = text.split("\n");
   let html = "";
-
-  // First handle block-level (lists + paragraphs)
-  const lines = text.trim().split("\n");
   let inUL = false;
   let inOL = false;
+  let olCounter = 1;
 
   const closeOpenList = () => {
     if (inUL) {
@@ -19,42 +18,44 @@ function formatBullets(text) {
       html += "</ol>";
       inOL = false;
     }
+    olCounter = 1;
   };
 
-  for (const line of lines) {
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
     const trimmed = line.trim();
 
     if (/^[-*]\s+/.test(trimmed)) {
-      closeOpenList();
+      if (inOL) closeOpenList();
       if (!inUL) {
-        html += '<ul style="margin: 6px 0 6px 6px; padding-left: 20px;">';
+        html += '<ul style="margin: 12px 0 12px 8px; padding-left: 20px;">';
         inUL = true;
       }
-      let content = trimmed.replace(/^[-*]\s+/, "");
-      content = applyInlineFormatting(content);
+      const content = applyInlineFormatting(trimmed.replace(/^[-*]\s+/, ""));
       html += `<li style="margin-bottom: 6px; color: #e4e4e7;">${content}</li>`;
     } else if (/^\d+[.)]\s+/.test(trimmed)) {
-      closeOpenList();
+      if (inUL) closeOpenList();
+
       if (!inOL) {
-        html += '<ol style="margin: 6px 0 6px 6px; padding-left: 20px;">';
+        html += '<ol style="margin: 12px 0 12px 8px; padding-left: 20px;">';
         inOL = true;
       }
-      let content = trimmed.replace(/^\d+[.)]\s+/, "");
-      content = applyInlineFormatting(content);
+
+      const content = applyInlineFormatting(trimmed.replace(/^\d+[.)]\s+/, ""));
       html += `<li style="margin-bottom: 6px; color: #e4e4e7;">${content}</li>`;
     } else {
+      // Paragraph or blank line
       closeOpenList();
       if (trimmed === "") {
         html += "<br>";
       } else {
-        let content = applyInlineFormatting(trimmed);
-        html += `<p style="margin: 2px 0;">${content}</p>`;
+        const content = applyInlineFormatting(trimmed);
+        html += `<p style="margin: 0px 0;">${content}</p>`;
       }
     }
   }
 
   closeOpenList();
-
   return html || text.replace(/\n/g, "<br>");
 }
 
@@ -144,11 +145,11 @@ function refreshDisplays() {
     "angenehmes",
   ].forEach((key) => {
     const el = document.getElementById(key + "-display");
-    if (el) el.innerHTML = formatBullets(DATA[key] || "");
+    if (el) el.innerHTML = formatContent(DATA[key] || "");
   });
   CUSTOM_SECTIONS.forEach((section) => {
     const el = document.getElementById(`display-${section.id}`);
-    if (el) el.innerHTML = formatBullets(section.content || "");
+    if (el) el.innerHTML = formatContent(section.content || "");
   });
 }
 
@@ -223,7 +224,7 @@ function renderCustomSection(section, container) {
             </div>
         </div>
         <div class="section-content" id="content-${section.id}" style="display:none;">
-            <div id="display-${section.id}" class="content-display">${formatBullets(section.content)}</div>
+            <div id="display-${section.id}" class="content-display">${formatContent(section.content)}</div>
         </div>`;
   } else {
     html += `
@@ -238,7 +239,7 @@ function renderCustomSection(section, container) {
             </div>
         </div>
         <div class="section-content">
-            <div id="display-${section.id}" class="content-display">${formatBullets(section.content)}</div>
+            <div id="display-${section.id}" class="content-display">${formatContent(section.content)}</div>
         </div>`;
   }
 
