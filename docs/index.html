@@ -1040,6 +1040,121 @@
             </div>
         </div>
 
+        <script id="viewer-script">
+            // ==================== VIEWER FUNCTIONS ====================
+            // Shared between the editor and the exported file.
+            // exportCleanHTML() reads this script tag's textContent verbatim.
+
+            function animateCounter(target) {
+                const el = document.getElementById("days-count");
+                if (!el) return;
+                if (target <= 0) {
+                    el.textContent = "0";
+                    return;
+                }
+                const duration = Math.min(1000, 300 + target * 5);
+                const startTime = performance.now();
+                function step(now) {
+                    const t = Math.min((now - startTime) / duration, 1);
+                    const eased = 1 - Math.pow(1 - t, 3);
+                    el.textContent = Math.round(eased * target);
+                    if (t < 1) requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
+            }
+
+            function getBerlinOffset(date) {
+                const year = date.getFullYear();
+                const marchLastSunday = new Date(
+                    year,
+                    2,
+                    31 - (new Date(year, 3, 0).getDay() || 7) + 1,
+                );
+                const octLastSunday = new Date(
+                    year,
+                    9,
+                    31 - (new Date(year, 10, 0).getDay() || 7) + 1,
+                );
+                return (
+                    (date >= marchLastSunday && date < octLastSunday ? 2 : 1) *
+                    60 *
+                    60 *
+                    1000
+                );
+            }
+
+            function setBreathingPhase(phase) {
+                const textEl = document.getElementById("breathing-text");
+                const circle = document.getElementById("breathing-circle");
+                const phases = [
+                    "Einatmen...",
+                    "Halten...",
+                    "Ausatmen...",
+                    "Halten...",
+                ];
+                if (textEl) textEl.textContent = phases[phase];
+                if (circle) {
+                    if (phase === 0 || phase === 1) {
+                        circle.classList.add("in");
+                        circle.classList.remove("out");
+                        document
+                            .getElementById("breathing-section")
+                            ?.classList.add("intense");
+                    } else {
+                        circle.classList.add("out");
+                        circle.classList.remove("in");
+                        document
+                            .getElementById("breathing-section")
+                            ?.classList.remove("intense");
+                    }
+                }
+            }
+
+            let breathingTimeout = null;
+            let isBreathing = false;
+
+            function startBoxBreathing() {
+                if (breathingTimeout) clearTimeout(breathingTimeout);
+                let phase = 0;
+                function cycle() {
+                    if (!isBreathing) return;
+                    setBreathingPhase(phase);
+                    phase = (phase + 1) % 4;
+                    breathingTimeout = setTimeout(cycle, 4000);
+                }
+                cycle();
+            }
+
+            function toggleBoxBreathing() {
+                const section = document.getElementById("breathing-section");
+                if (isBreathing) {
+                    clearTimeout(breathingTimeout);
+                    section.classList.remove("active", "intense");
+                    document
+                        .getElementById("breathing-circle")
+                        ?.classList.remove("in", "out");
+                    document.getElementById("breathing-text").textContent = "";
+                    isBreathing = false;
+                } else {
+                    section.classList.add("active");
+                    isBreathing = true;
+                    startBoxBreathing();
+                    setTimeout(() => {
+                        if (isBreathing) toggleBoxBreathing();
+                    }, 180000);
+                }
+            }
+
+            function toggleCollapse(id) {
+                const content = document.getElementById(`content-${id}`);
+                const icon = document.getElementById(`collapse-icon-${id}`);
+                if (!content || !icon) return;
+                const isHidden = content.style.display === "none";
+                content.style.display = isHidden ? "block" : "none";
+                icon.classList.toggle("open", isHidden);
+            }
+        </script>
+
         <script>
             // ==================== CONFIG & DATA ====================
             let SECTION_CONFIG = [
@@ -1298,7 +1413,7 @@
                                 <span id="icon-kontakte">${SVGs.phone}</span>
                                 <span>${config.title}</span>
                             </div>
-                            <button class="edit-btn" onclick="showAddContactModal()">+</button>
+                            <button class="edit-btn" data-export-remove onclick="showAddContactModal()">+</button>
                         </div>
                         <div class="section-content" id="kontakte-list"></div>
                     </div>`;
@@ -1314,7 +1429,7 @@
                                 <span>${config.title}</span>
                             </div>
                             <div style="display:flex; align-items:center; gap:8px;">
-                                <button class="edit-btn" onclick="event.stopPropagation(); openEditor('${key}')">✎</button>
+                                <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${key}')">✎</button>
                                 <span id="collapse-icon-${key}" class="collapse-icon">›</span>
                             </div>
                         </div>
@@ -1332,7 +1447,7 @@
                             <span id="icon-${key}"></span>
                             <span>${config.title}</span>
                         </div>
-                        <button class="edit-btn" onclick="openEditor('${key}')">✎</button>
+                        <button class="edit-btn" data-export-remove onclick="openEditor('${key}')">✎</button>
                     </div>
                     <div class="section-content">
                         <div id="${key}-display" class="content-display"></div>
@@ -1352,8 +1467,8 @@
                             <span>${section.title}</span>
                         </div>
                         <div style="display:flex; align-items:center; gap:8px;">
-                            <button class="edit-btn" onclick="event.stopPropagation(); openEditor('${section.id}', true)">✎</button>
-                            <button class="edit-btn" style="background:#ef4444;" onclick="event.stopPropagation(); deleteCustomSection('${section.id}')">🗑</button>
+                            <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${section.id}', true)">✎</button>
+                            <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="event.stopPropagation(); deleteCustomSection('${section.id}')">🗑</button>
                             <span id="collapse-icon-${section.id}" class="collapse-icon">›</span>
                         </div>
                     </div>
@@ -1368,8 +1483,8 @@
                             <span>${section.title}</span>
                         </div>
                         <div style="display:flex; gap:8px;">
-                            <button class="edit-btn" onclick="openEditor('${section.id}', true)">✎</button>
-                            <button class="edit-btn" style="background:#ef4444;" onclick="deleteCustomSection('${section.id}')">🗑</button>
+                            <button class="edit-btn" data-export-remove onclick="openEditor('${section.id}', true)">✎</button>
+                            <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="deleteCustomSection('${section.id}')">🗑</button>
                         </div>
                     </div>
                     <div class="section-content">
@@ -1396,7 +1511,7 @@
                         div.dataset.index = i;
                         div.innerHTML = `
                             <div style="display:flex; align-items:center; gap:12px; flex:1; cursor:grab;">
-                                <span style="color:#52525b; font-size:1.1rem;">☰</span>
+                                <span data-export-remove style="color:#52525b; font-size:1.1rem;">☰</span>
                                 <div>
                                     <div style="font-weight:500;">${k.name}</div>
                                     <a href="tel:${k.tel}" style="color:#34d399;">${k.tel}</a>
@@ -1404,8 +1519,8 @@
                             </div>
                             <div style="display:flex; gap:8px;">
                                 <a href="tel:${k.tel}" class="contact-call-btn">${SVGs.phone}</a>
-                                <button onclick="deleteContact(${i}); event.stopPropagation()"
-                                        class="contact-delete-btn">🗑</button>
+                                <button data-export-remove onclick="deleteContact(${i}); event.stopPropagation()"
+                                            class="contact-delete-btn">🗑</button>
                             </div>`;
                         div.addEventListener(
                             "dragstart",
@@ -1421,6 +1536,7 @@
                 const addBtn = document.createElement("button");
                 addBtn.className = "add-contact";
                 addBtn.textContent = "+ Neuen Kontakt hinzufügen";
+                addBtn.dataset.exportRemove = "";
                 addBtn.onclick = showAddContactModal;
                 container.appendChild(addBtn);
             }
@@ -1767,15 +1883,6 @@
 
             // Unified toggle for both default collapsible sections and custom collapsible sections.
             // Both use id="collapse-icon-${id}" and id="content-${id}".
-            function toggleCollapse(id) {
-                const content = document.getElementById(`content-${id}`);
-                const icon = document.getElementById(`collapse-icon-${id}`);
-                if (!content || !icon) return;
-                const isHidden = content.style.display === "none";
-                content.style.display = isHidden ? "block" : "none";
-                icon.classList.toggle("open", isHidden);
-            }
-
             // ==================== CONTACTS ====================
 
             function showAddContactModal() {
@@ -1806,86 +1913,7 @@
                 saveToLocalStorage();
             }
 
-            // ==================== BREATHING ====================
-            let breathingTimeout = null;
-            let isBreathing = false;
-
-            function setBreathingPhase(phase) {
-                const textEl = document.getElementById("breathing-text");
-                const circle = document.getElementById("breathing-circle");
-                const phases = [
-                    "Einatmen...",
-                    "Halten...",
-                    "Ausatmen...",
-                    "Halten...",
-                ];
-                textEl.textContent = phases[phase];
-                if (phase === 0 || phase === 1) {
-                    circle.classList.add("in");
-                    circle.classList.remove("out");
-                    document
-                        .getElementById("breathing-section")
-                        .classList.add("intense");
-                } else {
-                    circle.classList.add("out");
-                    circle.classList.remove("in");
-                    document
-                        .getElementById("breathing-section")
-                        .classList.remove("intense");
-                }
-            }
-
-            function startBoxBreathing() {
-                if (breathingTimeout) clearTimeout(breathingTimeout);
-                let phase = 0;
-                function cycle() {
-                    if (!isBreathing) return;
-                    setBreathingPhase(phase);
-                    phase = (phase + 1) % 4;
-                    breathingTimeout = setTimeout(cycle, 4000);
-                }
-                cycle();
-            }
-
-            function toggleBoxBreathing() {
-                const section = document.getElementById("breathing-section");
-                if (isBreathing) {
-                    clearTimeout(breathingTimeout);
-                    section.classList.remove("active", "intense");
-                    document
-                        .getElementById("breathing-circle")
-                        .classList.remove("in", "out");
-                    document.getElementById("breathing-text").textContent = "";
-                    isBreathing = false;
-                } else {
-                    section.classList.add("active");
-                    isBreathing = true;
-                    startBoxBreathing();
-                    setTimeout(() => {
-                        if (isBreathing) toggleBoxBreathing();
-                    }, 180000);
-                }
-            }
-
             // ==================== DAY COUNTER ====================
-
-            function animateCounter(target) {
-                const el = document.getElementById("days-count");
-                if (!el) return;
-                if (target <= 0) {
-                    el.textContent = "0";
-                    return;
-                }
-                const duration = Math.min(1000, 300 + target * 5);
-                const startTime = performance.now();
-                function step(now) {
-                    const t = Math.min((now - startTime) / duration, 1);
-                    const eased = 1 - Math.pow(1 - t, 3); // cubic ease-out
-                    el.textContent = Math.round(eased * target);
-                    if (t < 1) requestAnimationFrame(step);
-                }
-                requestAnimationFrame(step);
-            }
 
             function calculateDays(animate = false) {
                 if (!DATA.startDate) {
@@ -1910,26 +1938,6 @@
                 }
             }
 
-            function getBerlinOffset(date) {
-                const year = date.getFullYear();
-                const marchLastSunday = new Date(
-                    year,
-                    2,
-                    31 - (new Date(year, 3, 0).getDay() || 7) + 1,
-                );
-                const octLastSunday = new Date(
-                    year,
-                    9,
-                    31 - (new Date(year, 10, 0).getDay() || 7) + 1,
-                );
-                return (
-                    (date >= marchLastSunday && date < octLastSunday ? 2 : 1) *
-                    60 *
-                    60 *
-                    1000
-                );
-            }
-
             function updateStartDate(val) {
                 if (val) {
                     DATA.startDate = val;
@@ -1943,50 +1951,28 @@
             function exportCleanHTML() {
                 const styleContent =
                     document.querySelector("style")?.innerHTML ?? "";
+                const viewerScript =
+                    document.getElementById("viewer-script").textContent;
 
                 const tempContainer = document.createElement("div");
                 tempContainer.innerHTML =
                     document.querySelector("header").outerHTML +
                     `<div id="main-content" style="margin-top:32px;">${document.getElementById("main-content").innerHTML}</div>`;
 
-                // Remove editor/management UI elements
+                // Remove all editor-only elements (marked with data-export-remove)
                 tempContainer
-                    .querySelectorAll(
-                        `
-                    .edit-btn,
-                    .add-contact,
-                    .section-actions,
-                    button[onclick*="deleteCustomSection"],
-                    button[onclick*="showAddContactModal"]
-                `,
-                    )
+                    .querySelectorAll("[data-export-remove]")
                     .forEach((el) => el.remove());
                 tempContainer
                     .querySelectorAll("textarea")
                     .forEach((el) => el.remove());
 
-                // Remove delete buttons from contacts
-                tempContainer
-                    .querySelectorAll(".contact-item button")
-                    .forEach((btn) => {
-                        if (
-                            btn.textContent.includes("🗑") ||
-                            btn.innerHTML.includes("🗑")
-                        )
-                            btn.remove();
-                    });
-
-                // Clean up drag handles and attributes from contacts
+                // Clean up remaining drag attributes from contact items
                 tempContainer
                     .querySelectorAll(".contact-item")
                     .forEach((item) => {
-                        item.querySelector(
-                            'span[style*="color:#52525b"]',
-                        )?.remove();
                         item.removeAttribute("draggable");
-                        item.style.cursor = "";
-                        // Also clear grab cursor from inner wrapper div
-                        item.querySelectorAll('[style*="cursor"]').forEach(
+                        item.querySelectorAll("[style*='cursor']").forEach(
                             (el) => el.style.removeProperty("cursor"),
                         );
                     });
@@ -1997,13 +1983,37 @@
                     .forEach((input) => {
                         const dateObj = new Date(input.value || DATA.startDate);
                         const formatted = dateObj.toLocaleDateString("de-DE");
-                        input.outerHTML = `<span style="font-size:0.7rem; color:#888;">${formatted}</span>`;
+                        const span = document.createElement("span");
+                        span.style.cssText = "font-size:0.7rem; color:#888;";
+                        span.textContent = formatted;
+                        input.replaceWith(span);
                     });
 
                 const containerHTML = tempContainer.innerHTML;
                 const faviconLink =
                     document.querySelector('link[rel="icon"]')?.outerHTML ?? "";
-                const startDate = DATA.startDate;
+                const startDate = DATA.startDate || "";
+
+                // The only export-specific logic: bake in START_DATE and set up DOMContentLoaded
+                const exportScript = [
+                    "(function() {",
+                    `  var START_DATE = ${JSON.stringify(startDate)};`,
+                    "  function calculateDays(animate) {",
+                    "    if (!START_DATE) { var el = document.getElementById('days-count'); if (el) el.textContent = '0'; return; }",
+                    "    var start = new Date(START_DATE + 'T00:00:00');",
+                    "    var now = new Date();",
+                    "    var berlinNow = new Date(now.getTime() + getBerlinOffset(now));",
+                    "    start.setHours(0, 0, 0, 0); berlinNow.setHours(0, 0, 0, 0);",
+                    "    var days = Math.max(0, Math.floor((berlinNow - start) / (1000 * 60 * 60 * 24)));",
+                    "    if (animate) { animateCounter(days); } else { var el = document.getElementById('days-count'); if (el) el.textContent = days; }",
+                    "  }",
+                    "  document.addEventListener('DOMContentLoaded', function() {",
+                    "    calculateDays(true);",
+                    "    document.querySelectorAll('.collapsible-section .section-content').forEach(function(el) { el.style.display = 'none'; });",
+                    "    document.querySelectorAll('.collapse-icon').forEach(function(el) { el.classList.remove('open'); });",
+                    "  });",
+                    "})();",
+                ].join("\n");
 
                 const htmlParts = [
                     "<!DOCTYPE html>",
@@ -2021,103 +2031,10 @@
                     '    <div class="container">',
                     containerHTML,
                     "    </div>",
-                    "    <script>",
-                    "(function() {",
-                    `  const START_DATE = "${startDate}";`,
-                    "  let breathingTimeout = null;",
-                    "  let isBreathing = false;",
-                    "",
-                    "  function animateCounter(target) {",
-                    "    const el = document.getElementById('days-count');",
-                    "    if (!el) return;",
-                    "    if (target <= 0) { el.textContent = '0'; return; }",
-                    "    const duration = Math.min(1000, 300 + target * 5);",
-                    "    const startTime = performance.now();",
-                    "    function step(now) {",
-                    "      const t = Math.min((now - startTime) / duration, 1);",
-                    "      const eased = 1 - Math.pow(1 - t, 3);",
-                    "      el.textContent = Math.round(eased * target);",
-                    "      if (t < 1) requestAnimationFrame(step);",
-                    "    }",
-                    "    requestAnimationFrame(step);",
-                    "  }",
-                    "",
-                    "  function calculateDays(animate) {",
-                    "    if (!START_DATE) { const el = document.getElementById('days-count'); if (el) el.textContent = '0'; return; }",
-                    "    const start = new Date(START_DATE + 'T00:00:00');",
-                    "    const now = new Date();",
-                    "    const berlinNow = new Date(now.getTime() + getBerlinOffset(now));",
-                    "    start.setHours(0, 0, 0, 0);",
-                    "    berlinNow.setHours(0, 0, 0, 0);",
-                    "    const diffDays = Math.floor((berlinNow - start) / (1000 * 60 * 60 * 24));",
-                    "    const days = Math.max(0, diffDays);",
-                    "    if (animate) { animateCounter(days); } else { const el = document.getElementById('days-count'); if (el) el.textContent = days; }",
-                    "  }",
-                    "",
-                    "  function getBerlinOffset(date) {",
-                    "    const year = date.getFullYear();",
-                    "    const marchLastSunday = new Date(year, 2, 31 - (new Date(year, 3, 0).getDay() || 7) + 1);",
-                    "    const octLastSunday = new Date(year, 9, 31 - (new Date(year, 10, 0).getDay() || 7) + 1);",
-                    "    return (date >= marchLastSunday && date < octLastSunday ? 2 : 1) * 60 * 60 * 1000;",
-                    "  }",
-                    "",
-                    "  function setBreathingPhase(phase) {",
-                    "    const phases = ['Einatmen...', 'Halten...', 'Ausatmen...', 'Halten...'];",
-                    "    const text = document.getElementById('breathing-text');",
-                    "    const circle = document.getElementById('breathing-circle');",
-                    "    const section = document.getElementById('breathing-section');",
-                    "    if (text) text.textContent = phases[phase];",
-                    "    if (circle) {",
-                    "      if (phase === 0 || phase === 1) { circle.classList.add('in'); circle.classList.remove('out'); if (section) section.classList.add('intense'); }",
-                    "      else { circle.classList.add('out'); circle.classList.remove('in'); if (section) section.classList.remove('intense'); }",
-                    "    }",
-                    "  }",
-                    "",
-                    "  function startBoxBreathing() {",
-                    "    if (breathingTimeout) clearTimeout(breathingTimeout);",
-                    "    let phase = 0;",
-                    "    function cycle() { if (!isBreathing) return; setBreathingPhase(phase); phase = (phase + 1) % 4; breathingTimeout = setTimeout(cycle, 4000); }",
-                    "    cycle();",
-                    "  }",
-                    "",
-                    "  window.toggleBoxBreathing = function() {",
-                    "    const section = document.getElementById('breathing-section');",
-                    "    const circle = document.getElementById('breathing-circle');",
-                    "    if (isBreathing) {",
-                    "      clearTimeout(breathingTimeout);",
-                    "      section.classList.remove('active', 'intense');",
-                    "      if (circle) circle.classList.remove('in', 'out');",
-                    "      document.getElementById('breathing-text').textContent = '';",
-                    "      isBreathing = false;",
-                    "    } else {",
-                    "      section.classList.add('active');",
-                    "      isBreathing = true;",
-                    "      startBoxBreathing();",
-                    "      setTimeout(() => { if (isBreathing) window.toggleBoxBreathing(); }, 180000);",
-                    "    }",
-                    "  };",
-                    "",
-                    "  window.toggleCollapse = function(id) {",
-                    "    const content = document.getElementById('content-' + id);",
-                    "    const icon = document.getElementById('collapse-icon-' + id);",
-                    "    if (!content || !icon) return;",
-                    "    const isHidden = content.style.display === 'none';",
-                    "    content.style.display = isHidden ? 'block' : 'none';",
-                    "    icon.classList.toggle('open', isHidden);",
-                    "  };",
-                    "",
-                    "  document.addEventListener('DOMContentLoaded', function() {",
-                    "    calculateDays(true);",
-                    "    // Ensure all collapsible sections start closed in the exported file",
-                    "    document.querySelectorAll('.collapsible-section .section-content').forEach(el => {",
-                    "      el.style.display = 'none';",
-                    "    });",
-                    "    document.querySelectorAll('.collapse-icon').forEach(el => {",
-                    "      el.classList.remove('open');",
-                    "    });",
-                    "  });",
-                    "})();",
-                    "    <" + "/script>",
+                    "<script>",
+                    viewerScript.trim(),
+                    exportScript,
+                    "<" + "/script>",
                     "</body>",
                     "<" + "/html>",
                 ];
