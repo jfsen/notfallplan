@@ -27,7 +27,7 @@ function formatBullets(text) {
     if (/^[-*]\s+/.test(trimmed)) {
       closeOpenList();
       if (!inUL) {
-        html += '<ul style="margin: 12px 0 12px 8px; padding-left: 20px;">';
+        html += '<ul style="margin: 6px 0 6px 6px; padding-left: 20px;">';
         inUL = true;
       }
       let content = trimmed.replace(/^[-*]\s+/, "");
@@ -36,7 +36,7 @@ function formatBullets(text) {
     } else if (/^\d+[.)]\s+/.test(trimmed)) {
       closeOpenList();
       if (!inOL) {
-        html += '<ol style="margin: 12px 0 12px 8px; padding-left: 20px;">';
+        html += '<ol style="margin: 6px 0 6px 6px; padding-left: 20px;">';
         inOL = true;
       }
       let content = trimmed.replace(/^\d+[.)]\s+/, "");
@@ -48,7 +48,7 @@ function formatBullets(text) {
         html += "<br>";
       } else {
         let content = applyInlineFormatting(trimmed);
-        html += `<p style="margin: 10px 0;">${content}</p>`;
+        html += `<p style="margin: 2px 0;">${content}</p>`;
       }
     }
   }
