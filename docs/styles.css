@@ -1,0 +1,507 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: "Inter", system-ui, sans-serif;
+    background: #18181b;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding-bottom: 120px;
+}
+.container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+header {
+    background: #18181b;
+    border-bottom: 1px solid #3f3f46;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+.header-content {
+    padding: 12px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+h1 {
+    font-size: 2.1rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: #34d399;
+}
+.counter {
+    background: #27272a;
+    border: 1px solid #34d39940;
+    border-radius: 16px;
+    padding: 8px 20px;
+    text-align: center;
+    line-height: 1.2;
+}
+.fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #20956a;
+    color: #ffffff;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    box-shadow: 0 10px 30px -10px rgba(52, 211, 153, 0.6);
+    z-index: 100;
+    border: none;
+    cursor: pointer;
+    transition:
+        background 0.2s,
+        transform 0.15s,
+        box-shadow 0.2s;
+}
+.fab:hover {
+    background: #178f5f;
+    transform: scale(1.08);
+    box-shadow: 0 16px 38px -10px rgba(52, 211, 153, 0.8);
+}
+#editor-textarea {
+    background: #18181b;
+    border: 2px solid #34d399;
+    border-radius: 16px;
+    padding: 20px;
+    color: #e4e4e7;
+    font-family: inherit;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+.modal-save-btn {
+    padding: 12px 28px;
+    background: #34d399;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.02rem;
+    cursor: pointer;
+}
+.modal-save-btn:hover {
+    background: #10b981;
+    transform: scale(1.03);
+}
+.section {
+    background: #27272a;
+    border: 1px solid #3f3f46;
+    border-radius: 24px;
+    margin-bottom: 28px;
+    overflow: hidden;
+}
+.section-header {
+    background: linear-gradient(135deg, #10b981, #34d399);
+    color: white;
+    padding: 16px 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.collapsible-section .section-header {
+    cursor: pointer;
+    user-select: none;
+}
+.collapsible-section .section-header:hover {
+    filter: brightness(1.08);
+}
+.collapse-icon {
+    font-size: 1.8rem;
+    transition: transform 0.3s ease;
+    margin-left: 8px;
+    display: inline-block;
+}
+.collapse-icon.open {
+    transform: rotate(90deg);
+}
+.collapsible-section
+    .section-header:hover
+    .collapse-icon:not(.open) {
+    transform: rotate(90deg);
+    opacity: 0.9;
+}
+.collapsible-section .section-header:hover .collapse-icon.open {
+    opacity: 0.85;
+}
+button {
+    cursor: pointer;
+}
+.edit-btn {
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    color: white;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+.edit-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+.section-content {
+    padding: 24px;
+}
+textarea {
+    width: 100%;
+    background: #18181b;
+    border: 2px solid #34d399;
+    border-radius: 16px;
+    padding: 18px;
+    color: #e4e4e7;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.65;
+    min-height: 180px;
+    resize: vertical;
+}
+.content-display {
+    background: #18181b;
+    border: 1px solid #52525b;
+    border-radius: 16px;
+    padding: 18px;
+    min-height: 160px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* ---- Breathing ---- */
+.breathing-section {
+    background: linear-gradient(
+        135deg,
+        rgba(16, 185, 129, 0.08),
+        rgba(45, 212, 191, 0.04)
+    );
+    margin-bottom: 24px;
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    border-radius: 28px;
+    padding: 40px 24px 8px;
+    text-align: center;
+    transition: all 0.5s ease;
+}
+.breathing-circle-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.breathing-section.active #breathing-btn-text {
+    color: #10b981;
+}
+#breathing-btn-text {
+    transition: all 0.3s ease;
+}
+.breathing-section:not(.active):hover {
+    border-color: rgba(52, 211, 153, 0.55);
+    box-shadow: 0 0 28px -8px rgba(52, 211, 153, 0.2);
+}
+.breathing-circle-btn:hover #breathing-btn-text {
+    color: #34d399;
+}
+.breathing-section.intense {
+    background: linear-gradient(
+        135deg,
+        rgba(16, 185, 129, 0.28),
+        rgba(45, 212, 191, 0.18)
+    ) !important;
+}
+.breathing-circle {
+    width: 148px;
+    height: 148px;
+    border-radius: 50%;
+    border: 7px solid rgba(52, 211, 153, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 40px -10px rgba(52, 211, 153, 0.4);
+    background: rgba(255, 255, 255, 0.06);
+}
+.breathing-circle::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(52, 211, 153, 0.25) 20%,
+        transparent 70%
+    );
+    animation: pulse 4s infinite ease-in-out;
+}
+.breathing-circle::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(52, 211, 153, 0.25) 0%,
+        transparent 70%
+    );
+    animation: pulse 4s infinite ease-in-out;
+}
+.breathing-circle.in {
+    transform: scale(1.18);
+    border-color: #34d399;
+    box-shadow: 0 15px 50px -5px rgba(52, 211, 153, 0.6);
+}
+.breathing-circle.out {
+    transform: scale(0.82);
+    border-color: rgba(52, 211, 153, 0.35);
+}
+
+/* ---- Contacts ---- */
+.contact-item {
+    background: #18181b;
+    border: 1px solid #3f3f46;
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    transition: all 0.2s ease;
+}
+.contact-item.dragging {
+    opacity: 0.4;
+    transform: scale(0.98);
+}
+.add-contact {
+    width: 100%;
+    padding: 14px;
+    background: #3f3f46;
+    border: none;
+    border-radius: 16px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+}
+.contact-call-btn {
+    background: #34d399;
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    text-decoration: none;
+}
+
+/* ---- Modals ---- */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+}
+.modal-content {
+    background: #27272a;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 420px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 24px;
+}
+.modal-title {
+    margin-bottom: 20px;
+    color: #34d399;
+}
+.modal-input {
+    width: 100%;
+    padding: 14px;
+    background: #18181b;
+    border: 1px solid #52525b;
+    border-radius: 12px;
+    color: white;
+    font-family: inherit;
+    font-size: 1rem;
+}
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+.modal-btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.modal-btn-secondary {
+    background: #3f3f46;
+    transition:
+        background 0.2s,
+        transform 0.15s;
+}
+.modal-btn-secondary:hover {
+    background: #52525b;
+    transform: scale(1.02);
+}
+.modal-btn-primary {
+    background: #34d399;
+    font-weight: 600;
+    transition:
+        background 0.2s,
+        transform 0.15s;
+}
+.modal-btn-primary:hover {
+    background: #10b981;
+    transform: scale(1.02);
+}
+
+/* ---- Section management ---- */
+.section-actions {
+    display: flex;
+    gap: 12px;
+    margin: 28px 0 16px 0;
+}
+.action-btn {
+    flex: 1;
+    padding: 14px;
+    background: #3f3f46;
+    border: none;
+    border-radius: 16px;
+    color: white;
+    font-weight: 500;
+    font-size: 1.02rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition:
+        background 0.2s,
+        transform 0.15s;
+}
+.action-btn:hover {
+    background: #52525b;
+    transform: scale(1.02);
+}
+.section-manage-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #1e1e22;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+.section-manage-item:active {
+    cursor: grabbing;
+}
+.section-manage-item:hover {
+    background: rgba(52, 211, 153, 0.09);
+    border: 1px solid rgba(52, 211, 153, 0.2);
+}
+.section-manage-item.dragging {
+    opacity: 0.4;
+    transform: scale(0.98);
+}
+.add-section-btn {
+    width: 100%;
+    padding: 16px;
+    background: #3f3f46;
+    border: 2px dashed #52525b;
+    color: #a1a1aa;
+    font-weight: 500;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 20px 0 40px 0;
+    transition: all 0.2s;
+}
+.add-section-btn:hover {
+    background: #52525b;
+    border-color: #34d399;
+    color: #e4e4e7;
+}
+.add-contact {
+    transition:
+        background 0.2s,
+        transform 0.15s;
+}
+.add-contact:hover {
+    background: #52525b;
+    transform: scale(1.01);
+}
+.contact-call-btn {
+    transition:
+        background 0.2s,
+        transform 0.15s;
+}
+.contact-call-btn:hover {
+    background: #10b981;
+    transform: scale(1.07);
+}
+.manage-item-btn {
+    min-width: 32px;
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition:
+        filter 0.15s,
+        transform 0.15s;
+}
+.manage-item-btn:hover {
+    filter: brightness(1.3);
+    transform: scale(1.08);
+}
+.contact-delete-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition:
+        filter 0.15s,
+        transform 0.15s;
+}
+.contact-delete-btn:hover {
+    filter: brightness(1.2);
+    transform: scale(1.08);
+}
