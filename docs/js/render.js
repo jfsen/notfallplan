@@ -122,11 +122,18 @@ function setDefaultIcons() {
     ausloeser: SVGs.bolt,
     gruende: SVGs.heart,
     kontakte: SVGs.phone,
+    phonebook: SVGs.phonebook,
     skills: SVGs.toolbox,
     staerken: SVGs.dumbbell,
     mottos: SVGs.quote,
     angenehmes: SVGs.toolbox,
     gear: SVGs.gear,
+    pill: SVGs.pill,
+    medicalbook: SVGs.medicalbook,
+    hospital: SVGs.hospital,
+    brain: SVGs.brain,
+    book: SVGs.book,
+    hands: SVGs.hands,
   };
   Object.entries(iconMap).forEach(([key, svg]) => {
     const el = document.getElementById(`icon-${key}`);
