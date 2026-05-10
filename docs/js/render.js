@@ -121,12 +121,12 @@ function setDefaultIcons() {
   const iconMap = {
     ausloeser: SVGs.bolt,
     gruende: SVGs.heart,
-    kontakte: SVGs.phone,
-    phonebook: SVGs.phonebook,
+    kontakte: SVGs.phonebook,
+    phone: SVGs.phone,
     skills: SVGs.toolbox,
     staerken: SVGs.dumbbell,
     mottos: SVGs.quote,
-    angenehmes: SVGs.toolbox,
+    angenehmes: SVGs.shield,
     gear: SVGs.gear,
     pill: SVGs.pill,
     medicalbook: SVGs.medicalbook,
@@ -169,7 +169,7 @@ function createDefaultSection(config) {
         <div class="section" id="section-kontakte">
             <div class="section-header">
                 <div style="display:flex; align-items:center; gap:12px;">
-                    <span id="icon-kontakte">${SVGs.phone}</span>
+                    <span id="icon-kontakte">${SVGs.phonebook}</span>
                     <span>${config.title}</span>
                 </div>
                 <button class="edit-btn" data-export-remove onclick="showAddContactModal()">+</button>
