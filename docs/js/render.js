@@ -1,53 +1,72 @@
 // ==================== FORMATTING ====================
 
 function formatBullets(text) {
-    if (!text || typeof text !== "string") return "";
+  if (!text || typeof text !== "string") return "";
 
-    const lines = text.trim().split("\n");
-    let html = "";
-    let inList = false;
+  const lines = text.trim().split("\n");
+  let html = "";
+  let inUL = false;
+  let inOL = false;
 
-    for (let line of lines) {
-        const trimmed = line.trim();
-        if (/^[-*]\s+/.test(line)) {
-            const content = trimmed.replace(/^[-*]\s+/, "").trim();
-            if (!inList) {
-                html +=
-                    '<ul style="margin: 12px 0 12px 8px; padding-left: 20px;">';
-                inList = true;
-            }
-            html += `<li style="margin-bottom: 6px; color: #e4e4e7;">${content}</li>`;
-        } else {
-            if (inList) {
-                html += "</ul>";
-                inList = false;
-            }
-            html +=
-                trimmed === ""
-                    ? "<br>"
-                    : `<p style="margin: 10px 0;">${trimmed}</p>`;
-        }
+  const closeOpenList = () => {
+    if (inUL) {
+      html += "</ul>";
+      inUL = false;
     }
+    if (inOL) {
+      html += "</ol>";
+      inOL = false;
+    }
+  };
 
-    if (inList) html += "</ul>";
-    return html || text.replace(/\n/g, "<br>");
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (/^[-*]\s+/.test(trimmed)) {
+      if (inOL) {
+        html += "</ol>";
+        inOL = false;
+      }
+      if (!inUL) {
+        html += '<ul style="margin: 12px 0 12px 8px; padding-left: 20px;">';
+        inUL = true;
+      }
+      html += `<li style="margin-bottom: 6px; color: #e4e4e7;">${trimmed.replace(/^[-*]\s+/, "")}</li>`;
+    } else if (/^\d+[.)]\s+/.test(trimmed)) {
+      if (inUL) {
+        html += "</ul>";
+        inUL = false;
+      }
+      if (!inOL) {
+        html += '<ol style="margin: 12px 0 12px 8px; padding-left: 20px;">';
+        inOL = true;
+      }
+      html += `<li style="margin-bottom: 6px; color: #e4e4e7;">${trimmed.replace(/^\d+[.)]\s+/, "")}</li>`;
+    } else {
+      closeOpenList();
+      html +=
+        trimmed === "" ? "<br>" : `<p style="margin: 10px 0;">${trimmed}</p>`;
+    }
+  }
+
+  closeOpenList();
+  return html || text.replace(/\n/g, "<br>");
 }
 
 // ==================== RENDER ====================
 
 function renderAllSections() {
-    const container = document.getElementById("main-content");
-    container.innerHTML = "";
+  const container = document.getElementById("main-content");
+  container.innerHTML = "";
 
-    SECTION_CONFIG.forEach((config) => {
-        if (!config.visible) return;
+  SECTION_CONFIG.forEach((config) => {
+    if (!config.visible) return;
 
-        if (config.type === "counter") {
-            return; // rendered separately in the header
-        }
+    if (config.type === "counter") {
+      return; // rendered separately in the header
+    }
 
-        if (config.type === "breathing") {
-            container.innerHTML += `
+    if (config.type === "breathing") {
+      container.innerHTML += `
             <div class="breathing-section" id="breathing-section">
                 <button onclick="toggleBoxBreathing()" id="breathing-circle-btn" class="breathing-circle-btn">
                     <div id="breathing-circle" class="breathing-circle">
@@ -57,70 +76,68 @@ function renderAllSections() {
                 </button>
                 <div id="breathing-text" style="margin-top: 28px; font-weight: 600; color:#34d399; font-size: 1.3rem;"></div>
             </div>`;
-        } else if (config.type === "custom") {
-            const sec = CUSTOM_SECTIONS.find(
-                (s) => s.id === config.id,
-            );
-            if (sec) renderCustomSection(sec, container);
-        } else {
-            container.innerHTML += createDefaultSection(config);
-        }
-    });
+    } else if (config.type === "custom") {
+      const sec = CUSTOM_SECTIONS.find((s) => s.id === config.id);
+      if (sec) renderCustomSection(sec, container);
+    } else {
+      container.innerHTML += createDefaultSection(config);
+    }
+  });
 
-    setDefaultIcons();
-    renderContacts();
-    renderCounter();
-    refreshDisplays();
+  setDefaultIcons();
+  renderContacts();
+  renderCounter();
+  refreshDisplays();
 }
 
 function renderCounter() {
-    const wrapper = document.getElementById("counter-wrapper");
-    const config = SECTION_CONFIG.find((s) => s.id === "counter");
-    if (wrapper && config)
-        wrapper.style.display = config.visible ? "block" : "none";
+  const wrapper = document.getElementById("counter-wrapper");
+  const config = SECTION_CONFIG.find((s) => s.id === "counter");
+  if (wrapper && config)
+    wrapper.style.display = config.visible ? "block" : "none";
 }
 
 function setDefaultIcons() {
-    const iconMap = {
-        ausloeser: SVGs.bolt,
-        gruende: SVGs.heart,
-        kontakte: SVGs.phone,
-        skills: SVGs.toolbox,
-        staerken: SVGs.dumbbell,
-        mottos: SVGs.quote,
-        angenehmes: SVGs.toolbox,
-        gear: SVGs.gear,
-    };
-    Object.entries(iconMap).forEach(([key, svg]) => {
-        const el = document.getElementById(`icon-${key}`);
-        if (el) el.innerHTML = svg;
-    });
+  const iconMap = {
+    ausloeser: SVGs.bolt,
+    gruende: SVGs.heart,
+    kontakte: SVGs.phone,
+    skills: SVGs.toolbox,
+    staerken: SVGs.dumbbell,
+    mottos: SVGs.quote,
+    angenehmes: SVGs.toolbox,
+    gear: SVGs.gear,
+  };
+  Object.entries(iconMap).forEach(([key, svg]) => {
+    const el = document.getElementById(`icon-${key}`);
+    if (el) el.innerHTML = svg;
+  });
 }
 
 // Updates all text content displays without re-rendering the full section structure.
 function refreshDisplays() {
-    [
-        "ausloeser",
-        "gruende",
-        "skills",
-        "staerken",
-        "mottos",
-        "angenehmes",
-    ].forEach((key) => {
-        const el = document.getElementById(key + "-display");
-        if (el) el.innerHTML = formatBullets(DATA[key] || "");
-    });
-    CUSTOM_SECTIONS.forEach((section) => {
-        const el = document.getElementById(`display-${section.id}`);
-        if (el) el.innerHTML = formatBullets(section.content || "");
-    });
+  [
+    "ausloeser",
+    "gruende",
+    "skills",
+    "staerken",
+    "mottos",
+    "angenehmes",
+  ].forEach((key) => {
+    const el = document.getElementById(key + "-display");
+    if (el) el.innerHTML = formatBullets(DATA[key] || "");
+  });
+  CUSTOM_SECTIONS.forEach((section) => {
+    const el = document.getElementById(`display-${section.id}`);
+    if (el) el.innerHTML = formatBullets(section.content || "");
+  });
 }
 
 function createDefaultSection(config) {
-    const key = config.id;
+  const key = config.id;
 
-    if (key === "kontakte") {
-        return `
+  if (key === "kontakte") {
+    return `
         <div class="section" id="section-kontakte">
             <div class="section-header">
                 <div style="display:flex; align-items:center; gap:12px;">
@@ -131,11 +148,11 @@ function createDefaultSection(config) {
             </div>
             <div class="section-content" id="kontakte-list"></div>
         </div>`;
-    }
+  }
 
-    // "Angenehmes" is collapsible
-    if (key === "angenehmes") {
-        return `
+  // "Angenehmes" is collapsible
+  if (key === "angenehmes") {
+    return `
         <div class="section collapsible-section" id="section-${key}">
             <div class="section-header" onclick="toggleCollapse('${key}')">
                 <div style="display:flex; align-items:center; gap:12px;">
@@ -151,10 +168,10 @@ function createDefaultSection(config) {
                 <div id="${key}-display" class="content-display"></div>
             </div>
         </div>`;
-    }
+  }
 
-    // All other default sections (non-collapsible)
-    return `
+  // All other default sections (non-collapsible)
+  return `
     <div class="section" id="section-${key}">
         <div class="section-header">
             <div style="display:flex; align-items:center; gap:12px;">
@@ -170,11 +187,11 @@ function createDefaultSection(config) {
 }
 
 function renderCustomSection(section, container) {
-    const iconSVG = SVGs[section.icon] || SVGs.bolt;
-    let html = `<div class="section custom-section ${section.isCollapsible ? "collapsible-section" : ""}" id="section-${section.id}">`;
+  const iconSVG = SVGs[section.icon] || SVGs.bolt;
+  let html = `<div class="section custom-section ${section.isCollapsible ? "collapsible-section" : ""}" id="section-${section.id}">`;
 
-    if (section.isCollapsible) {
-        html += `
+  if (section.isCollapsible) {
+    html += `
         <div class="section-header" onclick="toggleCollapse('${section.id}')">
             <div style="display:flex; align-items:center; gap:12px;">
                 <span>${iconSVG}</span>
@@ -189,8 +206,8 @@ function renderCustomSection(section, container) {
         <div class="section-content" id="content-${section.id}" style="display:none;">
             <div id="display-${section.id}" class="content-display">${formatBullets(section.content)}</div>
         </div>`;
-    } else {
-        html += `
+  } else {
+    html += `
         <div class="section-header">
             <div style="display:flex; align-items:center; gap:12px;">
                 <span>${iconSVG}</span>
@@ -204,26 +221,28 @@ function renderCustomSection(section, container) {
         <div class="section-content">
             <div id="display-${section.id}" class="content-display">${formatBullets(section.content)}</div>
         </div>`;
-    }
+  }
 
-    html += `</div>`;
-    container.innerHTML += html;
+  html += `</div>`;
+  container.innerHTML += html;
 }
 
 function renderContacts() {
-    const container = document.getElementById("kontakte-list");
-    if (!container) return;
-    container.innerHTML = "";
+  const container = document.getElementById("kontakte-list");
+  if (!container) return;
+  container.innerHTML = "";
 
-    if (KONTAKTE.length === 0) {
-        container.innerHTML = `<p style="color:#888; text-align:center; padding:40px 20px;">Noch keine Notfallkontakte hinzugefügt.</p>`;
-    } else {
-        KONTAKTE.forEach((k, i) => {
-            const div = document.createElement("div");
-            div.className = "contact-item";
-            div.draggable = true;
-            div.dataset.index = i;
-            div.innerHTML = `
+  if (KONTAKTE.length === 0) {
+    container.innerHTML = `<p style="color:#888; text-align:center; padding:40px 20px;">Noch keine Notfallkontakte hinzugefügt.</p>`;
+  } else {
+    KONTAKTE.forEach((k, i) => {
+      const div = document.createElement("div");
+      div.className = "contact-item";
+      div.draggable = true;
+      div.dataset.index = i;
+      const isFirst = i === 0;
+      const isLast = i === KONTAKTE.length - 1;
+      div.innerHTML = `
                 <div style="display:flex; align-items:center; gap:12px; flex:1; cursor:grab;">
                     <span data-export-remove style="color:#52525b; font-size:1.1rem;">☰</span>
                     <div>
@@ -231,26 +250,33 @@ function renderContacts() {
                         <a href="tel:${k.tel}" style="color:#34d399;">${k.tel}</a>
                     </div>
                 </div>
-                <div style="display:flex; gap:8px;">
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <div data-export-remove style="display:flex; flex-direction:column; gap:3px;">
+                        <button onclick="moveContact(${i}, -1); event.stopPropagation()"
+                                class="manage-item-btn"
+                                style="background:#3f3f46; height:28px; min-width:28px; font-size:0.85rem; ${isFirst ? "opacity:0.3; cursor:not-allowed;" : ""}"
+                                ${isFirst ? "disabled" : ""}>↑</button>
+                        <button onclick="moveContact(${i}, 1); event.stopPropagation()"
+                                class="manage-item-btn"
+                                style="background:#3f3f46; height:28px; min-width:28px; font-size:0.85rem; ${isLast ? "opacity:0.3; cursor:not-allowed;" : ""}"
+                                ${isLast ? "disabled" : ""}>↓</button>
+                    </div>
                     <a href="tel:${k.tel}" class="contact-call-btn">${SVGs.phone}</a>
                     <button data-export-remove onclick="deleteContact(${i}); event.stopPropagation()"
-                                class="contact-delete-btn">🗑</button>
+                            class="contact-delete-btn">🗑</button>
                 </div>`;
-            div.addEventListener(
-                "dragstart",
-                handleContactDragStart,
-            );
-            div.addEventListener("dragover", handleContactDragOver);
-            div.addEventListener("drop", handleContactDrop);
-            div.addEventListener("dragend", handleContactDragEnd);
-            container.appendChild(div);
-        });
-    }
+      div.addEventListener("dragstart", handleContactDragStart);
+      div.addEventListener("dragover", handleContactDragOver);
+      div.addEventListener("drop", handleContactDrop);
+      div.addEventListener("dragend", handleContactDragEnd);
+      container.appendChild(div);
+    });
+  }
 
-    const addBtn = document.createElement("button");
-    addBtn.className = "add-contact";
-    addBtn.textContent = "+ Neuen Kontakt hinzufügen";
-    addBtn.dataset.exportRemove = "";
-    addBtn.onclick = showAddContactModal;
-    container.appendChild(addBtn);
+  const addBtn = document.createElement("button");
+  addBtn.className = "add-contact";
+  addBtn.textContent = "+ Neuen Kontakt hinzufügen";
+  addBtn.dataset.exportRemove = "";
+  addBtn.onclick = showAddContactModal;
+  container.appendChild(addBtn);
 }

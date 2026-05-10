@@ -102,7 +102,11 @@
             </header>
 
             <div class="section-actions">
-                <button onclick="showManageModal()" class="action-btn">
+                <button
+                    onclick="showManageModal()"
+                    class="action-btn"
+                    style="font-weight: 600"
+                >
                     <span id="icon-gear"></span>
                     Sektionen verwalten
                 </button>
@@ -250,6 +254,55 @@
                     <h3 id="editor-title" style="margin: 0; color: #34d399">
                         Sektion bearbeiten
                     </h3>
+                </div>
+                <div
+                    style="
+                        display: flex;
+                        gap: 8px;
+                        margin-bottom: 10px;
+                        flex-wrap: wrap;
+                        align-items: center;
+                    "
+                >
+                    <button
+                        onclick="insertFormatting('bullet')"
+                        class="format-btn"
+                    >
+                        • Aufzählung
+                    </button>
+                    <button
+                        onclick="insertFormatting('numbered')"
+                        class="format-btn"
+                    >
+                        1. Nummeriert
+                    </button>
+                    <span
+                        style="
+                            color: #52525b;
+                            font-size: 0.8rem;
+                            margin-left: 2px;
+                        "
+                    >
+                        Zeile mit
+                        <code
+                            style="
+                                background: #27272a;
+                                padding: 1px 5px;
+                                border-radius: 4px;
+                            "
+                            >-</code
+                        >
+                        oder
+                        <code
+                            style="
+                                background: #27272a;
+                                padding: 1px 5px;
+                                border-radius: 4px;
+                            "
+                            >1.</code
+                        >
+                        beginnen
+                    </span>
                 </div>
                 <textarea id="editor-textarea" rows="12"></textarea>
                 <div
