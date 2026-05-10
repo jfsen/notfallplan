@@ -132,8 +132,9 @@ function setDefaultIcons() {
     medicalbook: SVGs.medicalbook,
     hospital: SVGs.hospital,
     brain: SVGs.brain,
-    book: SVGs.book,
     hands: SVGs.hands,
+    group: SVGs.group,
+    shield: SVGs.shield,
   };
   Object.entries(iconMap).forEach(([key, svg]) => {
     const el = document.getElementById(`icon-${key}`);
