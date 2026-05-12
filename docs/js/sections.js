@@ -170,7 +170,7 @@ function hideAddSectionModal() {
 function populateIconPicker() {
   const container = document.getElementById("icon-picker");
   container.innerHTML = "";
-  Object.keys(SVGs).forEach((key) => {
+  Object.keys(PickIcons).forEach((key) => {
     const div = document.createElement("div");
     div.style.cssText = `width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#18181b;border:2px solid ${key === selectedCustomIcon ? "#34d399" : "transparent"};border-radius:12px;cursor:pointer;`;
     div.innerHTML = SVGs[key];

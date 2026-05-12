@@ -128,13 +128,7 @@ function setDefaultIcons() {
     mottos: SVGs.quote,
     angenehmes: SVGs.shield,
     gear: SVGs.gear,
-    pill: SVGs.pill,
-    medicalbook: SVGs.medicalbook,
-    hospital: SVGs.hospital,
-    brain: SVGs.brain,
-    hands: SVGs.hands,
-    group: SVGs.group,
-    shield: SVGs.shield,
+    plus: SVGs.plus,
   };
   Object.entries(iconMap).forEach(([key, svg]) => {
     const el = document.getElementById(`icon-${key}`);
