@@ -222,8 +222,8 @@ function renderCustomSection(section, container) {
                 <span>${section.title}</span>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-                <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${section.id}', true)">${SVGs.pen}</button>
                 <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="event.stopPropagation(); deleteCustomSection('${section.id}')">${SVGs.trash}</button>
+                <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${section.id}', true)">${SVGs.pen}</button>
                 <span id="collapse-icon-${section.id}" class="collapse-icon">›</span>
             </div>
         </div>
@@ -238,8 +238,8 @@ function renderCustomSection(section, container) {
                 <span>${section.title}</span>
             </div>
             <div style="display:flex; gap:8px;">
-                <button class="edit-btn" data-export-remove onclick="openEditor('${section.id}', true)">${SVGs.pen}</button>
                 <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="deleteCustomSection('${section.id}')">${SVGs.trash}</button>
+                <button class="edit-btn" data-export-remove onclick="openEditor('${section.id}', true)">${SVGs.pen}</button>
             </div>
         </div>
         <div class="section-content">
