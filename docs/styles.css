@@ -33,6 +33,7 @@ h1 {
     font-weight: 680;
     letter-spacing: -0.04em;
     color: #34d399;
+    line-height: 1;
 }
 .counter {
     background: #27272a;
