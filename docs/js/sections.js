@@ -32,7 +32,7 @@ function showManageModal() {
 
       if (item.type === "custom") {
         itemHTML += `<button onclick="deleteCustomSection('${item.id}')"
-                                     class="manage-item-btn" style="background:#ef4444;">🗑</button>`;
+                                     class="manage-item-btn" style="background:#ef4444;">${SVGs.trash}</button>`;
       }
 
       // Up / Down buttons (exactly like contacts)

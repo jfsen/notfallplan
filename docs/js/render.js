@@ -129,6 +129,8 @@ function setDefaultIcons() {
     angenehmes: SVGs.shield,
     gear: SVGs.gear,
     plus: SVGs.plus,
+    trash: SVGs.trash,
+    pen: SVGs.pen,
   };
   Object.entries(iconMap).forEach(([key, svg]) => {
     const el = document.getElementById(`icon-${key}`);
@@ -166,7 +168,7 @@ function createDefaultSection(config) {
                     <span id="icon-kontakte">${SVGs.phonebook}</span>
                     <span>${config.title}</span>
                 </div>
-                <button class="edit-btn" data-export-remove onclick="showAddContactModal()">+</button>
+                <button class="edit-btn" data-export-remove onclick="showAddContactModal()">${SVGs.plus}</button>
             </div>
             <div class="section-content" id="kontakte-list"></div>
         </div>`;
@@ -182,7 +184,7 @@ function createDefaultSection(config) {
                     <span>${config.title}</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${key}')">✎</button>
+                    <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${key}')">${SVGs.pen}</button>
                     <span id="collapse-icon-${key}" class="collapse-icon">›</span>
                 </div>
             </div>
@@ -200,7 +202,7 @@ function createDefaultSection(config) {
                 <span id="icon-${key}"></span>
                 <span>${config.title}</span>
             </div>
-            <button class="edit-btn" data-export-remove onclick="openEditor('${key}')">✎</button>
+            <button class="edit-btn" data-export-remove onclick="openEditor('${key}')">${SVGs.pen}</button>
         </div>
         <div class="section-content">
             <div id="${key}-display" class="content-display"></div>
@@ -220,8 +222,8 @@ function renderCustomSection(section, container) {
                 <span>${section.title}</span>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-                <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${section.id}', true)">✎</button>
-                <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="event.stopPropagation(); deleteCustomSection('${section.id}')">🗑</button>
+                <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${section.id}', true)">${SVGs.pen}</button>
+                <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="event.stopPropagation(); deleteCustomSection('${section.id}')">${SVGs.trash}</button>
                 <span id="collapse-icon-${section.id}" class="collapse-icon">›</span>
             </div>
         </div>
@@ -236,8 +238,8 @@ function renderCustomSection(section, container) {
                 <span>${section.title}</span>
             </div>
             <div style="display:flex; gap:8px;">
-                <button class="edit-btn" data-export-remove onclick="openEditor('${section.id}', true)">✎</button>
-                <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="deleteCustomSection('${section.id}')">🗑</button>
+                <button class="edit-btn" data-export-remove onclick="openEditor('${section.id}', true)">${SVGs.pen}</button>
+                <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="deleteCustomSection('${section.id}')">${SVGs.trash}</button>
             </div>
         </div>
         <div class="section-content">
@@ -285,7 +287,7 @@ function renderContacts() {
                     </div>
                     <a href="tel:${k.tel}" class="contact-call-btn">${SVGs.phone}</a>
                     <button data-export-remove onclick="deleteContact(${i}); event.stopPropagation()"
-                            class="contact-delete-btn">🗑</button>
+                            class="contact-delete-btn">${SVGs.trash}</button>
                 </div>`;
       div.addEventListener("dragstart", handleContactDragStart);
       div.addEventListener("dragover", handleContactDragOver);

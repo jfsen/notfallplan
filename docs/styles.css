@@ -154,6 +154,10 @@ button {
     background: rgba(255, 255, 255, 0.4);
     transform: scale(1.05);
 }
+.edit-btn svg {
+    width: 18px;
+    height: 18px;
+}
 .section-content {
     padding: 24px;
 }
@@ -483,6 +487,10 @@ textarea {
     filter: brightness(1.3);
     transform: scale(1.08);
 }
+.manage-item-btn svg {
+    width: 16px;
+    height: 16px;
+}
 .contact-delete-btn {
     background: #ef4444;
     color: white;
@@ -502,6 +510,10 @@ textarea {
 .contact-delete-btn:hover {
     filter: brightness(1.2);
     transform: scale(1.08);
+}
+.contact-delete-btn svg {
+    width: 28px;
+    height: 28px;
 }
 
 /* ---- Editor formatting toolbar ---- */
