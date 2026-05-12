@@ -267,7 +267,7 @@ function renderContacts() {
       const isFirst = i === 0;
       const isLast = i === KONTAKTE.length - 1;
       div.innerHTML = `
-                <div style="display:flex; align-items:center; gap:12px; flex:1; cursor:grab;">
+                <div style="max-width: 100%; overflow: hidden; display:flex; align-items:center; gap:12px; flex:1; cursor:grab;">
                     <span data-export-remove style="color:#52525b; font-size:1.1rem;">☰</span>
                     <div>
                         <div style="font-weight:500;">${k.name}</div>
