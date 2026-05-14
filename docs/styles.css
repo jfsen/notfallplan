@@ -15,6 +15,12 @@ body {
     margin: 0 auto;
     padding: 0 20px;
 }
+
+@media (max-width: 380px) {
+    .container {
+        padding: 0 12px;
+    }
+}
 header {
     background: #18181b;
     border-bottom: 1px solid #3f3f46;
@@ -27,13 +33,21 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
 }
 h1 {
-    font-size: 2rem;
+    font-size: clamp(1.4rem, 5.5vw, 2rem);
     font-weight: 680;
     letter-spacing: -0.04em;
     color: #34d399;
-    line-height: 1;
+    line-height: 1.15;
+}
+
+/* Logo SVG: fixed size until the narrow breakpoint */
+header svg[width="64"] {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
 }
 .counter {
     background: #27272a;
@@ -42,6 +56,73 @@ h1 {
     padding: 8px 16px;
     text-align: center;
     line-height: 1.2;
+}
+
+.date-input {
+    background: #3f3f46;
+    border: 1px solid #52525b;
+    border-radius: 8px;
+    color: #e4e4e7;
+    padding: 2px 6px;
+    font-family: inherit;
+    font-size: 0.75rem;
+    max-width: 130px;
+}
+
+/* Responsive: compact counter on narrower screens */
+@media (max-width: 500px) {
+    #counter-wrapper .counter {
+        padding: 6px 12px;
+        border-radius: 12px;
+    }
+
+    #counter-wrapper .counter div:first-child {
+        font-size: 0.6rem !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    #days-count {
+        font-size: 1.6rem !important;
+    }
+
+    /* Rearrange the bottom row of the counter to be a single line */
+    #counter-wrapper .counter > div:last-child {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+    }
+
+    #counter-wrapper .counter span {
+        font-size: 0.6rem !important;
+    }
+
+    .date-input {
+        max-width: 100px;
+        font-size: 0.7rem !important;
+    }
+}
+
+/* Narrow: shrink logo and counter more aggressively */
+@media (max-width: 380px) {
+    header svg[width="64"] {
+        width: 40px;
+        height: 40px;
+    }
+
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    #counter-wrapper .counter {
+        padding: 4px 8px;
+    }
+
+    #days-count {
+        font-size: 1.3rem !important;
+    }
+
+    .date-input {
+        max-width: 90px;
+    }
 }
 .fab {
     position: fixed;
@@ -283,7 +364,7 @@ textarea {
     background: #18181b;
     border: 1px solid #3f3f46;
     border-radius: 16px;
-    padding: 16px 20px;
+    padding: 14px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
