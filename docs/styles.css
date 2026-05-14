@@ -329,6 +329,8 @@ textarea {
     ) !important;
 }
 .breathing-circle {
+    --breath-duration: 4s;
+    --breath-cycle: 16s;
     width: 148px;
     height: 148px;
     border-radius: 50%;
@@ -337,7 +339,7 @@ textarea {
     align-items: center;
     justify-content: center;
     position: relative;
-    transition: all 4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--breath-duration) cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 10px 40px -10px rgba(52, 211, 153, 0.4);
     background: rgba(255, 255, 255, 0.06);
 }
@@ -352,7 +354,7 @@ textarea {
         rgba(52, 211, 153, 0.25) 20%,
         transparent 70%
     );
-    animation: pulse 4s infinite ease-in-out;
+    animation: pulse var(--breath-cycle) infinite ease-in-out;
 }
 .breathing-circle::before {
     content: "";
@@ -365,15 +367,15 @@ textarea {
         rgba(52, 211, 153, 0.25) 0%,
         transparent 70%
     );
-    animation: pulse 4s infinite ease-in-out;
+    animation: pulse var(--breath-cycle) infinite ease-in-out;
 }
 .breathing-circle.in {
-    transform: scale(1.18);
+    transform: scale(1.28);
     border-color: #34d399;
     box-shadow: 0 15px 50px -5px rgba(52, 211, 153, 0.6);
 }
 .breathing-circle.out {
-    transform: scale(0.82);
+    transform: scale(0.62);
     border-color: rgba(52, 211, 153, 0.35);
 }
 
@@ -634,4 +636,105 @@ textarea {
     background: #3f3f46;
     color: #e4e4e7;
     border-color: #52525b;
+}
+
+/* ---- Breathing Burger Dropdown ---- */
+.breathing-section {
+    position: relative;
+}
+.breathing-burger-wrapper {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+}
+.breathing-burger-btn {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 8px;
+    transition:
+        background 0.2s,
+        border-color 0.2s;
+}
+.breathing-burger-btn:hover {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+.breathing-burger-btn span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 2px;
+    transition: background 0.2s;
+}
+.breathing-burger-btn:hover span {
+    background: #fff;
+}
+.breathing-menu {
+    position: absolute;
+    top: 44px;
+    right: 0;
+    background: #27272a;
+    border: 1px solid #3f3f46;
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    min-width: 230px;
+    overflow: hidden;
+    z-index: 20;
+    animation: breathingFadeIn 0.15s ease;
+}
+@keyframes breathingFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.breathing-menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding: 14px 18px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #3f3f46;
+    color: #e4e4e7;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s;
+}
+.breathing-menu-item:last-child {
+    border-bottom: none;
+}
+.breathing-menu-item:hover {
+    background: rgba(52, 211, 153, 0.1);
+}
+.breathing-menu-item.active {
+    background: rgba(52, 211, 153, 0.18);
+}
+.breathing-menu-item.active .breathing-menu-item-title {
+    color: #34d399;
+}
+.breathing-menu-item-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+}
+.breathing-menu-item-desc {
+    font-size: 0.78rem;
+    color: #a1a1aa;
 }

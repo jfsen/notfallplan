@@ -88,6 +88,22 @@ function renderAllSections() {
     if (config.type === "breathing") {
       container.innerHTML += `
             <div class="breathing-section" id="breathing-section">
+                <div class="breathing-burger-wrapper">
+                    <button class="breathing-burger-btn" onclick="event.stopPropagation(); toggleBreathingMenu()" title="Atemübung wählen">
+                        <span></span><span></span><span></span>
+                    </button>
+                    <div class="breathing-menu" id="breathing-menu" style="display:none;">
+                        ${BREATHING_EXERCISES.map(
+                          (ex) => `
+                        <button class="breathing-menu-item ${ex.id === currentBreathingExercise ? "active" : ""}"
+                                onclick="event.stopPropagation(); switchBreathingExercise('${ex.id}')">
+                            <span class="breathing-menu-item-title">${ex.title}</span>
+                            <span class="breathing-menu-item-desc">${ex.desc}</span>
+                        </button>
+                        `,
+                        ).join("")}
+                    </div>
+                </div>
                 <button onclick="toggleBoxBreathing()" id="breathing-circle-btn" class="breathing-circle-btn">
                     <div id="breathing-circle" class="breathing-circle">
                         <span id="breathing-icon" style="font-size: 2.8rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">${SVGs.wind}</span>

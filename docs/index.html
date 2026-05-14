@@ -798,18 +798,28 @@
                 );
             }
 
+            function getActiveExercise() {
+                const ex = BREATHING_EXERCISES.find(
+                    (e) => e.id === currentBreathingExercise,
+                );
+                return ex || BREATHING_EXERCISES[0];
+            }
+
             function setBreathingPhase(phase) {
                 const textEl = document.getElementById("breathing-text");
                 const circle = document.getElementById("breathing-circle");
-                const phases = [
-                    "Einatmen...",
-                    "Halten...",
-                    "Ausatmen...",
-                    "Halten...",
-                ];
-                if (textEl) textEl.textContent = phases[phase];
+                const ex = getActiveExercise();
+                if (textEl) textEl.textContent = ex.phases[phase];
                 if (circle) {
-                    if (phase === 0 || phase === 1) {
+                    // Sync transition duration to this phase
+                    circle.style.transitionDuration =
+                        ex.durations[phase] + "ms";
+                    circle.style.setProperty(
+                        "--breath-duration",
+                        ex.durations[phase] / 1000 + "s",
+                    );
+                    const isInPhase = phase < Math.ceil(ex.phases.length / 2);
+                    if (isInPhase) {
                         circle.classList.add("in");
                         circle.classList.remove("out");
                         document
@@ -828,14 +838,29 @@
             let breathingTimeout = null;
             let isBreathing = false;
 
-            function startBoxBreathing() {
+            function startBreathing() {
                 if (breathingTimeout) clearTimeout(breathingTimeout);
+                const ex = getActiveExercise();
+                // Sync pulse animation to total cycle time
+                const totalCycle = ex.durations.reduce((a, b) => a + b, 0);
+                const circle = document.getElementById("breathing-circle");
+                if (circle) {
+                    circle.style.setProperty(
+                        "--breath-cycle",
+                        totalCycle / 1000 + "s",
+                    );
+                }
                 let phase = 0;
                 function cycle() {
                     if (!isBreathing) return;
                     setBreathingPhase(phase);
-                    phase = (phase + 1) % 4;
-                    breathingTimeout = setTimeout(cycle, 4000);
+                    phase = (phase + 1) % ex.phases.length;
+                    breathingTimeout = setTimeout(
+                        cycle,
+                        ex.durations[
+                            phase === 0 ? ex.phases.length - 1 : phase - 1
+                        ],
+                    );
                 }
                 cycle();
             }
@@ -853,12 +878,53 @@
                 } else {
                     section.classList.add("active");
                     isBreathing = true;
-                    startBoxBreathing();
+                    startBreathing();
                     setTimeout(() => {
                         if (isBreathing) toggleBoxBreathing();
                     }, 180000);
                 }
             }
+
+            function switchBreathingExercise(id) {
+                currentBreathingExercise = id;
+                const wasActive = isBreathing;
+                if (wasActive) toggleBoxBreathing();
+                document.getElementById("breathing-menu").style.display =
+                    "none";
+                // Update menu active states inline
+                document
+                    .querySelectorAll(".breathing-menu-item")
+                    .forEach((item) => {
+                        item.classList.toggle(
+                            "active",
+                            item
+                                .getAttribute("onclick")
+                                .includes("'" + id + "'"),
+                        );
+                    });
+                // Update button text
+                const ex = getActiveExercise();
+                const btnText = document.getElementById("breathing-btn-text");
+                if (btnText) btnText.textContent = wasActive ? "" : ex.title;
+            }
+
+            function toggleBreathingMenu() {
+                const menu = document.getElementById("breathing-menu");
+                if (!menu) return;
+                const isVisible = menu.style.display === "block";
+                menu.style.display = isVisible ? "none" : "block";
+            }
+
+            document.addEventListener("click", function (e) {
+                const menu = document.getElementById("breathing-menu");
+                if (!menu || menu.style.display === "none") return;
+                const wrapper = document.querySelector(
+                    ".breathing-burger-wrapper",
+                );
+                if (wrapper && !wrapper.contains(e.target)) {
+                    menu.style.display = "none";
+                }
+            });
 
             function toggleCollapse(id) {
                 const content = document.getElementById(`content-${id}`);
