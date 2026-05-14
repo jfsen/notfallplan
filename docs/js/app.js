@@ -5,13 +5,13 @@ function calculateDays(animate = false) {
     document.getElementById("days-count").textContent = "0";
     return;
   }
-  const start = new Date(DATA.startDate + "T00:00:00");
-  const now = new Date();
-  const berlinNow = new Date(now.getTime() + getBerlinOffset(now));
-  start.setHours(0, 0, 0, 0);
-  berlinNow.setHours(0, 0, 0, 0);
-  const diffDays = Math.floor((berlinNow - start) / (1000 * 60 * 60 * 24));
-  const days = Math.max(0, diffDays);
+  const todayBerlin = new Date().toLocaleDateString("en-CA", {
+    timeZone: "Europe/Berlin",
+  });
+  const diff =
+    new Date(todayBerlin + "T00:00:00Z") -
+    new Date(DATA.startDate + "T00:00:00Z");
+  const days = Math.max(0, Math.floor(diff / 86400000));
   if (animate) {
     animateCounter(days);
   } else {
@@ -85,11 +85,9 @@ function exportCleanHTML() {
     `  var START_DATE = ${JSON.stringify(startDate)};`,
     "  function calculateDays(animate) {",
     "    if (!START_DATE) { var el = document.getElementById('days-count'); if (el) el.textContent = '0'; return; }",
-    "    var start = new Date(START_DATE + 'T00:00:00');",
-    "    var now = new Date();",
-    "    var berlinNow = new Date(now.getTime() + getBerlinOffset(now));",
-    "    start.setHours(0, 0, 0, 0); berlinNow.setHours(0, 0, 0, 0);",
-    "    var days = Math.max(0, Math.floor((berlinNow - start) / (1000 * 60 * 60 * 24)));",
+    "    var todayBerlin = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Berlin' });",
+    "    var diff = new Date(todayBerlin + 'T00:00:00Z') - new Date(START_DATE + 'T00:00:00Z');",
+    "    var days = Math.max(0, Math.floor(diff / 86400000));",
     "    if (animate) { animateCounter(days); } else { var el = document.getElementById('days-count'); if (el) el.textContent = days; }",
     "  }",
     "  document.addEventListener('DOMContentLoaded', function() {",
