@@ -129,6 +129,7 @@ function setDefaultIcons() {
     angenehmes: SVGs.shield,
     gear: SVGs.gear,
     plus: SVGs.plus,
+    info: SVGs.info,
     trash: SVGs.trash,
     pen: SVGs.pen,
   };

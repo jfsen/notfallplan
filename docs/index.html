@@ -119,6 +119,20 @@
                     <span id="icon-plus" style="margin-right: 6px"></span>
                     Neue Sektion
                 </button>
+
+                <button
+                    onclick="showInfoModal()"
+                    class="action-btn"
+                    style="
+                        font-weight: 600;
+                        flex: 0 0 auto;
+                        width: 56px;
+                        padding: 14px 0;
+                    "
+                    title="Infos zum Datenschutz"
+                >
+                    <span id="icon-info" style="display: flex"></span>
+                </button>
             </div>
 
             <div id="main-content" style="margin-top: 32px"></div>
@@ -570,6 +584,164 @@
                 >
                     <button
                         onclick="hideExportModal()"
+                        class="modal-btn modal-btn-primary"
+                        style="width: 100%; font-size: 1.05rem"
+                    >
+                        Verstanden
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Privacy Info Modal -->
+        <div class="modal" id="info-modal">
+            <div
+                class="modal-content"
+                style="
+                    max-width: 500px;
+                    display: flex;
+                    flex-direction: column;
+                    max-height: 90vh;
+                    overflow: hidden;
+                "
+            >
+                <div style="padding: 32px 24px; overflow-y: auto; flex: 1">
+                    <h2
+                        style="
+                            color: #34d399;
+                            margin-bottom: 24px;
+                            font-size: 1.5rem;
+                        "
+                    >
+                        🔒 Deine Daten bleiben bei dir!
+                    </h2>
+                    <div
+                        style="
+                            background: #18181b;
+                            border-radius: 16px;
+                            padding: 20px;
+                            margin-bottom: 24px;
+                            border: 1px solid #3f3f46;
+                        "
+                    >
+                        <p
+                            style="
+                                margin-bottom: 16px;
+                                font-weight: 500;
+                                font-size: 1.05rem;
+                            "
+                        >
+                            Keine Sorge – deine Privatsphäre ist geschützt.
+                        </p>
+                        <p
+                            style="
+                                color: #c2c2c7;
+                                font-size: 0.9rem;
+                                margin-bottom: 16px;
+                            "
+                        >
+                            Alle Daten, die du hier eingibst, werden
+                            <strong>ausschließlich in deinem Browser</strong>
+                            gespeichert – genauer gesagt im
+                            <strong>localStorage</strong> deines Geräts.
+                        </p>
+                        <p
+                            style="
+                                color: #c2c2c7;
+                                font-size: 0.9rem;
+                                margin-bottom: 16px;
+                            "
+                        >
+                            Es werden <strong>keinerlei Daten</strong> an einen
+                            Server übermittelt, nicht analysiert und nicht an
+                            Dritte weitergegeben.
+                        </p>
+                        <p style="color: #c2c2c7; font-size: 0.9rem">
+                            Du kannst jederzeit alle gespeicherten Daten
+                            löschen, indem du in deinen Browsereinstellungen die
+                            Daten dieser Seite entfernst.
+                        </p>
+                    </div>
+                    <div
+                        style="
+                            background: #1b5e50;
+                            border-radius: 16px;
+                            padding: 16px;
+                            margin-bottom: 20px;
+                            border: 1px solid #10b981;
+                        "
+                    >
+                        <p
+                            style="
+                                color: #34d399;
+                                font-weight: 600;
+                                margin-bottom: 8px;
+                            "
+                        >
+                            💡 Wie es funktioniert:
+                        </p>
+                        <ul
+                            style="
+                                padding-left: 20px;
+                                color: #c2c2c7;
+                                font-size: 0.9rem;
+                            "
+                        >
+                            <li style="margin-bottom: 8px">
+                                Deine Texte, Kontakte und Einstellungen bleiben
+                                auf deinem Gerät
+                            </li>
+                            <li style="margin-bottom: 8px">
+                                Beim Export entsteht eine eigenständige
+                                HTML-Datei – ohne Verbindung zu irgendeinem
+                                Server
+                            </li>
+                            <li style="margin-bottom: 8px">
+                                Die App funktioniert komplett offline (nach dem
+                                ersten Laden)
+                            </li>
+                            <li>
+                                Es wird keine Internetverbindung benötigt, um
+                                deine Daten zu speichern oder zu nutzen
+                            </li>
+                        </ul>
+                    </div>
+                    <div
+                        style="
+                            background: #3f3f46;
+                            border-radius: 16px;
+                            padding: 16px;
+                            margin-bottom: 20px;
+                            border-left: 4px solid #34d399;
+                        "
+                    >
+                        <p
+                            style="
+                                color: #e4e4e7;
+                                font-weight: 600;
+                                margin-bottom: 8px;
+                                font-size: 0.95rem;
+                            "
+                        >
+                            📌 Kurz gesagt:
+                        </p>
+                        <p style="font-size: 0.9rem; color: #c2c2c7">
+                            Was du hier schreibst, bleibt
+                            <strong>deins</strong>. Es verlässt nie deinen
+                            Browser – versprochen!
+                        </p>
+                    </div>
+                </div>
+                <div
+                    style="
+                        padding: 16px 24px;
+                        background: #27272a;
+                        border-top: 1px solid #3f3f46;
+                        flex-shrink: 0;
+                    "
+                >
+                    <button
+                        onclick="hideInfoModal()"
                         class="modal-btn modal-btn-primary"
                         style="width: 100%; font-size: 1.05rem"
                     >

@@ -225,3 +225,13 @@ function deleteCustomSection(id) {
   const manageModal = document.getElementById("manage-modal");
   if (manageModal?.style.display === "flex") showManageModal();
 }
+
+// ==================== PRIVACY INFO MODAL ====================
+
+function showInfoModal() {
+  document.getElementById("info-modal").style.display = "flex";
+}
+
+function hideInfoModal() {
+  document.getElementById("info-modal").style.display = "none";
+}
