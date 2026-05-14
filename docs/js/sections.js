@@ -191,7 +191,8 @@ function populateIconPicker() {
 
 function createCustomSection() {
   const title = document.getElementById("new-section-title").value.trim();
-  if (!title) return alert("Titel eingeben!");
+  if (!title)
+    return showAlert("Bitte gib einen Titel für die neue Sektion ein.");
   const isCollapsible = document.getElementById(
     "new-section-collapsible",
   ).checked;
@@ -224,16 +225,20 @@ function createCustomSection() {
 function deleteCustomSection(id) {
   const section = SECTION_CONFIG.find((s) => s.id === id);
   if (!section) return;
-  if (!confirm(`Sektion "${section.title}" wirklich löschen?`)) return;
+  showConfirm(
+    `Sektion "${section.title}" wirklich löschen?`,
+    () => {
+      CUSTOM_SECTIONS = CUSTOM_SECTIONS.filter((s) => s.id !== id);
+      SECTION_CONFIG = SECTION_CONFIG.filter((s) => s.id !== id);
 
-  CUSTOM_SECTIONS = CUSTOM_SECTIONS.filter((s) => s.id !== id);
-  SECTION_CONFIG = SECTION_CONFIG.filter((s) => s.id !== id);
+      renderAllSections();
+      saveToLocalStorage();
 
-  renderAllSections();
-  saveToLocalStorage();
-
-  const manageModal = document.getElementById("manage-modal");
-  if (manageModal?.style.display === "flex") showManageModal();
+      const manageModal = document.getElementById("manage-modal");
+      if (manageModal?.style.display === "flex") showManageModal();
+    },
+    "Löschen",
+  );
 }
 
 // ==================== PRIVACY INFO MODAL ====================
@@ -244,4 +249,40 @@ function showInfoModal() {
 
 function hideInfoModal() {
   document.getElementById("info-modal").style.display = "none";
+}
+
+// ── Reusable Confirm / Alert Modal ───────────────────
+
+let confirmCallback = null;
+
+function showConfirm(message, onConfirm, confirmText) {
+  document.getElementById("confirm-message").textContent = message;
+  document.getElementById("confirm-actions").innerHTML = `
+    <button onclick="confirmCancel()" class="modal-btn modal-btn-secondary">Abbrechen</button>
+    <button onclick="confirmOk()" class="modal-btn" style="background:#ef4444; font-weight:600;"
+            onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">${confirmText || "Löschen"}</button>
+  `;
+  confirmCallback = onConfirm || null;
+  document.getElementById("confirm-modal").style.display = "flex";
+}
+
+function showAlert(message) {
+  document.getElementById("confirm-message").textContent = message;
+  document.getElementById("confirm-actions").innerHTML = `
+    <button onclick="confirmOk()" class="modal-btn" style="flex:none; background:#3f3f46; color:#e4e4e7; font-weight:600; margin:0 auto; padding:14px 40px;"
+            onmouseover="this.style.background='#52525b'" onmouseout="this.style.background='#3f3f46'">OK</button>
+  `;
+  confirmCallback = null;
+  document.getElementById("confirm-modal").style.display = "flex";
+}
+
+function confirmOk() {
+  if (confirmCallback) confirmCallback();
+  document.getElementById("confirm-modal").style.display = "none";
+  confirmCallback = null;
+}
+
+function confirmCancel() {
+  document.getElementById("confirm-modal").style.display = "none";
+  confirmCallback = null;
 }

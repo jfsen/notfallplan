@@ -83,7 +83,7 @@ function addContactConfirm() {
     !(normalized.startsWith("0") && digitCount > 14);
 
   if (!validChars || !validLength) {
-    alert("Das sieht nicht wie eine gültige Telefonnummer aus.");
+    showAlert("Das sieht nicht wie eine gültige Telefonnummer aus.");
     return;
   }
 

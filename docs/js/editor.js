@@ -332,37 +332,3 @@ function insertLinkConfirm() {
   // Focus the editor on the next tick, after the key is fully released
   setTimeout(() => ta.focus(), 0);
 }
-
-// ── Reusable Confirm / Alert Modal ───────────────────
-
-let confirmCallback = null;
-
-function showConfirm(message, onConfirm, confirmText) {
-  document.getElementById("confirm-message").textContent = message;
-  document.getElementById("confirm-actions").innerHTML = `
-    <button onclick="confirmCancel()" class="modal-btn modal-btn-secondary">Abbrechen</button>
-    <button onclick="confirmOk()" class="modal-btn modal-btn-primary">${confirmText || "Löschen"}</button>
-  `;
-  confirmCallback = onConfirm || null;
-  document.getElementById("confirm-modal").style.display = "flex";
-}
-
-function showAlert(message) {
-  document.getElementById("confirm-message").textContent = message;
-  document.getElementById("confirm-actions").innerHTML = `
-    <button onclick="confirmOk()" class="modal-btn modal-btn-primary" style="flex:none; padding:14px 32px;">OK</button>
-  `;
-  confirmCallback = null;
-  document.getElementById("confirm-modal").style.display = "flex";
-}
-
-function confirmOk() {
-  if (confirmCallback) confirmCallback();
-  document.getElementById("confirm-modal").style.display = "none";
-  confirmCallback = null;
-}
-
-function confirmCancel() {
-  document.getElementById("confirm-modal").style.display = "none";
-  confirmCallback = null;
-}
