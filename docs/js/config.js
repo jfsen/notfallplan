@@ -56,32 +56,6 @@ let SECTION_CONFIG = [
   },
 ];
 
-// ---- Breathing Exercises ----
-const BREATHING_EXERCISES = [
-  {
-    id: "box",
-    title: "Boxatmung",
-    desc: "4s ein · 4s halten · 4s aus · 4s halten",
-    phases: ["Einatmen...", "Halten...", "Ausatmen...", "Halten..."],
-    durations: [4000, 4000, 4000, 4000],
-  },
-  {
-    id: "478",
-    title: "4-7-8 Atmung",
-    desc: "4s ein · 7s halten · 8s aus",
-    phases: ["Einatmen...", "Halten...", "Lange ausatmen..."],
-    durations: [4000, 7000, 8000],
-  },
-  {
-    id: "coherent",
-    title: "Kohärentes Atmen",
-    desc: "5.5s ein · 5.5s aus",
-    phases: ["Einatmen...", "Ausatmen..."],
-    durations: [5500, 5500],
-  },
-];
-let currentBreathingExercise = "box";
-
 let DATA = {
   startDate: "",
   ausloeser: "",

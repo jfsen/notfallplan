@@ -771,6 +771,36 @@
             // Shared between the editor and the exported file.
             // exportCleanHTML() reads this script tag's textContent verbatim.
 
+            const BREATHING_EXERCISES = [
+                {
+                    id: "box",
+                    title: "Boxatmung",
+                    desc: "4s ein \u00b7 4s halten \u00b7 4s aus \u00b7 4s halten",
+                    phases: [
+                        "Einatmen...",
+                        "Halten...",
+                        "Ausatmen...",
+                        "Halten...",
+                    ],
+                    durations: [4000, 4000, 4000, 4000],
+                },
+                {
+                    id: "478",
+                    title: "4-7-8 Atmung",
+                    desc: "4s ein \u00b7 7s halten \u00b7 8s aus",
+                    phases: ["Einatmen...", "Halten...", "Lange ausatmen..."],
+                    durations: [4000, 7000, 8000],
+                },
+                {
+                    id: "coherent",
+                    title: "Koh\u00e4rentes Atmen",
+                    desc: "5.5s ein \u00b7 5.5s aus",
+                    phases: ["Einatmen...", "Ausatmen..."],
+                    durations: [5500, 5500],
+                },
+            ];
+            let currentBreathingExercise = "box";
+
             function animateCounter(target) {
                 const el = document.getElementById("days-count");
                 if (!el) return;
@@ -870,9 +900,6 @@
                     section.classList.add("active");
                     isBreathing = true;
                     startBreathing();
-                    setTimeout(() => {
-                        if (isBreathing) toggleBoxBreathing();
-                    }, 180000);
                 }
             }
 
@@ -893,9 +920,7 @@
                                 .includes("'" + id + "'"),
                         );
                     });
-                // Update button text
                 const ex = getActiveExercise();
-                const btnText = document.getElementById("breathing-btn-text");
             }
 
             function toggleBreathingMenu() {
