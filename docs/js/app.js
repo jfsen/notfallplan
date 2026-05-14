@@ -49,6 +49,7 @@ function exportCleanHTML() {
   const tempContainer = document.createElement("div");
   tempContainer.innerHTML =
     document.querySelector("header").outerHTML +
+    `<canvas id="confetti-canvas"></canvas>` +
     `<div id="main-content" style="margin-top:32px;">${document.getElementById("main-content").innerHTML}</div>`;
 
   // Remove all editor-only elements (marked with data-export-remove)
