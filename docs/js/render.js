@@ -90,7 +90,7 @@ function renderAllSections() {
             <div class="breathing-section" id="breathing-section">
                 <div class="breathing-burger-wrapper">
                     <button class="breathing-burger-btn" onclick="event.stopPropagation(); toggleBreathingMenu()" title="Atemübung wählen">
-                        <span></span><span></span><span></span>
+                        ${SVGs.burger}
                     </button>
                     <div class="breathing-menu" id="breathing-menu" style="display:none;">
                         ${BREATHING_EXERCISES.map(
