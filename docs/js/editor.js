@@ -3,30 +3,37 @@ let currentEditingId = null;
 let isCustom = false;
 let saveTimeout = null;
 
+// Cached DOM refs
+const $editor = () => document.getElementById("editor-textarea");
+const $title = () => document.getElementById("editor-title");
+const $status = () => document.getElementById("editor-status");
+const $modal = () => document.getElementById("editor-modal");
+
+// ── Open / Close / Save ──────────────────────────────
+
 function openEditor(id, custom = false) {
   currentEditingId = id;
   isCustom = custom;
 
-  const textarea = document.getElementById("editor-textarea");
-  const titleEl = document.getElementById("editor-title");
-  const statusEl = document.getElementById("editor-status");
+  const ta = $editor();
+  const title = $title();
 
   if (custom) {
     const section = CUSTOM_SECTIONS.find((s) => s.id === id);
-    textarea.value = section ? section.content || "" : "";
-    titleEl.textContent = section ? section.title : "Bearbeiten";
+    ta.value = section ? section.content || "" : "";
+    title.textContent = section ? section.title : "Bearbeiten";
   } else {
-    textarea.value = DATA[id] || "";
+    ta.value = DATA[id] || "";
     const config = SECTION_CONFIG.find((s) => s.id === id);
-    titleEl.textContent = config ? config.title : "Bearbeiten";
+    title.textContent = config ? config.title : "Bearbeiten";
   }
 
-  statusEl.innerHTML = '<span style="color:#34d399;">✓</span>';
-  document.getElementById("editor-modal").style.display = "flex";
-  textarea.focus();
+  $status().innerHTML = '<span style="color:#34d399;">✓</span>';
+  $modal().style.display = "flex";
+  ta.focus();
 
-  textarea.oninput = () => {
-    statusEl.innerHTML = '<span style="color:#fbbf24;">●</span>';
+  ta.oninput = () => {
+    $status().innerHTML = '<span style="color:#fbbf24;">●</span>';
     clearTimeout(saveTimeout);
     saveTimeout = setTimeout(autoSaveEditor, 700);
   };
@@ -35,7 +42,7 @@ function openEditor(id, custom = false) {
 function autoSaveEditor() {
   if (!currentEditingId) return;
 
-  const value = document.getElementById("editor-textarea").value.trim();
+  const value = $editor().value.trim();
 
   if (isCustom) {
     const section = CUSTOM_SECTIONS.find((s) => s.id === currentEditingId);
@@ -44,24 +51,69 @@ function autoSaveEditor() {
     DATA[currentEditingId] = value;
   }
 
-  document.getElementById("editor-status").innerHTML =
-    '<span style="color:#34d399;">✓</span>';
+  $status().innerHTML = '<span style="color:#34d399;">✓</span>';
   saveToLocalStorage();
   refreshDisplays();
 }
 
 function closeEditor() {
   autoSaveEditor();
-  document.getElementById("editor-modal").style.display = "none";
+  $modal().style.display = "none";
   currentEditingId = null;
 }
 
-// Smart Enter: continue a list on Enter, exit it on Enter when the item is empty.
-// Shift+Enter always inserts a plain newline regardless of context.
+// ── Format Helpers ───────────────────────────────────
+
+/**
+ * Replace the current selection with `newText` using execCommand,
+ * which preserves the browser's undo stack. Returns the new length of
+ * the inserted text so callers can re-position the selection.
+ */
+function replaceSelection(newText) {
+  const ta = $editor();
+  ta.focus();
+  // execCommand('insertText') replaces the current selection with the given
+  // text and moves the cursor to the end of the inserted text.
+  document.execCommand("insertText", false, newText);
+  return newText.length;
+}
+
+/**
+ * Expand the selection to full lines (start of first line → end of last line).
+ * Returns { lineStart, lineEnd, text }.
+ */
+function getLineRange(ta) {
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  const text = ta.value;
+  const lineStart = text.lastIndexOf("\n", start - 1) + 1;
+  let lineEnd = text.indexOf("\n", end);
+  if (lineEnd === -1) lineEnd = text.length;
+  return { lineStart, lineEnd, text, start, end };
+}
+
+// ── Key Bindings (smart Enter + Ctrl shortcuts) ─────
+
 function handleEditorKeydown(e) {
+  const ta = e.target;
+
+  // Ctrl/Cmd + B / I / U / K  – shortcuts for formatting (do not consume
+  // the native key when no formatting command is matched).
+  if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
+    const map = { b: "bold", i: "italic", u: "underline", k: "link" };
+    const cmd = map[e.key.toLowerCase()];
+    if (cmd) {
+      e.preventDefault();
+      // Delegate to the same entry-point the toolbar buttons use
+      if (cmd === "link") insertLink();
+      else insertInlineFormat(cmd);
+      return;
+    }
+  }
+
+  // ── Smart Enter logic ──
   if (e.key !== "Enter" || e.shiftKey) return;
 
-  const ta = e.target;
   const pos = ta.selectionStart;
   if (ta.selectionEnd !== pos) return; // don't interfere with range selections
 
@@ -72,31 +124,37 @@ function handleEditorKeydown(e) {
 
   const fullLine = text.substring(lineStart, lineEnd);
 
-  const bulletMatch = fullLine.match(/^([-*] )/);
-  const numberedMatch = fullLine.match(/^(\d+)([.)]) /);
-  if (!bulletMatch && !numberedMatch) return; // not in a list — use default Enter
+  // Detect list prefix (allow leading whitespace for indented lists)
+  const bulletMatch = fullLine.match(/^(\s*)([-*] )(.*)/);
+  const numberedMatch = fullLine.match(/^(\s*)(\d+)([.)]) (.*)/);
+
+  if (!bulletMatch && !numberedMatch) return;
 
   e.preventDefault();
 
-  let prefix, nextPrefix;
+  let indent, prefix, nextPrefix;
   if (bulletMatch) {
-    prefix = nextPrefix = bulletMatch[1]; // e.g. "- "
+    [, indent, prefix] = bulletMatch;
+    nextPrefix = indent + prefix;
   } else {
-    const num = parseInt(numberedMatch[1], 10);
-    const sep = numberedMatch[2]; // "." or ")"
+    const [, ws, numStr, sep] = numberedMatch;
+    indent = ws;
+    const num = parseInt(numStr, 10);
     prefix = `${num}${sep} `;
-    nextPrefix = `${num + 1}${sep} `;
+    nextPrefix = indent + `${num + 1}${sep} `;
   }
 
-  const contentAfterPrefix = fullLine.slice(prefix.length).trim();
+  // Content after the prefix (trimmed to detect "empty" item)
+  const contentAfterPrefix = fullLine.trim().slice(prefix.length).trim();
 
   if (contentAfterPrefix === "") {
-    // Empty list item — exit the list: strip the prefix, leave a blank line
+    // Empty list item → exit the list: strip the entire prefix + indent
     ta.value =
-      text.substring(0, lineStart) + text.substring(lineStart + prefix.length);
+      text.substring(0, lineStart) +
+      text.substring(lineStart + indent.length + prefix.length);
     ta.selectionStart = ta.selectionEnd = lineStart;
   } else {
-    // Non-empty item — insert a newline and start the next list item
+    // Non-empty → newline + next list item
     const insertion = "\n" + nextPrefix;
     ta.value = text.substring(0, pos) + insertion + text.substring(pos);
     ta.selectionStart = ta.selectionEnd = pos + insertion.length;
@@ -105,88 +163,206 @@ function handleEditorKeydown(e) {
   ta.dispatchEvent(new Event("input"));
 }
 
+// ── List formatting (bullet / numbered) ──────────────
+
 function insertFormatting(type) {
-  const ta = document.getElementById("editor-textarea");
-  const start = ta.selectionStart;
-  const end = ta.selectionEnd;
-  const text = ta.value;
+  const ta = $editor();
+  const r = getLineRange(ta);
+  const { lineStart, lineEnd } = r;
+  const lines = r.text.substring(lineStart, lineEnd).split("\n");
 
-  // Expand selection to cover full lines
-  const lineStart = text.lastIndexOf("\n", start - 1) + 1;
-  let lineEnd = text.indexOf("\n", end);
-  if (lineEnd === -1) lineEnd = text.length;
-
-  const selectedLines = text.substring(lineStart, lineEnd).split("\n");
   const isBullet = type === "bullet";
-  const targetRe = isBullet ? /^[-*]\s+/ : /^\d+[.)]\s+/;
+  // Allow optional leading whitespace when detecting current type
+  const targetRe = isBullet ? /^\s*[-*]\s+/ : /^\s*\d+[.)]\s+/;
 
-  // Strip any existing list prefix (bullet or numbered) from a line
-  const strip = (l) => l.replace(/^([-*]|\d+[.)])\s+/, "");
+  // Strip any existing list prefix (bullet or numbered), preserving content
+  const strip = (l) => l.replace(/^\s*([-*]|\d+[.)])\s+/, "");
 
   let formatted;
-  if (selectedLines.every((l) => targetRe.test(l))) {
-    // All lines already have this list type → toggle OFF
-    formatted = selectedLines.map(strip).join("\n");
+  if (lines.every((l) => targetRe.test(l))) {
+    // Already this list type → toggle OFF (unwrap)
+    formatted = lines.map(strip).join("\n");
   } else {
-    // Some or none have it → strip any existing prefix, then apply the new type
-    const stripped = selectedLines.map(strip);
+    // Strip any prefix first, then apply the new type
+    const stripped = lines.map(strip);
     formatted = isBullet
       ? stripped.map((l) => `- ${l}`).join("\n")
       : stripped.map((l, i) => `${i + 1}. ${l}`).join("\n");
   }
 
-  ta.value = text.substring(0, lineStart) + formatted + text.substring(lineEnd);
+  ta.focus();
+  ta.selectionStart = lineStart;
+  ta.selectionEnd = lineEnd;
+
+  replaceSelection(formatted);
+
+  // Select the result
   ta.selectionStart = lineStart;
   ta.selectionEnd = lineStart + formatted.length;
-  ta.focus();
   ta.dispatchEvent(new Event("input"));
 }
 
+// ── Inline formatting (bold / italic / underline) ────
+
 function insertInlineFormat(type) {
-  const ta = document.getElementById("editor-textarea");
+  const ta = $editor();
   let start = ta.selectionStart;
   let end = ta.selectionEnd;
-  let text = ta.value;
+  const text = ta.value;
 
-  let wrapper;
-  switch (type) {
-    case "bold":
-      wrapper = "**";
-      break;
-    case "italic":
-      wrapper = "*";
-      break;
-    case "underline":
-      wrapper = "__";
-      break;
-    default:
-      return;
-  }
+  const wrapperMap = { bold: "**", italic: "*", underline: "__" };
+  const wrapper = wrapperMap[type];
+  if (!wrapper) return;
 
   const selected = text.substring(start, end);
+  const hasSelection = start !== end;
 
-  // If nothing selected, insert example
-  if (!selected) {
-    const example =
-      type === "bold" ? "fett" : type === "italic" ? "kursiv" : "unterstrichen";
+  if (!hasSelection) {
+    // Nothing selected → insert placeholder text
+    const labels = {
+      bold: "fett",
+      italic: "kursiv",
+      underline: "unterstrichen",
+    };
+    const example = labels[type];
     const insert = wrapper + example + wrapper;
-    ta.value = text.substring(0, start) + insert + text.substring(end);
+    replaceSelection(insert);
+    // Select the inner example text
     ta.selectionStart = start + wrapper.length;
     ta.selectionEnd = start + wrapper.length + example.length;
+    ta.dispatchEvent(new Event("input"));
+    return;
   }
-  // Toggle: if already wrapped, remove it; else wrap it
-  else if (selected.startsWith(wrapper) && selected.endsWith(wrapper)) {
-    const inner = selected.slice(wrapper.length, -wrapper.length);
-    ta.value = text.substring(0, start) + inner + text.substring(end);
+
+  // ── Multi-line selection: apply formatting to EACH line ──
+  const lines = selected.split("\n");
+
+  // Helper: check whether every line is already wrapped
+  const everyWrapped = (arr, w) =>
+    arr.length > 0 &&
+    arr.every(
+      (l) => l.startsWith(w) && l.endsWith(w) && l.length >= w.length * 2,
+    );
+
+  if (everyWrapped(lines, wrapper)) {
+    // Toggle OFF: strip wrapper from every line
+    const unwrapped = lines
+      .map((l) => l.slice(wrapper.length, -wrapper.length))
+      .join("\n");
+    replaceSelection(unwrapped);
     ta.selectionStart = start;
-    ta.selectionEnd = start + inner.length;
+    ta.selectionEnd = start + unwrapped.length;
   } else {
-    const wrapped = wrapper + selected + wrapper;
-    ta.value = text.substring(0, start) + wrapped + text.substring(end);
+    // Toggle ON: wrap each line individually
+    const wrapped = lines.map((l) => wrapper + l + wrapper).join("\n");
+    replaceSelection(wrapped);
     ta.selectionStart = start;
     ta.selectionEnd = start + wrapped.length;
   }
 
-  ta.focus();
   ta.dispatchEvent(new Event("input"));
+}
+
+// ── Link insertion ───────────────────────────────────
+
+let linkState = null;
+
+function insertLink() {
+  const ta = $editor();
+  linkState = {
+    start: ta.selectionStart,
+    end: ta.selectionEnd,
+    selected: ta.value.substring(ta.selectionStart, ta.selectionEnd),
+  };
+
+  document.getElementById("link-url").value = "https://";
+  document.getElementById("link-text").value = linkState.selected || "";
+  document.getElementById("link-modal").style.display = "flex";
+
+  // Focus and select the URL field on next tick (modal needs to render first)
+  setTimeout(() => {
+    const urlInput = document.getElementById("link-url");
+    urlInput.focus();
+    urlInput.select();
+  }, 50);
+}
+
+function hideLinkModal() {
+  document.getElementById("link-modal").style.display = "none";
+  linkState = null;
+}
+
+function insertLinkConfirm() {
+  if (!linkState) return;
+
+  let url = document.getElementById("link-url").value.trim();
+  if (!url) return;
+
+  // Auto-prepend https:// if no protocol is given
+  if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(url)) {
+    url = "https://" + url;
+  }
+
+  const text = document.getElementById("link-text").value.trim() || url;
+  const markdown = `[${text}](${url})`;
+
+  const ta = $editor();
+
+  // IMPORTANT: do NOT focus the textarea during this handler.
+  // The user pressed Enter to submit — if we move focus to the
+  // textarea while the key is still held, key-repeat generates
+  // new keydown events there which insert an unwanted newline.
+  // Instead, modify the value directly and defer focus.
+
+  // Modify value at the stored selection range
+  const before = ta.value.substring(0, linkState.start);
+  const after = ta.value.substring(linkState.end);
+  ta.value = before + markdown + after;
+
+  // Select the inserted markdown so the user can adjust
+  ta.setSelectionRange(linkState.start, linkState.start + markdown.length);
+
+  // Hide modal immediately so the Enter event doesn't interact with it
+  document.getElementById("link-modal").style.display = "none";
+  linkState = null;
+
+  // Trigger autosave on idle
+  ta.dispatchEvent(new Event("input"));
+
+  // Focus the editor on the next tick, after the key is fully released
+  setTimeout(() => ta.focus(), 0);
+}
+
+// ── Reusable Confirm / Alert Modal ───────────────────
+
+let confirmCallback = null;
+
+function showConfirm(message, onConfirm, confirmText) {
+  document.getElementById("confirm-message").textContent = message;
+  document.getElementById("confirm-actions").innerHTML = `
+    <button onclick="confirmCancel()" class="modal-btn modal-btn-secondary">Abbrechen</button>
+    <button onclick="confirmOk()" class="modal-btn modal-btn-primary">${confirmText || "Löschen"}</button>
+  `;
+  confirmCallback = onConfirm || null;
+  document.getElementById("confirm-modal").style.display = "flex";
+}
+
+function showAlert(message) {
+  document.getElementById("confirm-message").textContent = message;
+  document.getElementById("confirm-actions").innerHTML = `
+    <button onclick="confirmOk()" class="modal-btn modal-btn-primary" style="flex:none; padding:14px 32px;">OK</button>
+  `;
+  confirmCallback = null;
+  document.getElementById("confirm-modal").style.display = "flex";
+}
+
+function confirmOk() {
+  if (confirmCallback) confirmCallback();
+  document.getElementById("confirm-modal").style.display = "none";
+  confirmCallback = null;
+}
+
+function confirmCancel() {
+  document.getElementById("confirm-modal").style.display = "none";
+  confirmCallback = null;
 }

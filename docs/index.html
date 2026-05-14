@@ -311,20 +311,30 @@
                     <button
                         onclick="insertInlineFormat('bold')"
                         class="format-btn"
+                        title="Strg+B"
                     >
                         B
                     </button>
                     <button
                         onclick="insertInlineFormat('italic')"
                         class="format-btn"
+                        title="Strg+I"
                     >
                         I
                     </button>
                     <button
                         onclick="insertInlineFormat('underline')"
                         class="format-btn"
+                        title="Strg+U"
                     >
                         U
+                    </button>
+                    <button
+                        onclick="insertLink()"
+                        class="format-btn"
+                        title="Strg+K"
+                    >
+                        🔗 Link
                     </button>
                 </div>
                 <textarea id="editor-textarea" rows="12"></textarea>
@@ -346,6 +356,52 @@
                     ></div>
                     <button onclick="closeEditor()" class="modal-save-btn">
                         Fertig
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Link Modal -->
+        <div class="modal" id="link-modal">
+            <div class="modal-content">
+                <h3 class="modal-title">Link einfügen</h3>
+                <input
+                    type="url"
+                    id="link-url"
+                    placeholder="https://example.com"
+                    class="modal-input"
+                    onkeypress="
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            insertLinkConfirm();
+                        }
+                    "
+                />
+                <input
+                    type="text"
+                    id="link-text"
+                    placeholder="Link-Text (optional)"
+                    class="modal-input"
+                    style="margin-top: 12px"
+                    onkeypress="
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            insertLinkConfirm();
+                        }
+                    "
+                />
+                <div class="modal-actions">
+                    <button
+                        onclick="hideLinkModal()"
+                        class="modal-btn modal-btn-secondary"
+                    >
+                        Abbrechen
+                    </button>
+                    <button
+                        onclick="insertLinkConfirm()"
+                        class="modal-btn modal-btn-primary"
+                    >
+                        Einfügen
                     </button>
                 </div>
             </div>

@@ -69,6 +69,12 @@ function applyInlineFormatting(str) {
   str = str.replace(/\*([^*]+?)\*/g, "<em>$1</em>"); // *italic*
   str = str.replace(/_([^_]+?)_/g, "<em>$1</em>"); // _italic_ (alternative)
 
+  // Links — applied last so that [**text**](url) works
+  str = str.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
+    const safeUrl = url.replace(/"/g, "&quot;");
+    return `<a href="${safeUrl}" style="color:#34d399; text-decoration:underline;">${text}</a>`;
+  });
+
   return str;
 }
 
