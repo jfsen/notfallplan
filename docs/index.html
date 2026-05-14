@@ -101,6 +101,8 @@
                 </div>
             </header>
 
+            <canvas id="confetti-canvas"></canvas>
+
             <div class="section-actions">
                 <button
                     onclick="showManageModal()"
@@ -889,6 +891,144 @@
                     if (t < 1) requestAnimationFrame(step);
                 }
                 requestAnimationFrame(step);
+            }
+
+            // ==================== ANNIVERSARY CELEBRATION ====================
+
+            function isAnniversary() {
+                // Returns the year number (1, 2, 3, …) if today is an anniversary, or 0 otherwise.
+                const DATA = window._NOTFALLPLAN_DATA || {};
+                const startDate = DATA.startDate;
+                if (!startDate) return 0;
+
+                const today = new Date().toLocaleDateString("en-CA", {
+                    timeZone: "Europe/Berlin",
+                });
+                const todayParts = today.split("-");
+                const startParts = startDate.split("-");
+
+                if (startParts.length < 3 || todayParts.length < 3) return 0;
+
+                // Same month and day?
+                if (
+                    todayParts[1] !== startParts[1] ||
+                    todayParts[2] !== startParts[2]
+                )
+                    return 0;
+
+                const startYear = parseInt(startParts[0], 10);
+                const todayYear = parseInt(todayParts[0], 10);
+                const yearsSince = todayYear - startYear;
+
+                // Must be at least one full year later
+                return yearsSince >= 1 ? yearsSince : 0;
+            }
+
+            let confettiAnimId = null;
+
+            function launchConfetti() {
+                const canvas = document.getElementById("confetti-canvas");
+                if (!canvas) return;
+                const ctx = canvas.getContext("2d");
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+
+                const colors = [
+                    "#fbbf24",
+                    "#34d399",
+                    "#f472b6",
+                    "#60a5fa",
+                    "#a78bfa",
+                    "#fb923c",
+                    "#f87171",
+                ];
+                const particles = [];
+                const count = 120;
+
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height * -1 - 20,
+                        w: Math.random() * 8 + 4,
+                        h: Math.random() * 6 + 3,
+                        color: colors[
+                            Math.floor(Math.random() * colors.length)
+                        ],
+                        vx: (Math.random() - 0.5) * 3,
+                        vy: Math.random() * 2.5 + 1.5,
+                        rot: Math.random() * 360,
+                        rotSpeed: (Math.random() - 0.5) * 6,
+                        opacity: 1,
+                    });
+                }
+
+                const startTime = performance.now();
+                const duration = 4500; // ms
+
+                function step(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    for (const p of particles) {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += 0.03; // gravity
+                        p.rot += p.rotSpeed;
+                        p.opacity = Math.max(0, 1 - progress);
+
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate((p.rot * Math.PI) / 180);
+                        ctx.globalAlpha = p.opacity;
+                        ctx.fillStyle = p.color;
+                        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                        ctx.restore();
+                    }
+
+                    if (progress < 1) {
+                        confettiAnimId = requestAnimationFrame(step);
+                    } else {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    }
+                }
+
+                if (confettiAnimId) cancelAnimationFrame(confettiAnimId);
+                confettiAnimId = requestAnimationFrame(step);
+            }
+
+            function checkAnniversary() {
+                const anniversaryYear = isAnniversary();
+                const counter = document.querySelector(".counter");
+                if (!counter) return;
+
+                // Remove previous celebration artifacts
+                counter.classList.remove("celebration");
+                const oldBadge = counter.querySelector(".celebration-badge");
+                if (oldBadge) oldBadge.remove();
+
+                if (anniversaryYear > 0) {
+                    counter.classList.add("celebration");
+                    launchConfetti();
+
+                    const badge = document.createElement("div");
+                    badge.className = "celebration-badge";
+                    const label =
+                        anniversaryYear === 1
+                            ? "1. Jubiläum! 🎉"
+                            : anniversaryYear === 5
+                              ? "5. Jubiläum! 🎉"
+                              : anniversaryYear === 10
+                                ? "10. Jubiläum! 🎉"
+                                : anniversaryYear === 25
+                                  ? "25. Jubiläum! 🎉"
+                                  : anniversaryYear === 50
+                                    ? "50. Jubiläum! 🎉"
+                                    : `${anniversaryYear}. Jubiläum! 🎉`;
+                    badge.textContent = label;
+                    counter.appendChild(badge);
+                }
             }
 
             function getActiveExercise() {

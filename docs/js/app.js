@@ -17,6 +17,7 @@ function calculateDays(animate = false) {
   } else {
     document.getElementById("days-count").textContent = days;
   }
+  checkAnniversary();
 }
 
 function updateStartDate(val) {
@@ -83,12 +84,14 @@ function exportCleanHTML() {
   const exportScript = [
     "(function() {",
     `  var START_DATE = ${JSON.stringify(startDate)};`,
+    "  window._NOTFALLPLAN_DATA = { startDate: START_DATE };",
     "  function calculateDays(animate) {",
     "    if (!START_DATE) { var el = document.getElementById('days-count'); if (el) el.textContent = '0'; return; }",
     "    var todayBerlin = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Berlin' });",
     "    var diff = new Date(todayBerlin + 'T00:00:00Z') - new Date(START_DATE + 'T00:00:00Z');",
     "    var days = Math.max(0, Math.floor(diff / 86400000));",
     "    if (animate) { animateCounter(days); } else { var el = document.getElementById('days-count'); if (el) el.textContent = days; }",
+    "    if (typeof checkAnniversary === 'function') checkAnniversary();",
     "  }",
     "  document.addEventListener('DOMContentLoaded', function() {",
     "    calculateDays(true);",
@@ -149,6 +152,7 @@ function hideExportModal() {
 // ==================== INIT ====================
 window.onload = function () {
   loadFromLocalStorage();
+  window._NOTFALLPLAN_DATA = DATA; // expose for viewer functions
   renderAllSections(); // renders all sections, sets icons, contacts, counter, displays
   calculateDays(true);
   document
