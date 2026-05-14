@@ -165,6 +165,11 @@ function showAddSectionModal() {
 
 function hideAddSectionModal() {
   document.getElementById("custom-section-modal").style.display = "none";
+  // Re-show manage modal if it was open
+  const manageModal = document.getElementById("manage-modal");
+  if (manageModal?.style.display === "flex") {
+    showManageModal();
+  }
 }
 
 function populateIconPicker() {
@@ -209,6 +214,11 @@ function createCustomSection() {
   hideAddSectionModal();
   renderAllSections();
   saveToLocalStorage();
+  // Re-show manage modal so the new section appears in the list
+  const manageModal = document.getElementById("manage-modal");
+  if (manageModal?.style.display === "flex") {
+    showManageModal();
+  }
 }
 
 function deleteCustomSection(id) {
