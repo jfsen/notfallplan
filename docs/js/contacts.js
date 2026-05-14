@@ -58,15 +58,39 @@ function showAddContactModal() {
 function hideAddContactModal() {
   document.getElementById("contact-modal").style.display = "none";
 }
+function normalizeTel(raw) {
+  // Strip common formatting characters (spaces, dashes, parens, dots, slashes)
+  let t = raw.replace(/[\s\-()./]/g, "");
+  // Handle the German "+49 (0)30 ..." pattern → "+4930 ..."
+  t = t.replace(/^(\+49|0049)0/, "$1");
+  return t;
+}
+
 function addContactConfirm() {
   const name = document.getElementById("modal-name").value.trim();
-  const tel = document.getElementById("modal-tel").value.trim();
-  if (name && tel) {
-    KONTAKTE.push({ name, tel });
-    renderContacts();
-    saveToLocalStorage();
-    hideAddContactModal();
+  const rawTel = document.getElementById("modal-tel").value.trim();
+
+  if (!name) return;
+
+  const normalized = normalizeTel(rawTel);
+  const digitCount = (normalized.match(/\d/g) || []).length;
+
+  const validChars = /^\+?\d+$/.test(normalized);
+  const validLength =
+    digitCount >= 6 &&
+    digitCount <= 15 &&
+    !(normalized.startsWith("+") && digitCount < 7) &&
+    !(normalized.startsWith("0") && digitCount > 14);
+
+  if (!validChars || !validLength) {
+    alert("Das sieht nicht wie eine gültige Telefonnummer aus.");
+    return;
   }
+
+  KONTAKTE.push({ name, tel: normalized });
+  renderContacts();
+  saveToLocalStorage();
+  hideAddContactModal();
 }
 function deleteContact(index) {
   KONTAKTE.splice(index, 1);
