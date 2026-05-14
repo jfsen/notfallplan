@@ -274,6 +274,10 @@ function showAlert(message) {
   `;
   confirmCallback = null;
   document.getElementById("confirm-modal").style.display = "flex";
+  setTimeout(() => {
+    const btn = document.querySelector("#confirm-actions button");
+    if (btn) btn.focus();
+  }, 50);
 }
 
 function confirmOk() {
