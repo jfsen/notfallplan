@@ -267,24 +267,23 @@ function renderContacts() {
       const isFirst = i === 0;
       const isLast = i === KONTAKTE.length - 1;
       div.innerHTML = `
-                <div style="max-width: 100%; overflow: hidden; display:flex; align-items:center; gap:12px; flex:1; cursor:grab;">
-                    <span data-export-remove style="color:#52525b; font-size:1.1rem;">☰</span>
-                    <div>
-                        <div style="font-weight:500;">${k.name}</div>
-                        <a href="tel:${k.tel}" style="color:#34d399;">${k.tel}</a>
-                    </div>
-                </div>
-                <div style="display:flex; gap:8px; align-items:center;">
-                    <div data-export-remove style="display:flex; flex-direction:column; gap:3px;">
+                <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0; cursor:grab;">
+                    <div data-export-remove style="display:flex; flex-direction:column; align-items:center; gap:1px; flex-shrink:0;">
                         <button onclick="moveContact(${i}, -1); event.stopPropagation()"
                                 class="manage-item-btn"
-                                style="background:#3f3f46; height:28px; min-width:28px; font-size:0.85rem; ${isFirst ? "opacity:0.3; cursor:not-allowed;" : ""}"
+                                style="background:#3f3f46; height:24px; min-width:24px; font-size:0.8rem; line-height:1; padding:0; ${isFirst ? "opacity:0.3; cursor:not-allowed;" : ""}"
                                 ${isFirst ? "disabled" : ""}>↑</button>
                         <button onclick="moveContact(${i}, 1); event.stopPropagation()"
                                 class="manage-item-btn"
-                                style="background:#3f3f46; height:28px; min-width:28px; font-size:0.85rem; ${isLast ? "opacity:0.3; cursor:not-allowed;" : ""}"
+                                style="background:#3f3f46; height:24px; min-width:24px; font-size:0.8rem; line-height:1; padding:0; ${isLast ? "opacity:0.3; cursor:not-allowed;" : ""}"
                                 ${isLast ? "disabled" : ""}>↓</button>
                     </div>
+                    <div style="min-width:0; overflow:hidden;">
+                        <div style="font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${k.name}</div>
+                        <a href="tel:${k.tel}" style="color:#34d399;">${k.tel}</a>
+                    </div>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center; flex-shrink:0;">
                     <a href="tel:${k.tel}" class="contact-call-btn">${SVGs.phone}</a>
                     <button data-export-remove onclick="deleteContact(${i}); event.stopPropagation()"
                             class="contact-delete-btn">${SVGs.trash}</button>
