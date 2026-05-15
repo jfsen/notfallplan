@@ -2,33 +2,33 @@
  *  TABLE OF CONTENTS
  * ==========================================================
  *
- *  1. RESET & BASE STYLES .................... L24
- *  2. TYPOGRAPHY ............................. L56
- *     Utility text classes ................... L67
- *  3. LAYOUT & CONTAINER ..................... L93
- *  4. HEADER ................................ L107
- *  5. COUNTER & DATE INPUT .................. L139
- *     Counter display ....................... L153
- *     Confetti canvas ....................... L227
- *  6. FAB — FLOATING ACTION BUTTON .......... L248
- *  7. SECTION COMPONENT ..................... L280
- *     Collapsible sections .................. L315
- *     Edit button ........................... L345
- *  8. EDITOR & FORMATTING TOOLBAR ........... L372
- *     Editor utilities ...................... L406
- *  9. BREATHING EXERCISE .................... L432
- *     Breathing circle ...................... L506
- *     Breathing burger menu ................. L560
- * 10. CONTACTS COMPONENT .................... L664
- * 11. MODAL COMPONENT ....................... L751
- *     Modal layout variants ................. L774
- *     Modal info / tip / warning boxes ...... L856
- *     Modal form elements ................... L827
- *     Modal buttons ......................... L953
- * 12. SECTION MANAGEMENT ................... L1004
- * 13. RESPONSIVE MEDIA QUERIES ............. L1120
- *     500px breakpoint ..................... L1125
- *     380px breakpoint ..................... L1168
+ *  1. RESET & BASE STYLES .................... L35
+ *  2. TYPOGRAPHY ............................. L122
+ *     Utility text classes ................... L133
+ *  3. LAYOUT & CONTAINER ..................... L159
+ *  4. HEADER ................................ L173
+ *  5. COUNTER & DATE INPUT .................. L206
+ *     Counter display ....................... L220
+ *     Confetti canvas ....................... L294
+ *  6. FAB — FLOATING ACTION BUTTON .......... L317
+ *  7. SECTION COMPONENT ..................... L349
+ *     Collapsible sections .................. L383
+ *     Edit button ........................... L413
+ *  8. EDITOR & FORMATTING TOOLBAR ........... L445
+ *     Editor utilities ...................... L484
+ *  9. BREATHING EXERCISE .................... L506
+ *     Breathing circle ...................... L584
+ *     Breathing burger menu ................. L636
+ * 10. CONTACTS COMPONENT .................... L738
+ * 11. MODAL COMPONENT ....................... L826
+ *     Modal layout variants ................. L850
+ *     Modal info / tip / warning boxes ...... L931
+ *     Modal form elements ................... L903
+ *     Modal buttons ......................... L1027
+ * 12. SECTION MANAGEMENT ................... L1084
+ * 13. RESPONSIVE MEDIA QUERIES ............. L1201
+ *     500px breakpoint ..................... L1206
+ *     380px breakpoint ..................... L1249
  *
  * ========================================================== */
 
@@ -41,10 +41,65 @@
     box-sizing: border-box;
 }
 
+:root {
+    /* ── Colours ── */
+    --color-bg: #18181b;
+    --color-surface: #27272a;
+    --color-surface-alt: #3f3f46;
+    --color-surface-hover: #52525b;
+    --color-border: #3f3f46;
+    --color-border-light: #52525b;
+
+    --color-accent: #34d399;
+    --color-accent-dark: #10b981;
+    --color-accent-dark-2: #178f5f;
+    --color-accent-deeper: #20956a;
+    --color-accent-bg: #1b5e50;
+
+    --color-text: #e4e4e7;
+    --color-text-muted: #a1a1aa;
+    --color-text-subtle: #c2c2c7;
+    --color-text-dim: #888;
+
+    --color-danger: #ef4444;
+    --color-warning: #fbbf24;
+    --color-highlight: #60a5fa;
+    --color-pink: #f472b6;
+
+    --color-white: #ffffff;
+    --color-black: #000000;
+
+    /* Raw RGB values for rgba() usage */
+    --color-accent-rgb: 52, 211, 153;
+    --color-accent-dark-rgb: 16, 185, 129;
+    --color-danger-rgb: 239, 68, 68;
+    --color-warning-rgb: 251, 191, 36;
+    --color-highlight-rgb: 96, 165, 250;
+    --color-pink-rgb: 244, 114, 182;
+
+    /* ── Surface shades ── */
+    --color-surface-darker: #1e1e22;
+
+    /* ── Border Radius ── */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 50%;
+
+    /* ── Durations ── */
+    --duration-fast: 0.15s;
+    --duration-base: 0.2s;
+    --duration-slow: 0.3s;
+
+    /* ── Shorthand transitions ── */
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 body {
     font-family: "Inter", system-ui, sans-serif;
-    background: #18181b;
-    color: #e4e4e7;
+    background: var(--color-bg);
+    color: var(--color-text);
     line-height: 1.6;
     padding-bottom: 80px;
 }
@@ -55,11 +110,11 @@ button {
 
 textarea {
     width: 100%;
-    background: #18181b;
-    border: 2px solid #34d399;
-    border-radius: 16px;
+    background: var(--color-bg);
+    border: 2px solid var(--color-accent);
+    border-radius: var(--radius-lg);
     padding: 18px;
-    color: #e4e4e7;
+    color: var(--color-text);
     font-family: inherit;
     font-size: 1rem;
     line-height: 1.65;
@@ -74,34 +129,33 @@ h1 {
     font-size: clamp(1.4rem, 5.5vw, 2rem);
     font-weight: 680;
     letter-spacing: -0.04em;
-    color: #34d399;
+    color: var(--color-accent);
     line-height: 1.15;
 }
 
 /* ── Utility text classes ── */
 .text-muted {
-    color: #c2c2c7;
+    color: var(--color-text-subtle);
     font-size: 0.9rem;
 }
 
-.text-emphasis {
+.text-emphasis,
+.text-emphasis--lg {
     font-weight: 500;
     margin-bottom: 16px;
 }
 
 .text-emphasis--lg {
-    font-weight: 500;
     font-size: 1.05rem;
-    margin-bottom: 16px;
 }
 
 .text-accent {
-    color: #34d399;
+    color: var(--color-accent);
     font-weight: 600;
 }
 
 .text-strong {
-    color: #e4e4e7;
+    color: var(--color-text);
     font-weight: 600;
 }
 
@@ -123,8 +177,8 @@ h1 {
  *  4. HEADER
  * ========================================================== */
 header {
-    background: #18181b;
-    border-bottom: 1px solid #3f3f46;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
     position: sticky;
     top: 0;
     z-index: 50;
@@ -156,15 +210,15 @@ header svg[width="64"] {
  *  5. COUNTER & DATE INPUT
  * ========================================================== */
 .counter {
-    background: #27272a;
-    border: 1px solid #34d39940;
-    border-radius: 16px;
+    background: var(--color-surface);
+    border: 1px solid rgba(var(--color-accent-rgb), 0.25);
+    border-radius: var(--radius-lg);
     padding: 8px 16px;
     text-align: center;
     line-height: 1.2;
     transition:
-        border-color 0.3s,
-        box-shadow 0.3s;
+        border-color var(--duration-slow),
+        box-shadow var(--duration-slow);
 }
 
 /* ── Anniversary celebration ── */
@@ -175,20 +229,20 @@ header svg[width="64"] {
 @keyframes counterGlow {
     0%,
     100% {
-        border-color: #34d39980;
-        box-shadow: 0 0 15px rgba(52, 211, 153, 0.3);
+        border-color: rgba(var(--color-accent-rgb), 0.5);
+        box-shadow: 0 0 15px rgba(var(--color-accent-rgb), 0.3);
     }
     25% {
-        border-color: #fbbf24;
-        box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+        border-color: var(--color-warning);
+        box-shadow: 0 0 20px rgba(var(--color-warning-rgb), 0.5);
     }
     50% {
-        border-color: #f472b6;
-        box-shadow: 0 0 25px rgba(244, 114, 182, 0.5);
+        border-color: var(--color-pink);
+        box-shadow: 0 0 25px rgba(var(--color-pink-rgb), 0.5);
     }
     75% {
-        border-color: #60a5fa;
-        box-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+        border-color: var(--color-highlight);
+        box-shadow: 0 0 20px rgba(var(--color-highlight-rgb), 0.5);
     }
 }
 
@@ -202,7 +256,7 @@ header svg[width="64"] {
 .counter-label {
     font-size: 0.75rem;
     letter-spacing: 1px;
-    color: #34d399;
+    color: var(--color-accent);
     font-weight: 500;
 }
 
@@ -215,7 +269,7 @@ header svg[width="64"] {
 
 .counter-since {
     font-size: 0.7rem;
-    color: #888;
+    color: var(--color-text-dim);
 }
 
 .celebration-badge {
@@ -223,7 +277,7 @@ header svg[width="64"] {
     margin-top: 4px;
     font-size: 0.75rem;
     font-weight: 600;
-    color: #fbbf24;
+    color: var(--color-warning);
     animation: badgePop 0.5s ease-out;
 }
 
@@ -253,10 +307,10 @@ header svg[width="64"] {
 }
 
 .date-input {
-    background: #3f3f46;
-    border: 1px solid #52525b;
-    border-radius: 8px;
-    color: #e4e4e7;
+    background: var(--color-surface-alt);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
     padding: 2px 6px;
     font-family: inherit;
     font-size: 0.75rem;
@@ -270,44 +324,48 @@ header svg[width="64"] {
     position: fixed;
     bottom: 24px;
     right: 24px;
-    background: #20956a;
-    color: #ffffff;
+    background: var(--color-accent-deeper);
+    color: var(--color-white);
     width: 64px;
     height: 64px;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 28px;
-    box-shadow: 0 10px 30px -10px rgba(52, 211, 153, 0.6);
+    box-shadow: 0 10px 30px -10px rgba(var(--color-accent-rgb), 0.6);
     z-index: 100;
     border: none;
     cursor: pointer;
     transition:
-        background 0.2s,
-        transform 0.15s,
-        box-shadow 0.2s;
+        background var(--duration-base),
+        transform var(--duration-fast),
+        box-shadow var(--duration-base);
 }
 
 .fab:hover {
-    background: #178f5f;
+    background: var(--color-accent-dark-2);
     transform: scale(1.08);
-    box-shadow: 0 16px 38px -10px rgba(52, 211, 153, 0.8);
+    box-shadow: 0 16px 38px -10px rgba(var(--color-accent-rgb), 0.8);
 }
 
 /* ==========================================================
  *  7. SECTION COMPONENT
  * ========================================================== */
 .section {
-    background: #27272a;
-    border: 1px solid #3f3f46;
-    border-radius: 24px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
     margin-bottom: 28px;
     overflow: hidden;
 }
 
 .section-header {
-    background: linear-gradient(135deg, #10b981, #34d399);
+    background: linear-gradient(
+        135deg,
+        var(--color-accent-dark),
+        var(--color-accent)
+    );
     color: white;
     padding: 16px 24px;
     font-weight: 600;
@@ -321,9 +379,9 @@ header svg[width="64"] {
 }
 
 .content-display {
-    background: #18181b;
-    border: 1px solid #52525b;
-    border-radius: 16px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
     padding: 18px;
     min-height: 160px;
     white-space: pre-wrap;
@@ -367,13 +425,13 @@ header svg[width="64"] {
     color: white;
     width: 34px;
     height: 34px;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     font-size: 18px;
-    transition: all 0.2s;
+    transition: all var(--duration-base);
     flex-shrink: 0;
 }
 
@@ -391,11 +449,11 @@ header svg[width="64"] {
  *  8. EDITOR & FORMATTING TOOLBAR
  * ========================================================== */
 #editor-textarea {
-    background: #18181b;
-    border: 2px solid #34d399;
-    border-radius: 16px;
+    background: var(--color-bg);
+    border: 2px solid var(--color-accent);
+    border-radius: var(--radius-lg);
     padding: 20px;
-    color: #e4e4e7;
+    color: var(--color-text);
     font-family: inherit;
     font-size: 1.05rem;
     line-height: 1.7;
@@ -403,22 +461,22 @@ header svg[width="64"] {
 
 .format-btn {
     padding: 5px 12px;
-    background: #27272a;
-    border: 1px solid #3f3f46;
-    border-radius: 8px;
-    color: #a1a1aa;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
     font-size: 0.85rem;
     cursor: pointer;
     transition:
-        background 0.15s,
-        color 0.15s,
-        border-color 0.15s;
+        background var(--duration-fast),
+        color var(--duration-fast),
+        border-color var(--duration-fast);
 }
 
 .format-btn:hover {
-    background: #3f3f46;
-    color: #e4e4e7;
-    border-color: #52525b;
+    background: var(--color-surface-alt);
+    color: var(--color-text);
+    border-color: var(--color-border-light);
 }
 
 /* ── Editor utilities ── */
@@ -439,13 +497,13 @@ header svg[width="64"] {
 
 #editor-title {
     margin: 0;
-    color: #34d399;
+    color: var(--color-accent);
 }
 
 #editor-status {
     font-size: 1.1rem;
     font-weight: 500;
-    color: #34d399;
+    color: var(--color-accent);
 }
 
 /* ==========================================================
@@ -455,15 +513,15 @@ header svg[width="64"] {
     position: relative;
     background: linear-gradient(
         135deg,
-        rgba(16, 185, 129, 0.08),
-        rgba(45, 212, 191, 0.04)
+        rgba(var(--color-accent-dark-rgb), 0.08),
+        rgba(var(--color-accent-rgb), 0.04)
     );
     margin-bottom: 24px;
-    border: 1px solid rgba(52, 211, 153, 0.3);
-    border-radius: 28px;
+    border: 1px solid rgba(var(--color-accent-rgb), 0.3);
+    border-radius: var(--radius-xl);
     padding: 40px 24px 8px;
     text-align: center;
-    transition: all 0.5s ease;
+    transition: all var(--duration-slow) ease;
 }
 
 /* Overlay for smooth fade of the intense background */
@@ -474,22 +532,22 @@ header svg[width="64"] {
     border-radius: inherit;
     background: linear-gradient(
         135deg,
-        rgba(16, 185, 129, 0.28),
-        rgba(45, 212, 191, 0.18)
+        rgba(var(--color-accent-dark-rgb), 0.28),
+        rgba(var(--color-accent-rgb), 0.18)
     );
     opacity: 0;
-    transition: opacity 0.6s ease;
+    transition: opacity var(--duration-slow) ease;
     pointer-events: none;
     z-index: 0;
 }
 
 .breathing-section:not(.active):hover {
-    border-color: rgba(52, 211, 153, 0.55);
-    box-shadow: 0 0 28px -8px rgba(52, 211, 153, 0.2);
+    border-color: rgba(var(--color-accent-rgb), 0.55);
+    box-shadow: 0 0 28px -8px rgba(var(--color-accent-rgb), 0.2);
 }
 
 .breathing-section.active #breathing-btn-text {
-    color: #10b981;
+    color: var(--color-accent-dark);
 }
 
 /* Ensure breathing section content sits above the overlay */
@@ -515,7 +573,7 @@ header svg[width="64"] {
 }
 
 .breathing-circle-btn:hover #breathing-btn-text {
-    color: #34d399;
+    color: var(--color-accent);
 }
 
 #breathing-btn-text {
@@ -528,14 +586,14 @@ header svg[width="64"] {
     --breath-cycle: 16s;
     width: 148px;
     height: 148px;
-    border-radius: 50%;
-    border: 7px solid rgba(52, 211, 153, 0.5);
+    border-radius: var(--radius-full);
+    border: 7px solid rgba(var(--color-accent-rgb), 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    transition: all var(--breath-duration) cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 40px -10px rgba(52, 211, 153, 0.4);
+    transition: all var(--breath-duration) var(--ease);
+    box-shadow: 0 10px 40px -10px rgba(var(--color-accent-rgb), 0.4);
     background: rgba(255, 255, 255, 0.06);
 }
 
@@ -545,14 +603,14 @@ header svg[width="64"] {
     position: absolute;
     width: 100%;
     height: 100%;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     animation: pulse var(--breath-cycle) infinite ease-in-out;
 }
 
 .breathing-circle::before {
     background: radial-gradient(
         circle,
-        rgba(52, 211, 153, 0.25) 0%,
+        rgba(var(--color-accent-rgb), 0.25) 0%,
         transparent 70%
     );
 }
@@ -560,20 +618,20 @@ header svg[width="64"] {
 .breathing-circle::after {
     background: radial-gradient(
         circle,
-        rgba(52, 211, 153, 0.25) 20%,
+        rgba(var(--color-accent-rgb), 0.25) 20%,
         transparent 70%
     );
 }
 
 .breathing-circle.in {
     transform: scale(1.28);
-    border-color: #34d399;
-    box-shadow: 0 15px 50px -5px rgba(52, 211, 153, 0.6);
+    border-color: var(--color-accent);
+    box-shadow: 0 15px 50px -5px rgba(var(--color-accent-rgb), 0.6);
 }
 
 .breathing-circle.out {
     transform: scale(0.62);
-    border-color: rgba(52, 211, 153, 0.35);
+    border-color: rgba(var(--color-accent-rgb), 0.35);
 }
 
 /* Breathing burger dropdown */
@@ -587,25 +645,25 @@ header svg[width="64"] {
 .breathing-burger-btn {
     width: 36px;
     height: 36px;
-    color: #34d399;
-    background: rgba(52, 211, 153, 0.08);
-    border: 1px solid rgba(52, 211, 153, 0.25);
-    border-radius: 10px;
+    color: var(--color-accent);
+    background: rgba(var(--color-accent-rgb), 0.08);
+    border: 1px solid rgba(var(--color-accent-rgb), 0.25);
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     padding: 6px;
     transition:
-        background 0.2s,
-        border-color 0.2s,
-        box-shadow 0.2s;
+        background var(--duration-base),
+        border-color var(--duration-base),
+        box-shadow var(--duration-base);
 }
 
 .breathing-burger-btn:hover {
-    background: rgba(52, 211, 153, 0.18);
-    border-color: rgba(52, 211, 153, 0.45);
-    box-shadow: 0 4px 14px -4px rgba(52, 211, 153, 0.3);
+    background: rgba(var(--color-accent-rgb), 0.18);
+    border-color: rgba(var(--color-accent-rgb), 0.45);
+    box-shadow: 0 4px 14px -4px rgba(var(--color-accent-rgb), 0.3);
 }
 
 .breathing-burger-btn svg {
@@ -617,14 +675,14 @@ header svg[width="64"] {
     position: absolute;
     top: 44px;
     right: 0;
-    background: #27272a;
-    border: 1px solid #3f3f46;
-    border-radius: 14px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 12px 40px rgba(var(--color-black), 0.5);
     min-width: 230px;
     overflow: hidden;
     z-index: 20;
-    animation: breathingFadeIn 0.15s ease;
+    animation: breathingFadeIn var(--duration-fast) ease;
 }
 
 @keyframes breathingFadeIn {
@@ -646,11 +704,11 @@ header svg[width="64"] {
     padding: 14px 18px;
     background: none;
     border: none;
-    border-bottom: 1px solid #3f3f46;
-    color: #e4e4e7;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text);
     cursor: pointer;
     text-align: left;
-    transition: background 0.15s;
+    transition: background var(--duration-fast);
 }
 
 .breathing-menu-item:last-child {
@@ -658,15 +716,15 @@ header svg[width="64"] {
 }
 
 .breathing-menu-item:hover {
-    background: rgba(52, 211, 153, 0.1);
+    background: rgba(var(--color-accent-rgb), 0.1);
 }
 
 .breathing-menu-item.active {
-    background: rgba(52, 211, 153, 0.18);
+    background: rgba(var(--color-accent-rgb), 0.18);
 }
 
 .breathing-menu-item.active .breathing-menu-item-title {
-    color: #34d399;
+    color: var(--color-accent);
 }
 
 .breathing-menu-item-title {
@@ -677,22 +735,22 @@ header svg[width="64"] {
 
 .breathing-menu-item-desc {
     font-size: 0.78rem;
-    color: #a1a1aa;
+    color: var(--color-text-muted);
 }
 
 /* ==========================================================
  * 10. CONTACTS COMPONENT
  * ========================================================== */
 .contact-item {
-    background: #18181b;
-    border: 1px solid #3f3f46;
-    border-radius: 16px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
     padding: 14px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 12px;
-    transition: all 0.2s ease;
+    transition: all var(--duration-base) ease;
 }
 
 .contact-item.dragging {
@@ -703,59 +761,59 @@ header svg[width="64"] {
 .add-contact {
     width: 100%;
     padding: 14px;
-    background: #3f3f46;
+    background: var(--color-surface-alt);
     border: none;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     color: white;
     font-weight: 500;
     cursor: pointer;
     transition:
-        background 0.2s,
-        transform 0.15s;
+        background var(--duration-base),
+        transform var(--duration-fast);
 }
 
 .add-contact:hover {
-    background: #52525b;
-    transform: scale(1.01);
+    background: var(--color-surface-hover);
+    transform: scale(1.02);
 }
 
 /* ── Contact item buttons ── */
 .contact-call-btn {
-    background: #34d399;
+    background: var(--color-accent);
     color: white;
     width: 44px;
     height: 44px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
     border: none;
     text-decoration: none;
     transition:
-        background 0.2s,
-        transform 0.15s;
+        background var(--duration-base),
+        transform var(--duration-fast);
 }
 
 .contact-call-btn:hover {
-    background: #10b981;
-    transform: scale(1.07);
+    background: var(--color-accent-dark);
+    transform: scale(1.08);
 }
 
 .contact-delete-btn {
-    background: #ef4444;
+    background: var(--color-danger);
     color: white;
     border: none;
     width: 44px;
     height: 44px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 20px;
     transition:
-        filter 0.15s,
-        transform 0.15s;
+        filter var(--duration-fast),
+        transform var(--duration-fast);
 }
 
 .contact-delete-btn:hover {
@@ -782,8 +840,8 @@ header svg[width="64"] {
 }
 
 .modal-content {
-    background: #27272a;
-    border-radius: 24px;
+    background: var(--color-surface);
+    border-radius: var(--radius-xl);
     width: 90%;
     max-width: 420px;
     max-height: 85vh;
@@ -829,13 +887,13 @@ header svg[width="64"] {
 .modal-footer {
     flex-shrink: 0;
     padding-top: 16px;
-    border-top: 1px solid #3f3f46;
+    border-top: 1px solid var(--color-border);
 }
 
 .modal-footer--dark {
     padding: 16px 24px;
-    background: #27272a;
-    border-top: 1px solid #3f3f46;
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
     flex-shrink: 0;
 }
 
@@ -848,7 +906,7 @@ header svg[width="64"] {
 .modal-label {
     display: block;
     margin-bottom: 8px;
-    color: #a1a1aa;
+    color: var(--color-text-muted);
 }
 
 .checkbox-label {
@@ -876,45 +934,45 @@ header svg[width="64"] {
 
 /* Modal info / tip / warning boxes */
 .info-box {
-    background: #18181b;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 24px;
-    border: 1px solid #3f3f46;
+    background: var(--color-bg);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid var(--color-border);
 }
 
 .tip-box {
-    background: #1b5e50;
-    border-radius: 16px;
+    background: var(--color-accent-bg);
+    border-radius: var(--radius-lg);
     padding: 16px;
     margin-bottom: 20px;
-    border: 1px solid #10b981;
+    border: 1px solid var(--color-accent-dark);
 }
 
 .warning-box {
-    background: #3f3f46;
-    border-radius: 16px;
+    background: var(--color-surface-alt);
+    border-radius: var(--radius-lg);
     padding: 16px;
     margin-bottom: 20px;
-    border-left: 4px solid #ef4444;
+    border-left: 4px solid var(--color-danger);
 }
 
 .highlight-box {
-    background: #3f3f46;
-    border-radius: 16px;
+    background: var(--color-surface-alt);
+    border-radius: var(--radius-lg);
     padding: 16px;
     margin-bottom: 20px;
-    border-left: 4px solid #34d399;
+    border-left: 4px solid var(--color-accent);
 }
 
 .modal-h2 {
-    color: #34d399;
+    color: var(--color-accent);
     margin-bottom: 24px;
     font-size: 1.5rem;
 }
 
 .modal-h3 {
-    color: #34d399;
+    color: var(--color-accent);
     margin-bottom: 16px;
     margin-top: 24px;
     font-weight: 600;
@@ -923,7 +981,7 @@ header svg[width="64"] {
 .modal-list {
     margin-bottom: 20px;
     padding-left: 20px;
-    color: #c2c2c7;
+    color: var(--color-text-subtle);
 }
 
 .modal-list li {
@@ -931,7 +989,7 @@ header svg[width="64"] {
 }
 
 #confirm-message {
-    color: #e4e4e7;
+    color: var(--color-text);
     line-height: 1.6;
     margin: 0;
     font-size: 1.05rem;
@@ -951,15 +1009,15 @@ header svg[width="64"] {
 
 .modal-title {
     margin-bottom: 20px;
-    color: #34d399;
+    color: var(--color-accent);
 }
 
 .modal-input {
     width: 100%;
     padding: 14px;
-    background: #18181b;
-    border: 1px solid #52525b;
-    border-radius: 12px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
     color: white;
     font-family: inherit;
     font-size: 1rem;
@@ -976,51 +1034,54 @@ header svg[width="64"] {
     flex: 1;
     padding: 14px;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     color: white;
     font-size: 1rem;
     cursor: pointer;
 }
 
 .modal-btn-secondary {
-    background: #3f3f46;
+    background: var(--color-surface-alt);
     transition:
-        background 0.2s,
-        transform 0.15s;
+        background var(--duration-base),
+        transform var(--duration-fast);
 }
 
 .modal-btn-secondary:hover {
-    background: #52525b;
+    background: var(--color-surface-hover);
     transform: scale(1.02);
 }
 
 .modal-btn-primary {
-    background: #34d399;
+    background: var(--color-accent);
     font-weight: 600;
     transition:
-        background 0.2s,
-        transform 0.15s;
+        background var(--duration-base),
+        transform var(--duration-fast);
 }
 
 .modal-btn-primary:hover {
-    background: #10b981;
+    background: var(--color-accent-dark);
     transform: scale(1.02);
 }
 
 .modal-save-btn {
     padding: 12px 28px;
-    background: #34d399;
+    background: var(--color-accent);
     color: white;
     font-weight: 600;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     font-size: 1.02rem;
     cursor: pointer;
+    transition:
+        background var(--duration-base),
+        transform var(--duration-fast);
 }
 
 .modal-save-btn:hover {
-    background: #10b981;
-    transform: scale(1.03);
+    background: var(--color-accent-dark);
+    transform: scale(1.05);
 }
 
 /* ==========================================================
@@ -1035,9 +1096,9 @@ header svg[width="64"] {
 .action-btn {
     flex: 1;
     padding: 8px;
-    background: #3f3f46;
+    background: var(--color-surface-alt);
     border: none;
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     color: white;
     font-weight: 500;
     font-size: 1.02rem;
@@ -1047,12 +1108,12 @@ header svg[width="64"] {
     gap: 8px;
     cursor: pointer;
     transition:
-        background 0.2s,
-        transform 0.15s;
+        background var(--duration-base),
+        transform var(--duration-fast);
 }
 
 .action-btn:hover {
-    background: #52525b;
+    background: var(--color-surface-hover);
     transform: scale(1.02);
 }
 
@@ -1076,13 +1137,13 @@ header svg[width="64"] {
     align-items: center;
     gap: 12px;
     padding: 12px 16px;
-    background: #1e1e22;
-    border-radius: 12px;
+    background: var(--color-surface-darker);
+    border-radius: var(--radius-md);
     margin-bottom: 8px;
     cursor: grab;
     user-select: none;
-    transition: all 0.2s;
-    border: 1px solid transparent;
+    transition: all var(--duration-base);
+    border: 1px solid var(--color-border);
 }
 
 .section-manage-item:active {
@@ -1090,8 +1151,8 @@ header svg[width="64"] {
 }
 
 .section-manage-item:hover {
-    background: rgba(52, 211, 153, 0.09);
-    border: 1px solid rgba(52, 211, 153, 0.2);
+    background: rgba(var(--color-accent-rgb), 0.09);
+    border: 1px solid rgba(var(--color-accent-rgb), 0.2);
 }
 
 .section-manage-item.dragging {
@@ -1102,36 +1163,37 @@ header svg[width="64"] {
 .add-section-btn {
     width: 100%;
     padding: 16px;
-    background: #3f3f46;
-    border: 2px dashed #52525b;
-    color: #a1a1aa;
+    background: var(--color-surface-alt);
+    border: 2px dashed var(--color-border-light);
+    color: var(--color-text-muted);
     font-weight: 500;
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
     cursor: pointer;
     margin: 20px 0 40px 0;
-    transition: all 0.2s;
+    transition: all var(--duration-base);
 }
 
 .add-section-btn:hover {
-    background: #52525b;
-    border-color: #34d399;
-    color: #e4e4e7;
+    background: var(--color-surface-hover);
+    border-color: var(--color-accent);
+    color: var(--color-text);
+    transform: scale(1.02);
 }
 
 .manage-item-btn {
     min-width: 32px;
     height: 36px;
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     color: white;
     cursor: pointer;
     transition:
-        filter 0.15s,
-        transform 0.15s;
+        filter var(--duration-fast),
+        transform var(--duration-fast);
 }
 
 .manage-item-btn:hover {
-    filter: brightness(1.3);
+    filter: brightness(1.2);
     transform: scale(1.08);
 }
 
@@ -1149,7 +1211,7 @@ header svg[width="64"] {
     /* Counter compact */
     #counter-wrapper .counter {
         padding: 6px 12px;
-        border-radius: 12px;
+        border-radius: var(--radius-md);
     }
 
     #counter-wrapper .counter div:first-child {
@@ -1158,7 +1220,7 @@ header svg[width="64"] {
     }
 
     #days-count {
-        font-size: 1.6rem !important;
+        font-size: 1.6rem;
     }
 
     /* Rearrange the bottom row of the counter to be a single line */
@@ -1173,7 +1235,7 @@ header svg[width="64"] {
 
     .date-input {
         max-width: 100px;
-        font-size: 0.7rem !important;
+        font-size: 0.7rem;
     }
 
     /* Section action buttons compact */
@@ -1209,7 +1271,7 @@ header svg[width="64"] {
     }
 
     #days-count {
-        font-size: 1.3rem !important;
+        font-size: 1.3rem;
     }
 
     .date-input {
