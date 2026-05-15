@@ -191,7 +191,7 @@ function createDefaultSection(config) {
                     <span id="icon-kontakte">${SVGs.phonebook}</span>
                     <span>${config.title}</span>
                 </div>
-                <button class="edit-btn" data-export-remove onclick="showAddContactModal()">${SVGs.plus}</button>
+                <button class="edit-btn" data-export-remove onclick="showAddContactModal()" title="Neuen Kontakt hinzufügen">${SVGs.plus}</button>
             </div>
             <div class="section-content" id="kontakte-list"></div>
         </div>`;
@@ -207,7 +207,7 @@ function createDefaultSection(config) {
                     <span>${config.title}</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${key}')">${SVGs.pen}</button>
+                    <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${key}')" title="Inhalt bearbeiten">${SVGs.pen}</button>
                     <span id="collapse-icon-${key}" class="collapse-icon">›</span>
                 </div>
             </div>
@@ -225,7 +225,7 @@ function createDefaultSection(config) {
                 <span id="icon-${key}"></span>
                 <span>${config.title}</span>
             </div>
-            <button class="edit-btn" data-export-remove onclick="openEditor('${key}')">${SVGs.pen}</button>
+            <button class="edit-btn" data-export-remove onclick="openEditor('${key}')" title="Inhalt bearbeiten">${SVGs.pen}</button>
         </div>
         <div class="section-content">
             <div id="${key}-display" class="content-display"></div>
@@ -245,8 +245,8 @@ function renderCustomSection(section, container) {
                 <span>${section.title}</span>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-                <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="event.stopPropagation(); deleteCustomSection('${section.id}')">${SVGs.trash}</button>
-                <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${section.id}', true)">${SVGs.pen}</button>
+                <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="event.stopPropagation(); deleteCustomSection('${section.id}')" title="Sektion löschen">${SVGs.trash}</button>
+                <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${section.id}', true)" title="Inhalt bearbeiten">${SVGs.pen}</button>
                 <span id="collapse-icon-${section.id}" class="collapse-icon">›</span>
             </div>
         </div>
@@ -261,8 +261,8 @@ function renderCustomSection(section, container) {
                 <span>${section.title}</span>
             </div>
             <div style="display:flex; gap:8px;">
-                <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="deleteCustomSection('${section.id}')">${SVGs.trash}</button>
-                <button class="edit-btn" data-export-remove onclick="openEditor('${section.id}', true)">${SVGs.pen}</button>
+                <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="deleteCustomSection('${section.id}')" title="Sektion löschen">${SVGs.trash}</button>
+                <button class="edit-btn" data-export-remove onclick="openEditor('${section.id}', true)" title="Inhalt bearbeiten">${SVGs.pen}</button>
             </div>
         </div>
         <div class="section-content">
@@ -295,11 +295,13 @@ function renderContacts() {
                         <button onclick="moveContact(${i}, -1); event.stopPropagation()"
                                 class="manage-item-btn"
                                 style="background:#3f3f46; height:24px; min-width:24px; font-size:0.8rem; line-height:1; padding:0; ${isFirst ? "opacity:0.3; cursor:not-allowed;" : ""}"
-                                ${isFirst ? "disabled" : ""}>↑</button>
+                                ${isFirst ? "disabled" : ""}
+                                title="Nach oben verschieben">↑</button>
                         <button onclick="moveContact(${i}, 1); event.stopPropagation()"
                                 class="manage-item-btn"
                                 style="background:#3f3f46; height:24px; min-width:24px; font-size:0.8rem; line-height:1; padding:0; ${isLast ? "opacity:0.3; cursor:not-allowed;" : ""}"
-                                ${isLast ? "disabled" : ""}>↓</button>
+                                ${isLast ? "disabled" : ""}
+                                title="Nach unten verschieben">↓</button>
                     </div>
                     <div style="min-width:0; overflow:hidden;">
                         <div style="font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${k.name}</div>
@@ -307,9 +309,9 @@ function renderContacts() {
                     </div>
                 </div>
                 <div style="display:flex; gap:8px; align-items:center; flex-shrink:0;">
-                    <a href="tel:${k.tel}" class="contact-call-btn">${SVGs.phone}</a>
+                    <a href="tel:${k.tel}" class="contact-call-btn" title="Anrufen">${SVGs.phone}</a>
                     <button data-export-remove onclick="deleteContact(${i}); event.stopPropagation()"
-                            class="contact-delete-btn">${SVGs.trash}</button>
+                            class="contact-delete-btn" title="Kontakt löschen">${SVGs.trash}</button>
                 </div>`;
       div.addEventListener("dragstart", handleContactDragStart);
       div.addEventListener("dragover", handleContactDragOver);

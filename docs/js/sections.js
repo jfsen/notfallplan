@@ -32,7 +32,7 @@ function showManageModal() {
 
       if (item.type === "custom") {
         itemHTML += `<button onclick="deleteCustomSection('${item.id}')"
-                                     class="manage-item-btn" style="background:#ef4444;">${SVGs.trash}</button>`;
+                                     class="manage-item-btn" style="background:#ef4444;" title="Sektion löschen">${SVGs.trash}</button>`;
       }
 
       // Up / Down buttons (exactly like contacts)
@@ -43,11 +43,13 @@ function showManageModal() {
                 <button onclick="moveSection(${index}, -1); event.stopPropagation()"
                         class="manage-item-btn"
                         style="background:#3f3f46; ${upStyle}"
-                        ${isFirstMovable ? "disabled" : ""}>↑</button>
+                        ${isFirstMovable ? "disabled" : ""}
+                        title="Nach oben verschieben">↑</button>
                 <button onclick="moveSection(${index}, 1); event.stopPropagation()"
                         class="manage-item-btn"
                         style="background:#3f3f46; ${downStyle}"
-                        ${isLastMovable ? "disabled" : ""}>↓</button>`;
+                        ${isLastMovable ? "disabled" : ""}
+                        title="Nach unten verschieben">↓</button>`;
 
       div.innerHTML = itemHTML;
 
@@ -175,9 +177,32 @@ function hideAddSectionModal() {
 function populateIconPicker() {
   const container = document.getElementById("icon-picker");
   container.innerHTML = "";
+  const iconNames = {
+    bolt: "Blitz",
+    heart: "Herz",
+    phonebook: "Telefonbuch",
+    toolbox: "Werkzeug",
+    dumbbell: "Hantel",
+    quote: "Zitat",
+    pill: "Tablette",
+    medicalbook: "Medizinbuch",
+    hospital: "Krankenhaus",
+    brain: "Gehirn",
+    hands: "Hände",
+    group: "Gruppe",
+    shield: "Schild",
+    parachute: "Fallschirm",
+    gauge: "Messer",
+    bandage: "Verband",
+    pepper: "Pfeffer",
+    carrot: "Karotte",
+    doctor: "Arzt",
+    masks: "Masken",
+  };
   Object.keys(PickIcons).forEach((key) => {
     const div = document.createElement("div");
     div.style.cssText = `width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#18181b;border:2px solid ${key === selectedCustomIcon ? "#34d399" : "transparent"};border-radius:12px;cursor:pointer;`;
+    div.title = iconNames[key] || key;
     div.innerHTML = SVGs[key];
     div.onclick = () => {
       selectedCustomIcon = key;
