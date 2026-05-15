@@ -2,19 +2,33 @@
  *  TABLE OF CONTENTS
  * ==========================================================
  *
- *  1. RESET & BASE STYLES .................... L21
+ *  1. RESET & BASE STYLES .................... L24
  *  2. TYPOGRAPHY ............................. L56
- *  3. LAYOUT & CONTAINER ..................... L67
- *  4. HEADER ................................. L76
- *  5. COUNTER & DATE INPUT .................. L102
- *  6. FAB — FLOATING ACTION BUTTON .......... L125
- *  7. SECTION COMPONENT ..................... L157
- *  8. EDITOR & FORMATTING TOOLBAR ........... L249
- *  9. BREATHING EXERCISE .................... L283
- * 10. CONTACTS COMPONENT .................... L496
- * 11. MODAL COMPONENT ....................... L583
- * 12. SECTION MANAGEMENT .................... L679
- * 13. RESPONSIVE MEDIA QUERIES .............. L781
+ *     Utility text classes ................... L67
+ *  3. LAYOUT & CONTAINER ..................... L93
+ *  4. HEADER ................................ L107
+ *  5. COUNTER & DATE INPUT .................. L139
+ *     Counter display ....................... L153
+ *     Confetti canvas ....................... L227
+ *  6. FAB — FLOATING ACTION BUTTON .......... L248
+ *  7. SECTION COMPONENT ..................... L280
+ *     Collapsible sections .................. L315
+ *     Edit button ........................... L345
+ *  8. EDITOR & FORMATTING TOOLBAR ........... L372
+ *     Editor utilities ...................... L406
+ *  9. BREATHING EXERCISE .................... L432
+ *     Breathing circle ...................... L506
+ *     Breathing burger menu ................. L560
+ * 10. CONTACTS COMPONENT .................... L664
+ * 11. MODAL COMPONENT ....................... L751
+ *     Modal layout variants ................. L774
+ *     Modal info / tip / warning boxes ...... L856
+ *     Modal form elements ................... L827
+ *     Modal buttons ......................... L953
+ * 12. SECTION MANAGEMENT ................... L1004
+ * 13. RESPONSIVE MEDIA QUERIES ............. L1120
+ *     500px breakpoint ..................... L1125
+ *     380px breakpoint ..................... L1168
  *
  * ========================================================== */
 
@@ -64,6 +78,33 @@ h1 {
     line-height: 1.15;
 }
 
+/* ── Utility text classes ── */
+.text-muted {
+    color: #c2c2c7;
+    font-size: 0.9rem;
+}
+
+.text-emphasis {
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.text-emphasis--lg {
+    font-weight: 500;
+    font-size: 1.05rem;
+    margin-bottom: 16px;
+}
+
+.text-accent {
+    color: #34d399;
+    font-weight: 600;
+}
+
+.text-strong {
+    color: #e4e4e7;
+    font-weight: 600;
+}
+
 /* ==========================================================
  *  3. LAYOUT & CONTAINER
  * ========================================================== */
@@ -71,6 +112,11 @@ h1 {
     max-width: 660px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+/* ── Main content area ── */
+#main-content {
+    margin-top: 32px;
 }
 
 /* ==========================================================
@@ -97,6 +143,13 @@ header svg[width="64"] {
     width: 64px;
     height: 64px;
     flex-shrink: 0;
+}
+
+/* ── Logo wrapper ── */
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 /* ==========================================================
@@ -137,6 +190,32 @@ header svg[width="64"] {
         border-color: #60a5fa;
         box-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
     }
+}
+
+/* ── Counter sub-elements ── */
+#days-count {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: white;
+}
+
+.counter-label {
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: #34d399;
+    font-weight: 500;
+}
+
+.counter-bottom-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: center;
+}
+
+.counter-since {
+    font-size: 0.7rem;
+    color: #888;
 }
 
 .celebration-badge {
@@ -340,6 +419,33 @@ header svg[width="64"] {
     background: #3f3f46;
     color: #e4e4e7;
     border-color: #52525b;
+}
+
+/* ── Editor utilities ── */
+.format-toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.editor-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#editor-title {
+    margin: 0;
+    color: #34d399;
+}
+
+#editor-status {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #34d399;
 }
 
 /* ==========================================================
@@ -613,6 +719,7 @@ header svg[width="64"] {
     transform: scale(1.01);
 }
 
+/* ── Contact item buttons ── */
 .contact-call-btn {
     background: #34d399;
     color: white;
@@ -684,6 +791,164 @@ header svg[width="64"] {
     padding: 24px;
 }
 
+/* Modal layout variants */
+.modal-content--column {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content--full {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+.modal-content--narrow {
+    max-width: 400px;
+}
+
+.modal-content--wide {
+    max-width: 560px;
+    width: 95%;
+}
+
+.modal-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-footer {
+    flex-shrink: 0;
+    padding-top: 16px;
+    border-top: 1px solid #3f3f46;
+}
+
+.modal-footer--dark {
+    padding: 16px 24px;
+    background: #27272a;
+    border-top: 1px solid #3f3f46;
+    flex-shrink: 0;
+}
+
+.modal-btn-full {
+    width: 100%;
+    font-size: 1.05rem;
+}
+
+/* ── Modal form elements ── */
+.modal-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #a1a1aa;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    cursor: pointer;
+}
+
+.form-group {
+    margin: 20px 0;
+}
+
+#icon-picker {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    justify-items: center;
+}
+
+.modal-input + .modal-input {
+    margin-top: 12px;
+}
+
+/* Modal info / tip / warning boxes */
+.info-box {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid #3f3f46;
+}
+
+.tip-box {
+    background: #1b5e50;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #10b981;
+}
+
+.warning-box {
+    background: #3f3f46;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border-left: 4px solid #ef4444;
+}
+
+.highlight-box {
+    background: #3f3f46;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 20px;
+    border-left: 4px solid #34d399;
+}
+
+.modal-h2 {
+    color: #34d399;
+    margin-bottom: 24px;
+    font-size: 1.5rem;
+}
+
+.modal-h3 {
+    color: #34d399;
+    margin-bottom: 16px;
+    margin-top: 24px;
+    font-weight: 600;
+}
+
+.modal-list {
+    margin-bottom: 20px;
+    padding-left: 20px;
+    color: #c2c2c7;
+}
+
+.modal-list li {
+    margin-bottom: 8px;
+}
+
+#confirm-message {
+    color: #e4e4e7;
+    line-height: 1.6;
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.scroll-content {
+    padding: 4px 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.scroll-content--padded {
+    padding: 32px 4px;
+    overflow-y: auto;
+    flex: 1;
+}
+
 .modal-title {
     margin-bottom: 20px;
     color: #34d399;
@@ -706,6 +971,7 @@ header svg[width="64"] {
     margin-top: 20px;
 }
 
+/* ── Modal buttons ── */
 .modal-btn {
     flex: 1;
     padding: 14px;
@@ -788,6 +1054,21 @@ header svg[width="64"] {
 .action-btn:hover {
     background: #52525b;
     transform: scale(1.02);
+}
+
+/* ── Icon-only action buttons (plus, info) ── */
+.action-btn-icon {
+    flex: 0 0 auto;
+    width: 56px;
+    padding: 14px 0;
+}
+
+.action-btn span {
+    display: flex;
+}
+
+#icon-gear {
+    margin-right: 6px;
 }
 
 .section-manage-item {

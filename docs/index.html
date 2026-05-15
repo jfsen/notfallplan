@@ -21,7 +21,7 @@
         <div class="container">
             <header>
                 <div class="header-content">
-                    <div style="display: flex; align-items: center; gap: 10px">
+                    <div class="header-logo">
                         <svg
                             width="64"
                             height="64"
@@ -58,37 +58,10 @@
 
                     <div id="counter-wrapper" style="display: none">
                         <div class="counter">
-                            <div
-                                style="
-                                    font-size: 0.75rem;
-                                    letter-spacing: 1px;
-                                    color: #34d399;
-                                    font-weight: 500;
-                                "
-                            >
-                                TAGE ABSTINENT
-                            </div>
-                            <div
-                                id="days-count"
-                                style="
-                                    font-size: 2.2rem;
-                                    font-weight: 700;
-                                    color: white;
-                                "
-                            >
-                                0
-                            </div>
-                            <div
-                                style="
-                                    display: flex;
-                                    align-items: center;
-                                    gap: 4px;
-                                    justify-content: center;
-                                "
-                            >
-                                <span style="font-size: 0.7rem; color: #888"
-                                    >seit</span
-                                >
+                            <div class="counter-label">TAGE ABSTINENT</div>
+                            <div id="days-count">0</div>
+                            <div class="counter-bottom-row">
+                                <span class="counter-since">seit</span>
                                 <input
                                     type="date"
                                     id="start-date"
@@ -104,44 +77,28 @@
             <canvas id="confetti-canvas"></canvas>
 
             <div class="section-actions">
-                <button
-                    onclick="showManageModal()"
-                    class="action-btn"
-                    style="font-weight: 500"
-                >
-                    <span id="icon-gear" style="margin-right: 6px"></span>
+                <button onclick="showManageModal()" class="action-btn">
+                    <span id="icon-gear"></span>
                     Sektionen verwalten
                 </button>
 
                 <button
                     onclick="showAddSectionModal()"
-                    class="action-btn"
-                    style="
-                        font-weight: 500;
-                        flex: 0 0 auto;
-                        width: 56px;
-                        padding: 14px 0;
-                    "
+                    class="action-btn action-btn-icon"
                 >
-                    <span id="icon-plus" style="display: flex"></span>
+                    <span id="icon-plus"></span>
                 </button>
 
                 <button
                     onclick="showInfoModal()"
-                    class="action-btn"
-                    style="
-                        font-weight: 600;
-                        flex: 0 0 auto;
-                        width: 56px;
-                        padding: 14px 0;
-                    "
+                    class="action-btn action-btn-icon"
                     title="Infos zum Datenschutz"
                 >
-                    <span id="icon-info" style="display: flex"></span>
+                    <span id="icon-info"></span>
                 </button>
             </div>
 
-            <div id="main-content" style="margin-top: 32px"></div>
+            <div id="main-content"></div>
         </div>
 
         <button
@@ -168,44 +125,26 @@
 
         <!-- Manage Modal -->
         <div class="modal" id="manage-modal">
-            <div
-                class="modal-content"
-                style="display: flex; flex-direction: column; max-height: 85vh"
-            >
+            <div class="modal-content modal-content--column">
                 <h3 class="modal-title" style="flex-shrink: 0">
                     Sektionen verwalten
                 </h3>
                 <div
                     id="manage-list"
-                    style="
-                        flex: 1;
-                        overflow-y: auto;
-                        padding-right: 8px;
-                        margin-bottom: 20px;
-                    "
+                    class="modal-scroll-area"
+                    style="padding-right: 8px; margin-bottom: 20px"
                 ></div>
-                <div
-                    style="
-                        flex-shrink: 0;
-                        padding-top: 16px;
-                        border-top: 1px solid #3f3f46;
-                    "
-                >
+                <div class="modal-footer">
                     <button
                         onclick="showAddSectionModal()"
-                        class="modal-btn modal-btn-secondary"
-                        style="
-                            width: 100%;
-                            font-size: 1.05rem;
-                            margin-bottom: 10px;
-                        "
+                        class="modal-btn modal-btn-secondary modal-btn-full"
+                        style="margin-bottom: 10px"
                     >
                         + Neue Sektion
                     </button>
                     <button
                         onclick="hideManageModal()"
-                        class="modal-btn modal-btn-primary"
-                        style="width: 100%; font-size: 1.05rem"
+                        class="modal-btn modal-btn-primary modal-btn-full"
                     >
                         Fertig
                     </button>
@@ -226,34 +165,11 @@
                         if (event.key === 'Enter') createCustomSection();
                     "
                 />
-                <div style="margin: 20px 0">
-                    <label
-                        style="
-                            display: block;
-                            margin-bottom: 8px;
-                            color: #a1a1aa;
-                        "
-                        >Icon auswählen:</label
-                    >
-                    <div
-                        id="icon-picker"
-                        style="
-                            display: grid;
-                            grid-template-columns: repeat(4, 1fr);
-                            gap: 12px;
-                            justify-items: center;
-                        "
-                    ></div>
+                <div class="form-group">
+                    <label class="modal-label">Icon auswählen:</label>
+                    <div id="icon-picker"></div>
                 </div>
-                <label
-                    style="
-                        display: flex;
-                        align-items: center;
-                        gap: 10px;
-                        margin-bottom: 24px;
-                        cursor: pointer;
-                    "
-                >
+                <label class="checkbox-label">
                     <input type="checkbox" id="new-section-collapsible" />
                     <span>Als aufklappbare Sektion</span>
                 </label>
@@ -276,28 +192,11 @@
 
         <!-- Editor Modal -->
         <div class="modal" id="editor-modal">
-            <div class="modal-content" style="max-width: 560px; width: 95%">
-                <div
-                    style="
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        margin-bottom: 20px;
-                    "
-                >
-                    <h3 id="editor-title" style="margin: 0; color: #34d399">
-                        Sektion bearbeiten
-                    </h3>
+            <div class="modal-content modal-content--wide">
+                <div class="modal-header">
+                    <h3 id="editor-title">Sektion bearbeiten</h3>
                 </div>
-                <div
-                    style="
-                        display: flex;
-                        gap: 8px;
-                        margin-bottom: 10px;
-                        flex-wrap: wrap;
-                        align-items: center;
-                    "
-                >
+                <div class="format-toolbar">
                     <button
                         onclick="insertFormatting('bullet')"
                         class="format-btn"
@@ -340,22 +239,8 @@
                     </button>
                 </div>
                 <textarea id="editor-textarea" rows="12"></textarea>
-                <div
-                    style="
-                        margin-top: 20px;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                    "
-                >
-                    <div
-                        id="editor-status"
-                        style="
-                            font-size: 1.1rem;
-                            font-weight: 500;
-                            color: #34d399;
-                        "
-                    ></div>
+                <div class="editor-actions">
+                    <div id="editor-status"></div>
                     <button onclick="closeEditor()" class="modal-save-btn">
                         Fertig
                     </button>
@@ -384,7 +269,6 @@
                     id="link-text"
                     placeholder="Link-Text (optional)"
                     class="modal-input"
-                    style="margin-top: 12px"
                     onkeypress="
                         if (event.key === 'Enter') {
                             event.preventDefault();
@@ -425,7 +309,6 @@
                     id="modal-tel"
                     placeholder="Telefonnummer"
                     class="modal-input"
-                    style="margin-top: 12px"
                     onkeypress="if (event.key === 'Enter') addContactConfirm();"
                 />
                 <div class="modal-actions">
@@ -447,67 +330,29 @@
 
         <!-- Export Instructions Modal -->
         <div class="modal" id="export-modal">
-            <div
-                class="modal-content"
-                style="
-                    max-width: 500px;
-                    display: flex;
-                    flex-direction: column;
-                    max-height: 90vh;
-                    overflow: hidden;
-                "
-            >
-                <div style="padding: 4px 24px; overflow-y: auto; flex: 1">
-                    <h2
-                        style="
-                            color: #34d399;
-                            margin-bottom: 24px;
-                            font-size: 1.5rem;
-                        "
-                    >
+            <div class="modal-content modal-content--full">
+                <div class="scroll-content">
+                    <h2 class="modal-h2">
                         ✓ Notfallplan erfolgreich exportiert!
                     </h2>
-                    <div
-                        style="
-                            background: #18181b;
-                            border-radius: 16px;
-                            padding: 20px;
-                            margin-bottom: 24px;
-                            border: 1px solid #3f3f46;
-                        "
-                    >
-                        <p style="margin-bottom: 16px; font-weight: 500">
+                    <div class="info-box">
+                        <p class="text-emphasis">
                             Die Datei "Mein-Notfallplan.html" wurde
                             heruntergeladen.
                         </p>
-                        <p style="color: #c2c2c7; font-size: 0.9rem">
+                        <p class="text-muted">
                             Speichere diese Datei an einem sicheren Ort, wo du
                             schnell darauf zugreifen kannst!
                         </p>
                     </div>
-                    <h3
-                        style="
-                            color: #34d399;
-                            margin-bottom: 16px;
-                            margin-top: 24px;
-                            font-weight: 600;
-                        "
-                    >
-                        💻 Auf dem PC
-                    </h3>
-                    <ul
-                        style="
-                            margin-bottom: 20px;
-                            padding-left: 20px;
-                            color: #c2c2c7;
-                        "
-                    >
-                        <li style="margin-bottom: 8px">
+                    <h3 class="modal-h3">💻 Auf dem PC</h3>
+                    <ul class="modal-list">
+                        <li>
                             <strong>Speichern:</strong> Die Datei ist in deinem
                             "Downloads"-Ordner. Verschiebe sie z.B. auf den
                             Desktop oder in einen "Notfallplan"-Ordner.
                         </li>
-                        <li style="margin-bottom: 8px">
+                        <li>
                             <strong>Öffnen:</strong> Doppelklick auf die Datei →
                             öffnet sich automatisch im Browser.
                         </li>
@@ -517,23 +362,8 @@
                             schnellen Zugriff.
                         </li>
                     </ul>
-                    <h3
-                        style="
-                            color: #34d399;
-                            margin-bottom: 16px;
-                            margin-top: 24px;
-                            font-weight: 600;
-                        "
-                    >
-                        📱 Auf dem Smartphone
-                    </h3>
-                    <ul
-                        style="
-                            margin-bottom: 20px;
-                            padding-left: 20px;
-                            color: #c2c2c7;
-                        "
-                    >
+                    <h3 class="modal-h3">📱 Auf dem Smartphone</h3>
+                    <ul class="modal-list">
                         <li style="margin-bottom: 12px">
                             <strong>iOS (iPhone/iPad):</strong>
                             <ul style="margin-top: 6px; padding-left: 16px">
@@ -589,22 +419,8 @@
                             </ul>
                         </li>
                     </ul>
-                    <div
-                        style="
-                            background: #1b5e50;
-                            border-radius: 16px;
-                            padding: 16px;
-                            margin-bottom: 20px;
-                            border: 1px solid #10b981;
-                        "
-                    >
-                        <p
-                            style="
-                                color: #34d399;
-                                font-weight: 600;
-                                margin-bottom: 8px;
-                            "
-                        >
+                    <div class="tip-box">
+                        <p class="text-accent" style="margin-bottom: 8px">
                             💡 Tipp:
                         </p>
                         <p style="font-size: 0.9rem">
@@ -622,22 +438,8 @@
                             </li>
                         </ul>
                     </div>
-                    <div
-                        style="
-                            background: #3f3f46;
-                            border-radius: 16px;
-                            padding: 16px;
-                            margin-bottom: 20px;
-                            border-left: 4px solid #ef4444;
-                        "
-                    >
-                        <p
-                            style="
-                                color: #e4e4e7;
-                                font-weight: 600;
-                                margin-bottom: 8px;
-                            "
-                        >
+                    <div class="warning-box">
+                        <p class="text-strong" style="margin-bottom: 8px">
                             ⚠️ Wichtig:
                         </p>
                         <p style="font-size: 0.9rem">
@@ -647,18 +449,10 @@
                         </p>
                     </div>
                 </div>
-                <div
-                    style="
-                        padding: 16px 24px;
-                        background: #27272a;
-                        border-top: 1px solid #3f3f46;
-                        flex-shrink: 0;
-                    "
-                >
+                <div class="modal-footer--dark">
                     <button
                         onclick="hideExportModal()"
-                        class="modal-btn modal-btn-primary"
-                        style="width: 100%; font-size: 1.05rem"
+                        class="modal-btn modal-btn-primary modal-btn-full"
                     >
                         Verstanden
                     </button>
@@ -668,108 +462,45 @@
 
         <!-- Privacy Info Modal -->
         <div class="modal" id="info-modal">
-            <div
-                class="modal-content"
-                style="
-                    max-width: 500px;
-                    display: flex;
-                    flex-direction: column;
-                    max-height: 90vh;
-                    overflow: hidden;
-                "
-            >
-                <div style="padding: 32px 4px; overflow-y: auto; flex: 1">
-                    <h2
-                        style="
-                            color: #34d399;
-                            margin-bottom: 24px;
-                            font-size: 1.5rem;
-                        "
-                    >
-                        🔒 Deine Daten bleiben bei dir!
-                    </h2>
-                    <div
-                        style="
-                            background: #18181b;
-                            border-radius: 16px;
-                            padding: 20px;
-                            margin-bottom: 24px;
-                            border: 1px solid #3f3f46;
-                        "
-                    >
-                        <p
-                            style="
-                                margin-bottom: 16px;
-                                font-weight: 500;
-                                font-size: 1.05rem;
-                            "
-                        >
+            <div class="modal-content modal-content--full">
+                <div class="scroll-content--padded">
+                    <h2 class="modal-h2">🔒 Deine Daten bleiben bei dir!</h2>
+                    <div class="info-box">
+                        <p class="text-emphasis--lg">
                             Keine Sorge – deine Privatsphäre ist geschützt.
                         </p>
-                        <p
-                            style="
-                                color: #c2c2c7;
-                                font-size: 0.9rem;
-                                margin-bottom: 16px;
-                            "
-                        >
+                        <p class="text-muted" style="margin-bottom: 16px">
                             Alle Daten, die du hier eingibst, werden
                             <strong>ausschließlich in deinem Browser</strong>
                             gespeichert – genauer gesagt im
                             <strong>localStorage</strong> deines Geräts.
                         </p>
-                        <p
-                            style="
-                                color: #c2c2c7;
-                                font-size: 0.9rem;
-                                margin-bottom: 16px;
-                            "
-                        >
+                        <p class="text-muted" style="margin-bottom: 16px">
                             Es werden <strong>keinerlei Daten</strong> an einen
                             Server übermittelt, nicht analysiert und nicht an
                             Dritte weitergegeben.
                         </p>
-                        <p style="color: #c2c2c7; font-size: 0.9rem">
+                        <p class="text-muted">
                             Du kannst jederzeit alle gespeicherten Daten
                             löschen, indem du in deinen Browsereinstellungen die
                             Daten dieser Seite entfernst.
                         </p>
                     </div>
-                    <div
-                        style="
-                            background: #1b5e50;
-                            border-radius: 16px;
-                            padding: 16px;
-                            margin-bottom: 20px;
-                            border: 1px solid #10b981;
-                        "
-                    >
-                        <p
-                            style="
-                                color: #34d399;
-                                font-weight: 600;
-                                margin-bottom: 8px;
-                            "
-                        >
+                    <div class="tip-box">
+                        <p class="text-accent" style="margin-bottom: 8px">
                             💡 Wie es funktioniert:
                         </p>
-                        <ul
-                            style="
-                                padding-left: 20px;
-                                color: #c2c2c7;
-                                font-size: 0.9rem;
-                            "
-                        >
-                            <li style="margin-bottom: 8px">
+                        <ul class="modal-list" style="font-size: 0.9rem">
+                            <li>
                                 Deine Texte, Kontakte und Einstellungen bleiben
                                 auf deinem Gerät
                             </li>
-                            <li style="margin-bottom: 8px">
+                            <li>
                                 Beim Export entsteht eine eigenständige
                                 HTML-Datei – ohne Verbindung zu irgendeinem
                                 Server
                             </li>
-                            <li style="margin-bottom: 8px">
+                            <li>
                                 Die App funktioniert komplett offline (nach dem
                                 ersten Laden)
                             </li>
@@ -779,44 +510,21 @@
                             </li>
                         </ul>
                     </div>
-                    <div
-                        style="
-                            background: #3f3f46;
-                            border-radius: 16px;
-                            padding: 16px;
-                            margin-bottom: 20px;
-                            border-left: 4px solid #34d399;
-                        "
-                    >
-                        <p
-                            style="
-                                color: #e4e4e7;
-                                font-weight: 600;
-                                margin-bottom: 8px;
-                                font-size: 0.95rem;
-                            "
-                        >
+                    <div class="highlight-box">
+                        <p class="text-strong" style="margin-bottom: 8px">
                             📌 Kurz gesagt:
                         </p>
-                        <p style="font-size: 0.9rem; color: #c2c2c7">
+                        <p class="text-muted">
                             Was du hier schreibst, bleibt
                             <strong>deins</strong>. Es verlässt nie deinen
                             Browser – versprochen!
                         </p>
                     </div>
                 </div>
-                <div
-                    style="
-                        padding: 16px 24px;
-                        background: #27272a;
-                        border-top: 1px solid #3f3f46;
-                        flex-shrink: 0;
-                    "
-                >
+                <div class="modal-footer--dark">
                     <button
                         onclick="hideInfoModal()"
-                        class="modal-btn modal-btn-primary"
-                        style="width: 100%; font-size: 1.05rem"
+                        class="modal-btn modal-btn-primary modal-btn-full"
                     >
                         Verstanden
                     </button>
@@ -826,16 +534,8 @@
 
         <!-- Confirm / Alert Modal -->
         <div class="modal" id="confirm-modal">
-            <div class="modal-content" style="max-width: 400px">
-                <p
-                    id="confirm-message"
-                    style="
-                        color: #e4e4e7;
-                        line-height: 1.6;
-                        margin: 0;
-                        font-size: 1.05rem;
-                    "
-                ></p>
+            <div class="modal-content modal-content--narrow">
+                <p id="confirm-message"></p>
                 <div class="modal-actions" id="confirm-actions"></div>
             </div>
         </div>
