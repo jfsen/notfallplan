@@ -2,55 +2,46 @@
 let SECTION_CONFIG = [
   {
     id: "counter",
-    title: "Abstinenzzähler",
     type: "counter",
     visible: true,
   },
   {
     id: "breathing",
-    title: "Boxatmung",
     type: "breathing",
     visible: true,
   },
   {
     id: "ausloeser",
-    title: "Auslöser & Stressoren",
     type: "default",
     visible: true,
   },
   {
     id: "gruende",
-    title: "Gute Gründe, abstinent zu bleiben",
     type: "default",
     visible: true,
   },
   {
     id: "kontakte",
-    title: "Meine Notfallkontakte",
     type: "contacts",
     visible: true,
   },
   {
     id: "skills",
-    title: "Bewältigungsmechanismen, Skills & Ablenkung",
     type: "default",
     visible: true,
   },
   {
     id: "staerken",
-    title: "Meine Stärken",
     type: "default",
     visible: true,
   },
   {
     id: "mottos",
-    title: "Hilfreiche Gedanken & Mottos",
     type: "default",
     visible: true,
   },
   {
     id: "angenehmes",
-    title: "Angenehme Aktivitäten",
     type: "default",
     visible: true,
   },
