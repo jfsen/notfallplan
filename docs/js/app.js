@@ -44,7 +44,15 @@ function getStylesheetContent() {
 
 function exportCleanHTML() {
   const styleContent = getStylesheetContent();
-  const viewerScript = document.getElementById("viewer-script").textContent;
+  // Get viewer script and replace BREATHING_EXERCISES with translated version
+  var viewerScript = document.getElementById("viewer-script").textContent;
+  var translatedEx = getTranslatedBreathingExercises();
+  var exercisesJSON = JSON.stringify(translatedEx, null, 4);
+  // Match from "const BREATHING_EXERCISES = [" to the first "];" at the top level
+  viewerScript = viewerScript.replace(
+    /const BREATHING_EXERCISES = \[[\s\S]*?\];/,
+    "const BREATHING_EXERCISES = " + exercisesJSON + ";",
+  );
 
   const tempContainer = document.createElement("div");
   tempContainer.innerHTML =
