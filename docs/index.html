@@ -123,7 +123,7 @@
                     <div
                         class="context-menu"
                         id="lang-menu"
-                        style="display: none; top: 52px"
+                        style="display: none"
                     >
                         <button
                             class="context-menu-item context-menu-item-simple"
@@ -984,8 +984,18 @@
                     .forEach(function (m) {
                         if (m.id !== menuId) m.style.display = "none";
                     });
-                menu.style.display =
-                    menu.style.display === "block" ? "none" : "block";
+                var isOpen = menu.style.display === "block";
+                menu.style.display = isOpen ? "none" : "block";
+                if (!isOpen) {
+                    // Dynamically position the menu below the trigger button
+                    var trigger = document.querySelector(
+                        "[data-context-menu='" + menuId + "']",
+                    );
+                    if (trigger) {
+                        menu.style.top =
+                            trigger.offsetTop + trigger.offsetHeight + 4 + "px";
+                    }
+                }
             }
 
             /**
