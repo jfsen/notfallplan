@@ -109,15 +109,44 @@
                     <span id="icon-info"></span>
                 </button>
 
-                <button
-                    onclick="toggleLanguage()"
-                    class="action-btn action-btn-icon"
-                    id="lang-btn"
-                    data-i18n-title="action.language"
-                    title="Sprache"
-                >
-                    <span id="icon-lang"></span>
-                </button>
+                <div style="position: relative; display: inline-flex">
+                    <button
+                        onclick="toggleContextMenu('lang-menu')"
+                        class="action-btn action-btn-icon"
+                        id="lang-btn"
+                        data-context-menu="lang-menu"
+                        data-i18n-title="action.language"
+                        title="Sprache"
+                    >
+                        <span id="icon-lang"></span>
+                    </button>
+                    <div
+                        class="context-menu"
+                        id="lang-menu"
+                        style="display: none; top: 52px"
+                    >
+                        <button
+                            class="context-menu-item context-menu-item-simple"
+                            onclick="
+                                event.stopPropagation();
+                                setLanguage('de');
+                                toggleContextMenu('lang-menu');
+                            "
+                        >
+                            <span>Deutsch</span>
+                        </button>
+                        <button
+                            class="context-menu-item context-menu-item-simple"
+                            onclick="
+                                event.stopPropagation();
+                                setLanguage('en');
+                                toggleContextMenu('lang-menu');
+                            "
+                        >
+                            <span>English</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div id="main-content"></div>
@@ -930,7 +959,7 @@
                     "none";
                 // Update menu active states inline
                 document
-                    .querySelectorAll(".breathing-menu-item")
+                    .querySelectorAll(".context-menu-item")
                     .forEach((item) => {
                         item.classList.toggle(
                             "active",
@@ -942,22 +971,43 @@
                 const ex = getActiveExercise();
             }
 
-            function toggleBreathingMenu() {
-                const menu = document.getElementById("breathing-menu");
+            /**
+             * Toggles a context menu by ID.
+             * Closes all other context menus first.
+             */
+            function toggleContextMenu(menuId) {
+                var menu = document.getElementById(menuId);
                 if (!menu) return;
-                const isVisible = menu.style.display === "block";
-                menu.style.display = isVisible ? "none" : "block";
+                // Close all other context menus
+                document
+                    .querySelectorAll(".context-menu")
+                    .forEach(function (m) {
+                        if (m.id !== menuId) m.style.display = "none";
+                    });
+                menu.style.display =
+                    menu.style.display === "block" ? "none" : "block";
             }
 
+            /**
+             * Closes context menus when clicking outside their trigger or the menu itself.
+             * Trigger buttons are linked via data-context-menu="menuId".
+             */
             document.addEventListener("click", function (e) {
-                const menu = document.getElementById("breathing-menu");
-                if (!menu || menu.style.display === "none") return;
-                const wrapper = document.querySelector(
-                    ".breathing-burger-wrapper",
-                );
-                if (wrapper && !wrapper.contains(e.target)) {
-                    menu.style.display = "none";
-                }
+                document
+                    .querySelectorAll(".context-menu")
+                    .forEach(function (menu) {
+                        if (menu.style.display !== "block") return;
+                        var trigger = document.querySelector(
+                            "[data-context-menu='" + menu.id + "']",
+                        );
+                        if (
+                            trigger &&
+                            !trigger.contains(e.target) &&
+                            !menu.contains(e.target)
+                        ) {
+                            menu.style.display = "none";
+                        }
+                    });
             });
 
             function toggleCollapse(id) {

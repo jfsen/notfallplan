@@ -103,16 +103,16 @@ function renderAllSections() {
       container.innerHTML += `
             <div class="breathing-section" id="breathing-section">
                 <div class="breathing-burger-wrapper">
-                    <button class="breathing-burger-btn" onclick="event.stopPropagation(); toggleBreathingMenu()" data-i18n-title="breathing.choose" title="Atemübung wählen">
+                    <button class="breathing-burger-btn" onclick="event.stopPropagation(); toggleContextMenu('breathing-menu')" data-context-menu="breathing-menu" data-i18n-title="breathing.choose" title="Atemübung wählen">
                         ${SVGs.burger}
                     </button>
-                    <div class="breathing-menu" id="breathing-menu" style="display:none;">
+                    <div class="context-menu" id="breathing-menu" style="display:none;">
                         ${BREATHING_EXERCISES.map(
                           (ex) => `
-                        <button class="breathing-menu-item ${ex.id === currentBreathingExercise ? "active" : ""}"
+                        <button class="context-menu-item ${ex.id === currentBreathingExercise ? "active" : ""}"
                                 onclick="event.stopPropagation(); switchBreathingExercise('${ex.id}')">
-                            <span class="breathing-menu-item-title">${ex.title}</span>
-                            <span class="breathing-menu-item-desc">${ex.desc}</span>
+                            <span class="context-menu-item-title">${ex.title}</span>
+                            <span class="context-menu-item-desc">${ex.desc}</span>
                         </button>
                         `,
                         ).join("")}

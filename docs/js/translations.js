@@ -459,6 +459,14 @@ function translatePage() {
     renderContacts();
   }
 
+  // Highlight the active language in the language context menu
+  document
+    .querySelectorAll("#lang-menu .context-menu-item")
+    .forEach(function (item) {
+      var lang = item.getAttribute("onclick").match(/setLanguage\('(\w+)'\)/);
+      item.classList.toggle("active", lang && lang[1] === currentLang);
+    });
+
   // Apply translations to dynamic elements (placeholders & titles)
   applyDynamicTranslations();
 
@@ -523,15 +531,6 @@ function getTranslatedBreathingExercises() {
       durations: [5500, 5500],
     },
   ];
-}
-
-/**
- * Toggles between 'de' and 'en' languages.
- * Called by the language button in the action bar.
- */
-function toggleLanguage() {
-  var newLang = currentLang === "de" ? "en" : "de";
-  setLanguage(newLang);
 }
 
 /**
