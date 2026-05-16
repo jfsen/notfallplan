@@ -37,6 +37,7 @@ function handleContactDrop(e) {
 
   saveToLocalStorage();
   renderContacts();
+  applyDynamicTranslations();
 }
 
 function handleContactDragEnd(e) {
@@ -83,18 +84,20 @@ function addContactConfirm() {
     !(normalized.startsWith("0") && digitCount > 14);
 
   if (!validChars || !validLength) {
-    showAlert("Das sieht nicht wie eine gültige Telefonnummer aus.");
+    showAlert(t("contacts.invalid_number"));
     return;
   }
 
   KONTAKTE.push({ name, tel: normalized });
   renderContacts();
+  applyDynamicTranslations();
   saveToLocalStorage();
   hideAddContactModal();
 }
 function deleteContact(index) {
   KONTAKTE.splice(index, 1);
   renderContacts();
+  applyDynamicTranslations();
   saveToLocalStorage();
 }
 
@@ -104,4 +107,5 @@ function moveContact(index, dir) {
   [KONTAKTE[index], KONTAKTE[newIdx]] = [KONTAKTE[newIdx], KONTAKTE[index]];
   saveToLocalStorage();
   renderContacts();
+  applyDynamicTranslations();
 }

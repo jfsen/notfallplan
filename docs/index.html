@@ -9,7 +9,7 @@
             name="viewport"
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
-        <title>Mein Notfallplan</title>
+        <title data-i18n="app.title">Mein Notfallplan</title>
         <link
             rel="icon"
             href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23ffffff'/%3E%3Crect x='20' y='38' width='60' height='24' rx='4' fill='%2334d399'/%3E%3Crect x='38' y='20' width='24' height='60' rx='4' fill='%2334d399'/%3E%3C/svg%3E"
@@ -53,15 +53,24 @@
                                 fill="#34d399"
                             ></rect>
                         </svg>
-                        <h1>Mein Notfallplan</h1>
+                        <h1 data-i18n="app.title">Mein Notfallplan</h1>
                     </div>
 
                     <div id="counter-wrapper" style="display: none">
                         <div class="counter">
-                            <div class="counter-label">TAGE ABSTINENT</div>
+                            <div
+                                class="counter-label"
+                                data-i18n="counter.label"
+                            >
+                                TAGE ABSTINENT
+                            </div>
                             <div id="days-count">0</div>
                             <div class="counter-bottom-row">
-                                <span class="counter-since">seit</span>
+                                <span
+                                    class="counter-since"
+                                    data-i18n="counter.since"
+                                    >seit</span
+                                >
                                 <input
                                     type="date"
                                     id="start-date"
@@ -79,12 +88,13 @@
             <div class="section-actions">
                 <button onclick="showManageModal()" class="action-btn">
                     <span id="icon-gear"></span>
-                    Sektionen verwalten
+                    <span data-i18n="action.manage">Sektionen verwalten</span>
                 </button>
 
                 <button
                     onclick="showAddSectionModal()"
                     class="action-btn action-btn-icon"
+                    data-i18n-title="action.add_section"
                     title="Neue Sektion hinzufügen"
                 >
                     <span id="icon-plus"></span>
@@ -93,9 +103,20 @@
                 <button
                     onclick="showInfoModal()"
                     class="action-btn action-btn-icon"
+                    data-i18n-title="action.info"
                     title="Infos zum Datenschutz"
                 >
                     <span id="icon-info"></span>
+                </button>
+
+                <button
+                    onclick="toggleLanguage()"
+                    class="action-btn action-btn-icon"
+                    id="lang-btn"
+                    data-i18n-title="action.language"
+                    title="Sprache"
+                >
+                    <span id="icon-lang"></span>
                 </button>
             </div>
 
@@ -105,6 +126,7 @@
         <button
             class="fab"
             onclick="exportCleanHTML()"
+            data-i18n-title="action.export"
             title="Notfallplan exportieren"
         >
             <svg
@@ -127,7 +149,11 @@
         <!-- Manage Modal -->
         <div class="modal" id="manage-modal">
             <div class="modal-content modal-content--column">
-                <h3 class="modal-title" style="flex-shrink: 0">
+                <h3
+                    class="modal-title"
+                    style="flex-shrink: 0"
+                    data-i18n="manage.title"
+                >
                     Sektionen verwalten
                 </h3>
                 <div
@@ -140,12 +166,14 @@
                         onclick="showAddSectionModal()"
                         class="modal-btn modal-btn-secondary modal-btn-full"
                         style="margin-bottom: 10px"
+                        data-i18n="manage.new_section"
                     >
                         + Neue Sektion
                     </button>
                     <button
                         onclick="hideManageModal()"
                         class="modal-btn modal-btn-primary modal-btn-full"
+                        data-i18n="manage.done"
                     >
                         Fertig
                     </button>
@@ -156,10 +184,13 @@
         <!-- Add Custom Section Modal -->
         <div class="modal" id="custom-section-modal">
             <div class="modal-content">
-                <h3 class="modal-title">Neue Sektion erstellen</h3>
+                <h3 class="modal-title" data-i18n="custom_section.title">
+                    Neue Sektion erstellen
+                </h3>
                 <input
                     type="text"
                     id="new-section-title"
+                    data-i18n-placeholder="custom_section.name_placeholder"
                     placeholder="Titel der Sektion"
                     class="modal-input"
                     onkeypress="
@@ -167,23 +198,31 @@
                     "
                 />
                 <div class="form-group">
-                    <label class="modal-label">Icon auswählen:</label>
+                    <label
+                        class="modal-label"
+                        data-i18n="custom_section.icon_label"
+                        >Icon auswählen:</label
+                    >
                     <div id="icon-picker"></div>
                 </div>
                 <label class="checkbox-label">
                     <input type="checkbox" id="new-section-collapsible" />
-                    <span>Als aufklappbare Sektion</span>
+                    <span data-i18n="custom_section.collapsible_label"
+                        >Als aufklappbare Sektion</span
+                    >
                 </label>
                 <div class="modal-actions" style="margin-top: 0">
                     <button
                         onclick="hideAddSectionModal()"
                         class="modal-btn modal-btn-secondary"
+                        data-i18n="custom_section.cancel"
                     >
                         Abbrechen
                     </button>
                     <button
                         onclick="createCustomSection()"
                         class="modal-btn modal-btn-primary"
+                        data-i18n="custom_section.create"
                     >
                         Erstellen
                     </button>
@@ -195,54 +234,62 @@
         <div class="modal" id="editor-modal">
             <div class="modal-content modal-content--wide">
                 <div class="modal-header">
-                    <h3 id="editor-title">Sektion bearbeiten</h3>
+                    <h3 id="editor-title">Bearbeiten</h3>
                 </div>
                 <div class="format-toolbar">
                     <button
                         onclick="insertFormatting('bullet')"
                         class="format-btn"
                     >
-                        • Aufzählung
+                        <span data-i18n="editor.format_bullet"
+                            >• Aufzählung</span
+                        >
                     </button>
                     <button
                         onclick="insertFormatting('numbered')"
                         class="format-btn"
                     >
-                        1. Nummeriert
+                        <span data-i18n="editor.format_numbered"
+                            >1. Nummeriert</span
+                        >
                     </button>
                     <button
                         onclick="insertInlineFormat('bold')"
                         class="format-btn"
                         title="Strg+B"
                     >
-                        B
+                        <span data-i18n="editor.format_bold">B</span>
                     </button>
                     <button
                         onclick="insertInlineFormat('italic')"
                         class="format-btn"
                         title="Strg+I"
                     >
-                        I
+                        <span data-i18n="editor.format_italic">I</span>
                     </button>
                     <button
                         onclick="insertInlineFormat('underline')"
                         class="format-btn"
                         title="Strg+U"
                     >
-                        U
+                        <span data-i18n="editor.format_underline">U</span>
                     </button>
                     <button
                         onclick="insertLink()"
                         class="format-btn"
                         title="Strg+K"
                     >
-                        🔗 Link
+                        <span data-i18n="editor.format_link">🔗 Link</span>
                     </button>
                 </div>
                 <textarea id="editor-textarea" rows="12"></textarea>
                 <div class="editor-actions">
                     <div id="editor-status"></div>
-                    <button onclick="closeEditor()" class="modal-save-btn">
+                    <button
+                        onclick="closeEditor()"
+                        class="modal-save-btn"
+                        data-i18n="editor.done"
+                    >
                         Fertig
                     </button>
                 </div>
@@ -252,10 +299,13 @@
         <!-- Link Modal -->
         <div class="modal" id="link-modal">
             <div class="modal-content">
-                <h3 class="modal-title">Link einfügen</h3>
+                <h3 class="modal-title" data-i18n="editor.link_title">
+                    Link einfügen
+                </h3>
                 <input
                     type="url"
                     id="link-url"
+                    data-i18n-placeholder="editor.link_url_placeholder"
                     placeholder="https://example.com"
                     class="modal-input"
                     onkeypress="
@@ -268,6 +318,7 @@
                 <input
                     type="text"
                     id="link-text"
+                    data-i18n-placeholder="editor.link_text_placeholder"
                     placeholder="Link-Text (optional)"
                     class="modal-input"
                     onkeypress="
@@ -281,12 +332,14 @@
                     <button
                         onclick="hideLinkModal()"
                         class="modal-btn modal-btn-secondary"
+                        data-i18n="editor.link_cancel"
                     >
                         Abbrechen
                     </button>
                     <button
                         onclick="insertLinkConfirm()"
                         class="modal-btn modal-btn-primary"
+                        data-i18n="editor.link_insert"
                     >
                         Einfügen
                     </button>
@@ -297,10 +350,13 @@
         <!-- Contact Modal -->
         <div class="modal" id="contact-modal">
             <div class="modal-content">
-                <h3 class="modal-title">Neuen Kontakt hinzufügen</h3>
+                <h3 class="modal-title" data-i18n="contacts.modal_title">
+                    Neuen Kontakt hinzufügen
+                </h3>
                 <input
                     type="text"
                     id="modal-name"
+                    data-i18n-placeholder="contacts.name_placeholder"
                     placeholder="Name"
                     class="modal-input"
                     onkeypress="if (event.key === 'Enter') addContactConfirm();"
@@ -308,6 +364,7 @@
                 <input
                     type="tel"
                     id="modal-tel"
+                    data-i18n-placeholder="contacts.tel_placeholder"
                     placeholder="Telefonnummer"
                     class="modal-input"
                     onkeypress="if (event.key === 'Enter') addContactConfirm();"
@@ -316,12 +373,14 @@
                     <button
                         onclick="hideAddContactModal()"
                         class="modal-btn modal-btn-secondary"
+                        data-i18n="confirm.cancel"
                     >
                         Abbrechen
                     </button>
                     <button
                         onclick="addContactConfirm()"
                         class="modal-btn modal-btn-primary"
+                        data-i18n="contacts.add_btn"
                     >
                         Hinzufügen
                     </button>
@@ -333,78 +392,89 @@
         <div class="modal" id="export-modal">
             <div class="modal-content modal-content--full">
                 <div class="scroll-content">
-                    <h2 class="modal-h2">
+                    <h2 class="modal-h2" data-i18n="export.success_title">
                         ✓ Notfallplan erfolgreich exportiert!
                     </h2>
                     <div class="info-box">
-                        <p class="text-emphasis">
+                        <p
+                            class="text-emphasis"
+                            data-i18n="export.success_desc"
+                        >
                             Die Datei "Mein-Notfallplan.html" wurde
                             heruntergeladen.
                         </p>
-                        <p class="text-muted">
+                        <p class="text-muted" data-i18n="export.success_tip">
                             Speichere diese Datei an einem sicheren Ort, wo du
                             schnell darauf zugreifen kannst!
                         </p>
                     </div>
-                    <h3 class="modal-h3">💻 Auf dem PC</h3>
+                    <h3 class="modal-h3" data-i18n="export.pc_title">
+                        💻 Auf dem PC
+                    </h3>
                     <ul class="modal-list">
-                        <li>
+                        <li data-i18n="export.pc_save">
                             <strong>Speichern:</strong> Die Datei ist in deinem
                             "Downloads"-Ordner. Verschiebe sie z.B. auf den
                             Desktop oder in einen "Notfallplan"-Ordner.
                         </li>
-                        <li>
+                        <li data-i18n="export.pc_open">
                             <strong>Öffnen:</strong> Doppelklick auf die Datei →
                             öffnet sich automatisch im Browser.
                         </li>
-                        <li>
+                        <li data-i18n="export.pc_bookmark">
                             <strong>Lesezeichen:</strong> Im Browser (Strg+D
                             oder Cmd+D): Speichere sie als Lesezeichen für
                             schnellen Zugriff.
                         </li>
                     </ul>
-                    <h3 class="modal-h3">📱 Auf dem Smartphone</h3>
+                    <h3 class="modal-h3" data-i18n="export.mobile_title">
+                        📱 Auf dem Smartphone
+                    </h3>
                     <ul class="modal-list">
                         <li style="margin-bottom: 12px">
-                            <strong>iOS (iPhone/iPad):</strong>
+                            <strong data-i18n="export.ios_title"
+                                >iOS (iPhone/iPad):</strong
+                            >
                             <ul style="margin-top: 6px; padding-left: 16px">
-                                <li>
+                                <li data-i18n="export.ios_1">
                                     1. Öffne die <strong>Dateien-App</strong>
                                 </li>
-                                <li>
+                                <li data-i18n="export.ios_2">
                                     2. Gehe zu "Downloads" und tippe auf deine
                                     Notfallplan-Datei
                                 </li>
-                                <li>
+                                <li data-i18n="export.ios_3">
                                     3. Tippe oben rechts auf das
                                     <strong>Share-Symbol</strong> (Quadrat mit
                                     Pfeil)
                                 </li>
-                                <li>
+                                <li data-i18n="export.ios_4">
                                     4. Wähle
                                     <strong
                                         >"Zu Home-Bildschirm hinzufügen"</strong
                                     >
                                 </li>
-                                <li>
+                                <li data-i18n="export.ios_5">
                                     5. Gib den Namen "Notfallplan" ein →
                                     Hinzufügen
                                 </li>
                             </ul>
                         </li>
                         <li style="margin-top: 16px">
-                            <strong>Android:</strong>
+                            <strong data-i18n="export.android_title"
+                                >Android:</strong
+                            >
                             <ul style="margin-top: 6px; padding-left: 16px">
-                                <li>
+                                <li data-i18n="export.android_1">
                                     1. Öffne die
                                     <strong>Dateien-App</strong> oder
                                     "Downloads"
                                 </li>
-                                <li>
+                                <li data-i18n="export.android_2">
                                     2. Tippe auf die Datei
                                     "Mein-Notfallplan.html"
                                 </li>
-                                <li>
+                                <li data-i18n="export.android_3">
                                     3. Tippe auf die drei Punkte (⋮) →
                                     <strong
                                         >"Zum Startbildschirm
@@ -412,7 +482,7 @@
                                     >
                                     oder "Shortcut erstellen"
                                 </li>
-                                <li>
+                                <li data-i18n="export.android_4">
                                     Oder: Datei in Chrome öffnen →
                                     Drei-Punkte-Menü → "Zum Startbildschirm
                                     hinzufügen"
@@ -421,29 +491,45 @@
                         </li>
                     </ul>
                     <div class="tip-box">
-                        <p class="text-accent" style="margin-bottom: 8px">
+                        <p
+                            class="text-accent"
+                            style="margin-bottom: 8px"
+                            data-i18n="export.tip_title"
+                        >
                             💡 Tipp:
                         </p>
-                        <p style="font-size: 0.9rem">
+                        <p
+                            style="font-size: 0.9rem"
+                            data-i18n="export.tip_desc"
+                        >
                             Speichere die Datei auch:
                         </p>
                         <ul style="margin-top: 8px; padding-left: 20px">
-                            <li>
+                            <li data-i18n="export.tip_cloud">
                                 In der Cloud (Google Drive, OneDrive, Dropbox) -
                                 so hast du Zugriff überall
                             </li>
-                            <li>Als E-Mail an dich selbst als Backup</li>
-                            <li>
+                            <li data-i18n="export.tip_email">
+                                Als E-Mail an dich selbst als Backup
+                            </li>
+                            <li data-i18n="export.tip_private">
                                 An einem sicheren, privaten Ort den nur du
                                 kennst
                             </li>
                         </ul>
                     </div>
                     <div class="warning-box">
-                        <p class="text-strong" style="margin-bottom: 8px">
+                        <p
+                            class="text-strong"
+                            style="margin-bottom: 8px"
+                            data-i18n="export.warning_title"
+                        >
                             ⚠️ Wichtig:
                         </p>
-                        <p style="font-size: 0.9rem">
+                        <p
+                            style="font-size: 0.9rem"
+                            data-i18n="export.warning_desc"
+                        >
                             Wenn du deine Daten aktualisierst (neue Kontakte,
                             Inhalte ändern), musst du die Datei neu exportieren,
                             damit die Änderungen gespeichert werden.
@@ -454,6 +540,7 @@
                     <button
                         onclick="hideExportModal()"
                         class="modal-btn modal-btn-primary modal-btn-full"
+                        data-i18n="export.got_it"
                     >
                         Verstanden
                     </button>
@@ -465,57 +552,75 @@
         <div class="modal" id="info-modal">
             <div class="modal-content modal-content--full">
                 <div class="scroll-content--padded">
-                    <h2 class="modal-h2">🔒 Deine Daten bleiben bei dir!</h2>
+                    <h2 class="modal-h2" data-i18n="info.title">
+                        🔒 Deine Daten bleiben bei dir!
+                    </h2>
                     <div class="info-box">
-                        <p class="text-emphasis--lg">
+                        <p class="text-emphasis--lg" data-i18n="info.emphasis">
                             Keine Sorge – deine Privatsphäre ist geschützt.
                         </p>
-                        <p class="text-muted" style="margin-bottom: 16px">
+                        <p
+                            class="text-muted"
+                            style="margin-bottom: 16px"
+                            data-i18n="info.data_stored"
+                        >
                             Alle Daten, die du hier eingibst, werden
                             <strong>ausschließlich in deinem Browser</strong>
                             gespeichert – genauer gesagt im
                             <strong>localStorage</strong> deines Geräts.
                         </p>
-                        <p class="text-muted" style="margin-bottom: 16px">
+                        <p
+                            class="text-muted"
+                            style="margin-bottom: 16px"
+                            data-i18n="info.no_server"
+                        >
                             Es werden <strong>keinerlei Daten</strong> an einen
                             Server übermittelt, nicht analysiert und nicht an
                             Dritte weitergegeben.
                         </p>
-                        <p class="text-muted">
+                        <p class="text-muted" data-i18n="info.clear_data">
                             Du kannst jederzeit alle gespeicherten Daten
                             löschen, indem du in deinen Browsereinstellungen die
                             Daten dieser Seite entfernst.
                         </p>
                     </div>
                     <div class="tip-box">
-                        <p class="text-accent" style="margin-bottom: 8px">
+                        <p
+                            class="text-accent"
+                            style="margin-bottom: 8px"
+                            data-i18n="info.how_it_works"
+                        >
                             💡 Wie es funktioniert:
                         </p>
                         <ul class="modal-list" style="font-size: 0.9rem">
-                            <li>
+                            <li data-i18n="info.how_1">
                                 Deine Texte, Kontakte und Einstellungen bleiben
                                 auf deinem Gerät
                             </li>
-                            <li>
+                            <li data-i18n="info.how_2">
                                 Beim Export entsteht eine eigenständige
                                 HTML-Datei – ohne Verbindung zu irgendeinem
                                 Server
                             </li>
-                            <li>
+                            <li data-i18n="info.how_3">
                                 Die App funktioniert komplett offline (nach dem
                                 ersten Laden)
                             </li>
-                            <li>
+                            <li data-i18n="info.how_4">
                                 Es wird keine Internetverbindung benötigt, um
                                 deine Daten zu speichern oder zu nutzen
                             </li>
                         </ul>
                     </div>
                     <div class="highlight-box">
-                        <p class="text-strong" style="margin-bottom: 8px">
+                        <p
+                            class="text-strong"
+                            style="margin-bottom: 8px"
+                            data-i18n="info.summary_title"
+                        >
                             📌 Kurz gesagt:
                         </p>
-                        <p class="text-muted">
+                        <p class="text-muted" data-i18n="info.summary">
                             Was du hier schreibst, bleibt
                             <strong>deins</strong>. Es verlässt nie deinen
                             Browser – versprochen!
@@ -526,6 +631,7 @@
                     <button
                         onclick="hideInfoModal()"
                         class="modal-btn modal-btn-primary modal-btn-full"
+                        data-i18n="info.got_it"
                     >
                         Verstanden
                     </button>
@@ -864,6 +970,7 @@
             }
         </script>
 
+        <script src="js/translations.js"></script>
         <script src="js/config.js"></script>
         <script src="js/storage.js"></script>
         <script src="js/render.js"></script>

@@ -21,19 +21,25 @@ function openEditor(id, custom = false) {
   if (custom) {
     const section = CUSTOM_SECTIONS.find((s) => s.id === id);
     ta.value = section ? section.content || "" : "";
-    title.textContent = section ? section.title : "Bearbeiten";
+    title.textContent = section ? section.title : t("editor.title_default");
   } else {
     ta.value = DATA[id] || "";
     const config = SECTION_CONFIG.find((s) => s.id === id);
-    title.textContent = config ? config.title : "Bearbeiten";
+    title.textContent = config
+      ? getSectionTitle(config.id) || config.title
+      : t("editor.title_default");
   }
 
-  $status().innerHTML = '<span style="color:#34d399;">✓</span>';
+  $status().innerHTML =
+    '<span style="color:#34d399;">' + t("editor.save_status_saved") + "</span>";
   $modal().style.display = "flex";
   ta.focus();
 
   ta.oninput = () => {
-    $status().innerHTML = '<span style="color:#fbbf24;">●</span>';
+    $status().innerHTML =
+      '<span style="color:#fbbf24;">' +
+      t("editor.save_status_unsaved") +
+      "</span>";
     clearTimeout(saveTimeout);
     saveTimeout = setTimeout(autoSaveEditor, 700);
   };
@@ -51,7 +57,8 @@ function autoSaveEditor() {
     DATA[currentEditingId] = value;
   }
 
-  $status().innerHTML = '<span style="color:#34d399;">✓</span>';
+  $status().innerHTML =
+    '<span style="color:#34d399;">' + t("editor.save_status_saved") + "</span>";
   saveToLocalStorage();
   refreshDisplays();
 }

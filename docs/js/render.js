@@ -80,6 +80,14 @@ function applyInlineFormatting(str) {
 
 // ==================== RENDER ====================
 
+function getSectionTitle(id) {
+  const config = SECTION_CONFIG.find((s) => s.id === id);
+  const translated = t("section." + id);
+  // If translation exists and differs from the key, use it; otherwise fall back to config title
+  if (translated && translated !== "section." + id) return translated;
+  return config ? config.title : id;
+}
+
 function renderAllSections() {
   const container = document.getElementById("main-content");
   container.innerHTML = "";
@@ -95,7 +103,7 @@ function renderAllSections() {
       container.innerHTML += `
             <div class="breathing-section" id="breathing-section">
                 <div class="breathing-burger-wrapper">
-                    <button class="breathing-burger-btn" onclick="event.stopPropagation(); toggleBreathingMenu()" title="Atemübung wählen">
+                    <button class="breathing-burger-btn" onclick="event.stopPropagation(); toggleBreathingMenu()" data-i18n-title="breathing.choose" title="Atemübung wählen">
                         ${SVGs.burger}
                     </button>
                     <div class="breathing-menu" id="breathing-menu" style="display:none;">
@@ -154,6 +162,7 @@ function setDefaultIcons() {
     info: SVGs.info,
     trash: SVGs.trash,
     pen: SVGs.pen,
+    lang: SVGs.lang,
   };
   Object.entries(iconMap).forEach(([key, svg]) => {
     const el = document.getElementById(`icon-${key}`);
@@ -189,9 +198,9 @@ function createDefaultSection(config) {
             <div class="section-header">
                 <div style="display:flex; align-items:center; gap:12px;">
                     <span id="icon-kontakte">${SVGs.phonebook}</span>
-                    <span>${config.title}</span>
+                    <span>${getSectionTitle(config.id)}</span>
                 </div>
-                <button class="edit-btn" data-export-remove onclick="showAddContactModal()" title="Neuen Kontakt hinzufügen">${SVGs.plus}</button>
+                <button class="edit-btn" data-export-remove onclick="showAddContactModal()" data-i18n-title="contacts.modal_title" title="Neuen Kontakt hinzufügen">${SVGs.plus}</button>
             </div>
             <div class="section-content" id="kontakte-list"></div>
         </div>`;
@@ -204,10 +213,10 @@ function createDefaultSection(config) {
             <div class="section-header" onclick="toggleCollapse('${key}')">
                 <div style="display:flex; align-items:center; gap:12px;">
                     <span id="icon-${key}"></span>
-                    <span>${config.title}</span>
+                    <span>${getSectionTitle(config.id)}</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${key}')" title="Inhalt bearbeiten">${SVGs.pen}</button>
+                    <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${key}')" data-i18n-title="manage.edit_content_tooltip" title="Inhalt bearbeiten">${SVGs.pen}</button>
                     <span id="collapse-icon-${key}" class="collapse-icon">›</span>
                 </div>
             </div>
@@ -223,9 +232,9 @@ function createDefaultSection(config) {
         <div class="section-header">
             <div style="display:flex; align-items:center; gap:12px;">
                 <span id="icon-${key}"></span>
-                <span>${config.title}</span>
+                <span>${getSectionTitle(config.id)}</span>
             </div>
-            <button class="edit-btn" data-export-remove onclick="openEditor('${key}')" title="Inhalt bearbeiten">${SVGs.pen}</button>
+        <button class="edit-btn" data-export-remove onclick="openEditor('${key}')" data-i18n-title="manage.edit_content_tooltip" title="Inhalt bearbeiten">${SVGs.pen}</button>
         </div>
         <div class="section-content">
             <div id="${key}-display" class="content-display"></div>
@@ -245,8 +254,8 @@ function renderCustomSection(section, container) {
                 <span>${section.title}</span>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-                <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="event.stopPropagation(); deleteCustomSection('${section.id}')" title="Sektion löschen">${SVGs.trash}</button>
-                <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${section.id}', true)" title="Inhalt bearbeiten">${SVGs.pen}</button>
+                <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="event.stopPropagation(); deleteCustomSection('${section.id}')" data-i18n-title="manage.delete_section_tooltip" title="Sektion löschen">${SVGs.trash}</button>
+                <button class="edit-btn" data-export-remove onclick="event.stopPropagation(); openEditor('${section.id}', true)" data-i18n-title="manage.edit_content_tooltip" title="Inhalt bearbeiten">${SVGs.pen}</button>
                 <span id="collapse-icon-${section.id}" class="collapse-icon">›</span>
             </div>
         </div>
@@ -261,8 +270,8 @@ function renderCustomSection(section, container) {
                 <span>${section.title}</span>
             </div>
             <div style="display:flex; gap:8px;">
-                <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="deleteCustomSection('${section.id}')" title="Sektion löschen">${SVGs.trash}</button>
-                <button class="edit-btn" data-export-remove onclick="openEditor('${section.id}', true)" title="Inhalt bearbeiten">${SVGs.pen}</button>
+                <button class="edit-btn" data-export-remove style="background:#ef4444;" onclick="deleteCustomSection('${section.id}')" data-i18n-title="manage.delete_section_tooltip" title="Sektion löschen">${SVGs.trash}</button>
+                <button class="edit-btn" data-export-remove onclick="openEditor('${section.id}', true)" data-i18n-title="manage.edit_content_tooltip" title="Inhalt bearbeiten">${SVGs.pen}</button>
             </div>
         </div>
         <div class="section-content">
@@ -280,7 +289,7 @@ function renderContacts() {
   container.innerHTML = "";
 
   if (KONTAKTE.length === 0) {
-    container.innerHTML = `<p style="color:#888; text-align:center; padding:40px 20px;">Noch keine Notfallkontakte hinzugefügt.</p>`;
+    container.innerHTML = `<p style="color:#888; text-align:center; padding:40px 20px;">${t("contacts.empty")}</p>`;
   } else {
     KONTAKTE.forEach((k, i) => {
       const div = document.createElement("div");
@@ -296,11 +305,13 @@ function renderContacts() {
                                 class="manage-item-btn"
                                 style="background:#3f3f46; height:24px; min-width:24px; font-size:0.8rem; line-height:1; padding:0; ${isFirst ? "opacity:0.3; cursor:not-allowed;" : ""}"
                                 ${isFirst ? "disabled" : ""}
+                                data-i18n-title="move.up"
                                 title="Nach oben verschieben">↑</button>
                         <button onclick="moveContact(${i}, 1); event.stopPropagation()"
                                 class="manage-item-btn"
                                 style="background:#3f3f46; height:24px; min-width:24px; font-size:0.8rem; line-height:1; padding:0; ${isLast ? "opacity:0.3; cursor:not-allowed;" : ""}"
                                 ${isLast ? "disabled" : ""}
+                                data-i18n-title="move.down"
                                 title="Nach unten verschieben">↓</button>
                     </div>
                     <div style="min-width:0; overflow:hidden;">
@@ -309,9 +320,9 @@ function renderContacts() {
                     </div>
                 </div>
                 <div style="display:flex; gap:8px; align-items:center; flex-shrink:0;">
-                    <a href="tel:${k.tel}" class="contact-call-btn" title="Anrufen">${SVGs.phone}</a>
+                    <a href="tel:${k.tel}" class="contact-call-btn" data-i18n-title="contacts.call_title" title="Anrufen">${SVGs.phone}</a>
                     <button data-export-remove onclick="deleteContact(${i}); event.stopPropagation()"
-                            class="contact-delete-btn" title="Kontakt löschen">${SVGs.trash}</button>
+                            class="contact-delete-btn" data-i18n-title="contacts.delete_title" title="Kontakt löschen">${SVGs.trash}</button>
                 </div>`;
       div.addEventListener("dragstart", handleContactDragStart);
       div.addEventListener("dragover", handleContactDragOver);
@@ -323,7 +334,7 @@ function renderContacts() {
 
   const addBtn = document.createElement("button");
   addBtn.className = "add-contact";
-  addBtn.textContent = "+ Neuen Kontakt hinzufügen";
+  addBtn.textContent = t("contacts.add");
   addBtn.dataset.exportRemove = "";
   addBtn.onclick = showAddContactModal;
   container.appendChild(addBtn);

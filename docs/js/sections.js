@@ -15,7 +15,7 @@ function showManageModal() {
                 <span style="color:transparent; font-size:1.1rem; flex-shrink:0; user-select:none;">☰</span>
                 <input type="checkbox" ${item.visible ? "checked" : ""}
                        onchange="toggleVisibility('${item.id}', this.checked)">
-                <div style="flex:1; font-weight:500;">${item.title}</div>`;
+                <div style="flex:1; font-weight:500;">${getSectionTitle(item.id) || item.title}</div>`;
     } else {
       // Movable sections
       div.draggable = true;
@@ -28,11 +28,11 @@ function showManageModal() {
                 <span style="color:#52525b; font-size:1.1rem; cursor:grab; flex-shrink:0;">☰</span>
                 <input type="checkbox" ${item.visible ? "checked" : ""}
                        onchange="toggleVisibility('${item.id}', this.checked)">
-                <div style="flex:1; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${item.title}</div>`;
+                <div style="flex:1; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${getSectionTitle(item.id) || item.title}</div>`;
 
       if (item.type === "custom") {
         itemHTML += `<button onclick="deleteCustomSection('${item.id}')"
-                                     class="manage-item-btn" style="background:#ef4444;" title="Sektion löschen">${SVGs.trash}</button>`;
+                                       class="manage-item-btn" style="background:#ef4444;" data-i18n-title="manage.delete_section_tooltip" title="Sektion löschen">${SVGs.trash}</button>`;
       }
 
       // Up / Down buttons (exactly like contacts)
@@ -44,11 +44,13 @@ function showManageModal() {
                         class="manage-item-btn"
                         style="background:#3f3f46; ${upStyle}"
                         ${isFirstMovable ? "disabled" : ""}
+                        data-i18n-title="manage.move_up"
                         title="Nach oben verschieben">↑</button>
                 <button onclick="moveSection(${index}, 1); event.stopPropagation()"
                         class="manage-item-btn"
                         style="background:#3f3f46; ${downStyle}"
                         ${isLastMovable ? "disabled" : ""}
+                        data-i18n-title="manage.move_down"
                         title="Nach unten verschieben">↓</button>`;
 
       div.innerHTML = itemHTML;
@@ -71,11 +73,15 @@ function showManageModal() {
     modalContent.style.width = "min(94%, 640px)";
     modalContent.style.maxWidth = "640px";
   }
+
+  // Apply translations to dynamically created list item tooltips
+  applyDynamicTranslations();
 }
 
 function hideManageModal() {
   document.getElementById("manage-modal").style.display = "none";
   renderAllSections();
+  applyDynamicTranslations();
   renderCounter();
   saveToLocalStorage();
 }
@@ -177,32 +183,10 @@ function hideAddSectionModal() {
 function populateIconPicker() {
   const container = document.getElementById("icon-picker");
   container.innerHTML = "";
-  const iconNames = {
-    bolt: "Blitz",
-    heart: "Herz",
-    phonebook: "Telefonbuch",
-    toolbox: "Werkzeug",
-    dumbbell: "Hantel",
-    quote: "Zitat",
-    pill: "Tablette",
-    medicalbook: "Medizinbuch",
-    hospital: "Krankenhaus",
-    brain: "Gehirn",
-    hands: "Hände",
-    group: "Gruppe",
-    shield: "Schild",
-    parachute: "Fallschirm",
-    gauge: "Messer",
-    bandage: "Verband",
-    pepper: "Pfeffer",
-    carrot: "Karotte",
-    doctor: "Arzt",
-    masks: "Masken",
-  };
   Object.keys(PickIcons).forEach((key) => {
     const div = document.createElement("div");
     div.style.cssText = `width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:#18181b;border:2px solid ${key === selectedCustomIcon ? "#34d399" : "transparent"};border-radius:12px;cursor:pointer;`;
-    div.title = iconNames[key] || key;
+    div.title = t("icon." + key);
     div.innerHTML = SVGs[key];
     div.onclick = () => {
       selectedCustomIcon = key;
@@ -216,8 +200,7 @@ function populateIconPicker() {
 
 function createCustomSection() {
   const title = document.getElementById("new-section-title").value.trim();
-  if (!title)
-    return showAlert("Bitte gib einen Titel für die neue Sektion ein.");
+  if (!title) return showAlert(t("custom_section.empty_title_error"));
   const isCollapsible = document.getElementById(
     "new-section-collapsible",
   ).checked;
@@ -239,6 +222,7 @@ function createCustomSection() {
 
   hideAddSectionModal();
   renderAllSections();
+  applyDynamicTranslations();
   saveToLocalStorage();
   // Re-show manage modal so the new section appears in the list
   const manageModal = document.getElementById("manage-modal");
@@ -251,12 +235,13 @@ function deleteCustomSection(id) {
   const section = SECTION_CONFIG.find((s) => s.id === id);
   if (!section) return;
   showConfirm(
-    `Sektion "${section.title}" wirklich löschen?`,
+    t("confirm.delete_section", section.title),
     () => {
       CUSTOM_SECTIONS = CUSTOM_SECTIONS.filter((s) => s.id !== id);
       SECTION_CONFIG = SECTION_CONFIG.filter((s) => s.id !== id);
 
       renderAllSections();
+      applyDynamicTranslations();
       saveToLocalStorage();
 
       const manageModal = document.getElementById("manage-modal");
@@ -282,10 +267,12 @@ let confirmCallback = null;
 
 function showConfirm(message, onConfirm, confirmText) {
   document.getElementById("confirm-message").textContent = message;
+  const cancelLabel = t("confirm.cancel");
+  const deleteLabel = confirmText || t("confirm.delete");
   document.getElementById("confirm-actions").innerHTML = `
-    <button onclick="confirmCancel()" class="modal-btn modal-btn-secondary">Abbrechen</button>
+    <button onclick="confirmCancel()" class="modal-btn modal-btn-secondary">${cancelLabel}</button>
     <button onclick="confirmOk()" class="modal-btn" style="background:#ef4444; font-weight:600;"
-            onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">${confirmText || "Löschen"}</button>
+            onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">${deleteLabel}</button>
   `;
   confirmCallback = onConfirm || null;
   document.getElementById("confirm-modal").style.display = "flex";

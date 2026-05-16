@@ -104,11 +104,11 @@ function exportCleanHTML() {
 
   const htmlParts = [
     "<!DOCTYPE html>",
-    '<html lang="de">',
+    '<html lang="' + currentLang + '">',
     "<head>",
     '    <meta charset="UTF-8">',
     '    <meta name="viewport" content="width=device-width, initial-scale=1.0">',
-    "    <title>Mein Notfallplan</title>",
+    "    <title>" + t("app.title") + "</title>",
     faviconLink,
     "    <style>",
     styleContent,
@@ -133,7 +133,8 @@ function exportCleanHTML() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = "Mein-Notfallplan.html";
+  a.download =
+    currentLang === "de" ? "Mein-Notfallplan.html" : "My-Emergency-Plan.html";
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -154,7 +155,22 @@ function hideExportModal() {
 window.onload = function () {
   loadFromLocalStorage();
   window._NOTFALLPLAN_DATA = DATA; // expose for viewer functions
-  renderAllSections(); // renders all sections, sets icons, contacts, counter, displays
+
+  // Detect language
+  var detectedLang = detectLanguage();
+
+  // If English is detected and data hasn't been customized yet
+  // (still equals the German default), swap to the English default.
+  if (
+    detectedLang === "en" &&
+    DATA.angenehmes === TRANSLATIONS.de["data.angenehmes_default"]
+  ) {
+    DATA.angenehmes = TRANSLATIONS.en["data.angenehmes_default"];
+  }
+
+  // Initialize language — setLanguage calls translatePage() which
+  // already runs renderAllSections() and renderContacts() internally.
+  setLanguage(detectedLang);
   calculateDays(true);
   document
     .getElementById("editor-textarea")
