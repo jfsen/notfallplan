@@ -197,7 +197,7 @@ function createDefaultSection(config) {
         <div class="section" id="section-kontakte">
             <div class="section-header">
                 <div style="display:flex; align-items:center; gap:12px;">
-                    <span id="icon-kontakte">${SVGs.phonebook}</span>
+                    <span id="icon-${key}">""</span>
                     <span>${getSectionTitle(config.id)}</span>
                 </div>
                 <button class="edit-btn" data-export-remove onclick="showAddContactModal()" data-i18n-title="contacts.modal_title" title="Neuen Kontakt hinzufügen">${SVGs.plus}</button>
@@ -212,7 +212,7 @@ function createDefaultSection(config) {
         <div class="section collapsible-section" id="section-${key}">
             <div class="section-header" onclick="toggleCollapse('${key}')">
                 <div style="display:flex; align-items:center; gap:12px;">
-                    <span id="icon-${key}"></span>
+                    <span id="icon-${key}">""</span>
                     <span>${getSectionTitle(config.id)}</span>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px;">
@@ -231,7 +231,7 @@ function createDefaultSection(config) {
     <div class="section" id="section-${key}">
         <div class="section-header">
             <div style="display:flex; align-items:center; gap:12px;">
-                <span id="icon-${key}"></span>
+                <span id="icon-${key}">""</span>
                 <span>${getSectionTitle(config.id)}</span>
             </div>
         <button class="edit-btn" data-export-remove onclick="openEditor('${key}')" data-i18n-title="manage.edit_content_tooltip" title="Inhalt bearbeiten">${SVGs.pen}</button>
