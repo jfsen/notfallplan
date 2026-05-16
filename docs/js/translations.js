@@ -171,91 +171,7 @@ const TRANSLATIONS = {
     "icon.doctor": "Arzt",
     "icon.masks": "Masken",
 
-    "data.angenehmes_default":
-      `- Spazieren gehen in der Natur\n` +
-      `- Einen längeren Wald- oder Parkspaziergang machen\n` +
-      `- Am Wasser sitzen (See, Fluss, Meer)\n` +
-      `- Mit dem Fahrrad fahren\n` +
-      `- Joggen oder Walken\n` +
-      `- Yoga oder Dehnübungen zu Hause\n` +
-      `- Krafttraining oder leichte Gymnastik\n` +
-      `- Tanzen (alleine oder in der Gruppe)\n` +
-      `- Schwimmen gehen\n` +
-      `- Sauna oder Dampfbad besuchen\n` +
-      `- Ein warmes Vollbad mit Badezusatz nehmen\n` +
-      `- Eine ausgiebige Dusche mit Lieblings-Duschgel\n` +
-      `- Die Haare waschen und pflegen\n` +
-      `- Sich selbst massieren oder eine Massage gönnen\n` +
-      `- Gesichtsmaske oder Maniküre/Pediküre machen\n` +
-      `- Lieblingsmusik hören\n` +
-      `- Ein Konzert oder Live-Musik-Video anschauen\n` +
-      `- Ein Instrument spielen oder dazu singen\n` +
-      `- Podcasts oder Hörbücher hören\n` +
-      `- Ein gutes Buch lesen\n` +
-      `- In Zeitschriften oder Comics blättern\n` +
-      `- Einen Film oder eine Serie schauen\n` +
-      `- Alte Fotos anschauen oder digitalisieren\n` +
-      `- Ein Fotoalbum oder Scrapbook basteln\n` +
-      `- Mit Freunden treffen oder telefonieren\n` +
-      `- Mit der Familie Zeit verbringen\n` +
-      `- Jemandem einen Besuch abstatten\n` +
-      `- Einen Brief oder eine Karte schreiben\n` +
-      `- Etwas Leckeres kochen\n` +
-      `- Backen (Kuchen, Plätzchen, Brot)\n` +
-      `- Ein neues Rezept ausprobieren\n` +
-      `- Kaffee oder Tee in Ruhe genießen\n` +
-      `- Etwas Schönes essen (z. B. Schokolade, Eis, Obst)\n` +
-      `- Im Café sitzen und Leute beobachten\n` +
-      `- Einkaufen gehen (nur Schaufenster oder gezielt etwas Schönes)\n` +
-      `- Blumen kaufen und in die Vase stellen\n` +
-      `- Zimmerpflanzen pflegen oder umtopfen\n` +
-      `- Gartenarbeit oder Balkon pflegen\n` +
-      `- Etwas basteln oder handwerken\n` +
-      `- Malen, zeichnen oder kritzeln\n` +
-      `- Mandalas ausmalen\n` +
-      `- Fotografieren (mit dem Handy reicht)\n` +
-      `- Ein Puzzle legen\n` +
-      `- Brett- oder Kartenspiele spielen\n` +
-      `- Sudoku, Kreuzworträtsel oder andere Rätsel lösen\n` +
-      `- Einen Kurs oder Workshop besuchen (online oder offline)\n` +
-      `- Etwas Neues lernen (Sprache, Handwerk, Skill)\n` +
-      `- Einen Vortrag oder TED-Talk anschauen\n` +
-      `- Meditation oder Achtsamkeitsübung\n` +
-      `- Progressive Muskelentspannung\n` +
-      `- Geführte Entspannung per App oder YouTube\n` +
-      `- In der Sonne sitzen oder ein Sonnenbad nehmen\n` +
-      `- Frische Luft am offenen Fenster genießen\n` +
-      `- Kerzen anzünden und den Duft genießen\n` +
-      `- Aromatherapie oder Duftöl verwenden\n` +
-      `- Ein Haustier streicheln, füttern oder spielen\n` +
-      `- Mit Kindern spielen oder toben\n` +
-      `- Etwas für andere tun (kleine Hilfe, Geschenk)\n` +
-      `- Etwas spenden oder Gutes tun\n` +
-      `- Eine schöne Serie oder Dokumentation schauen\n` +
-      `- Ein warmes Getränk mit Zimt oder Gewürzen trinken\n` +
-      `- Einen Kaminfeuer-Videoclip anschauen (bei schlechtem Wetter)\n` +
-      `- Frische Bettwäsche aufziehen\n` +
-      `- Die Wohnung aufräumen und das Ergebnis genießen\n` +
-      `- Eine To-do-Liste abhaken und Erfolge feiern\n` +
-      `- Etwas wegwerfen oder aussortieren, das erleichtert\n` +
-      `- Eine schöne Duftkerze oder Räucherstäbchen anzünden\n` +
-      `- Einen Spaziergang bei Regen mit Regenschirm machen\n` +
-      `- Sterne oder Wolken beobachten\n` +
-      `- Einen Aussichtspunkt besuchen\n` +
-      `- Mit öffentlichen Verkehrsmitteln irgendwo hinfahren, nur zum Spaß\n` +
-      `- Einen Markt oder Flohmarkt besuchen\n` +
-      `- In eine Buchhandlung oder Bibliothek gehen\n` +
-      `- Etwas Schönes online bestellen und sich darauf freuen\n` +
-      `- Ein Badewannen-Leseabend\n` +
-      `- Die Lieblingsspeise von früher kochen\n` +
-      `- Alte Briefe oder Erinnerungsstücke durchschauen\n` +
-      `- Eine Dankbarkeitsliste schreiben\n` +
-      `- Sich selbst etwas Schönes sagen oder affirmieren\n` +
-      `- Eine Power-Nap machen (kurzer Mittagsschlaf)\n` +
-      `- Die Beine hochlegen und einfach nichts tun\n` +
-      `- Ein entspannendes Hörspiel hören\n` +
-      `- Comedy oder lustige Videos schauen\n` +
-      `- Mit jemandem lachen oder Witze erzählen`,
+    "anniversary.badge": "{0}. Jubiläum! 🎉",
   },
 
   en: {
@@ -423,91 +339,7 @@ const TRANSLATIONS = {
     "icon.doctor": "Doctor",
     "icon.masks": "Masks",
 
-    "data.angenehmes_default":
-      `- Going for a walk in nature\n` +
-      `- Taking a longer walk in the woods or park\n` +
-      `- Sitting by the water (lake, river, sea)\n` +
-      `- Riding a bike\n` +
-      `- Jogging or walking\n` +
-      `- Yoga or stretching exercises at home\n` +
-      `- Strength training or light gymnastics\n` +
-      `- Dancing (alone or in a group)\n` +
-      `- Going swimming\n` +
-      `- Visiting a sauna or steam bath\n` +
-      `- Taking a warm bath with bath salts\n` +
-      `- Having a long shower with your favorite shower gel\n` +
-      `- Washing and caring for your hair\n` +
-      `- Giving yourself a massage or treating yourself to one\n` +
-      `- Doing a face mask or manicure/pedicure\n` +
-      `- Listening to your favorite music\n` +
-      `- Watching a concert or live music video\n` +
-      `- Playing an instrument or singing along\n` +
-      `- Listening to podcasts or audiobooks\n` +
-      `- Reading a good book\n` +
-      `- Flipping through magazines or comics\n` +
-      `- Watching a movie or a series\n` +
-      `- Looking at old photos or digitizing them\n` +
-      `- Making a photo album or scrapbook\n` +
-      `- Meeting or calling friends\n` +
-      `- Spending time with family\n` +
-      `- Visiting someone\n` +
-      `- Writing a letter or a card\n` +
-      `- Cooking something delicious\n` +
-      `- Baking (cake, cookies, bread)\n` +
-      `- Trying a new recipe\n` +
-      `- Enjoying coffee or tea in peace\n` +
-      `- Eating something nice (e.g. chocolate, ice cream, fruit)\n` +
-      `- Sitting in a café and people watching\n` +
-      `- Going shopping (window shopping or buying something nice)\n` +
-      `- Buying flowers and putting them in a vase\n` +
-      `- Caring for or repotting houseplants\n` +
-      `- Gardening or tending to the balcony\n` +
-      `- Doing some crafting or DIY\n` +
-      `- Painting, drawing or doodling\n` +
-      `- Coloring mandalas\n` +
-      `- Taking photos (your phone is enough)\n` +
-      `- Doing a jigsaw puzzle\n` +
-      `- Playing board or card games\n` +
-      `- Solving sudoku, crosswords or other puzzles\n` +
-      `- Attending a course or workshop (online or offline)\n` +
-      `- Learning something new (language, craft, skill)\n` +
-      `- Watching a lecture or TED talk\n` +
-      `- Meditation or mindfulness exercise\n` +
-      `- Progressive muscle relaxation\n` +
-      `- Guided relaxation via app or YouTube\n` +
-      `- Sitting in the sun or sunbathing\n` +
-      `- Enjoying fresh air at an open window\n` +
-      `- Lighting candles and enjoying the scent\n` +
-      `- Using aromatherapy or essential oils\n` +
-      `- Petting, feeding or playing with a pet\n` +
-      `- Playing or romping with children\n` +
-      `- Doing something for others (small help, gift)\n` +
-      `- Donating or doing something good\n` +
-      `- Watching a nice series or documentary\n` +
-      `- Drinking a warm beverage with cinnamon or spices\n` +
-      `- Watching a fireplace video (in bad weather)\n` +
-      `- Putting on fresh bed sheets\n` +
-      `- Tidying up the apartment and enjoying the result\n` +
-      `- Checking off a to-do list and celebrating successes\n` +
-      `- Throwing away or sorting out things that feel liberating\n` +
-      `- Lighting a nice scented candle or incense stick\n` +
-      `- Taking a walk in the rain with an umbrella\n` +
-      `- Stargazing or cloud watching\n` +
-      `- Visiting a viewpoint\n` +
-      `- Taking public transport somewhere just for fun\n` +
-      `- Visiting a market or flea market\n` +
-      `- Going to a bookstore or library\n` +
-      `- Ordering something nice online and looking forward to it\n` +
-      `- A bath-time reading evening\n` +
-      `- Cooking your favorite meal from the past\n` +
-      `- Going through old letters or memorabilia\n` +
-      `- Writing a gratitude list\n` +
-      `- Saying or affirming something nice to yourself\n` +
-      `- Taking a power nap (short afternoon nap)\n` +
-      `- Putting your feet up and doing nothing\n` +
-      `- Listening to a relaxing radio play\n` +
-      `- Watching comedy or funny videos\n` +
-      `- Laughing with someone or telling jokes`,
+    "anniversary.badge": "Year {0}! 🎉",
   },
 };
 
@@ -597,6 +429,26 @@ function translatePage() {
     });
   }
 
+  // Override checkAnniversary with a translated version
+  if (typeof checkAnniversary === "function") {
+    window.checkAnniversary = function () {
+      var anniversaryYear = isAnniversary();
+      var counter = document.querySelector(".counter");
+      if (!counter) return;
+      counter.classList.remove("celebration");
+      var oldBadge = counter.querySelector(".celebration-badge");
+      if (oldBadge) oldBadge.remove();
+      if (anniversaryYear > 0) {
+        counter.classList.add("celebration");
+        if (typeof launchConfetti === "function") launchConfetti();
+        var badge = document.createElement("div");
+        badge.className = "celebration-badge";
+        badge.textContent = t("anniversary.badge", String(anniversaryYear));
+        counter.appendChild(badge);
+      }
+    };
+  }
+
   // Re-render sections (creates dynamic elements with data-i18n-* attributes)
   if (typeof renderAllSections === "function") {
     renderAllSections();
@@ -609,6 +461,11 @@ function translatePage() {
 
   // Apply translations to dynamic elements (placeholders & titles)
   applyDynamicTranslations();
+
+  // Re-check anniversary to update any visible badge with the new language
+  if (typeof checkAnniversary === "function") {
+    checkAnniversary();
+  }
 }
 
 /**

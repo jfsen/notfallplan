@@ -54,6 +54,15 @@ function exportCleanHTML() {
     "const BREATHING_EXERCISES = " + exercisesJSON + ";",
   );
 
+  // Replace hardcoded anniversary badge text with translated version
+  var translatedBadgeTemplate = t("anniversary.badge");
+  viewerScript = viewerScript.replace(
+    /const label =[\s\S]*?\`\$\{anniversaryYear\}[^;]*?;/,
+    'const label = "' +
+      translatedBadgeTemplate.replace(/"/g, '\\"') +
+      '\".replace("{0}", anniversaryYear);',
+  );
+
   const tempContainer = document.createElement("div");
   tempContainer.innerHTML =
     document.querySelector("header").outerHTML +
@@ -164,21 +173,9 @@ window.onload = function () {
   loadFromLocalStorage();
   window._NOTFALLPLAN_DATA = DATA; // expose for viewer functions
 
-  // Detect language
-  var detectedLang = detectLanguage();
-
-  // If English is detected and data hasn't been customized yet
-  // (still equals the German default), swap to the English default.
-  if (
-    detectedLang === "en" &&
-    DATA.angenehmes === TRANSLATIONS.de["data.angenehmes_default"]
-  ) {
-    DATA.angenehmes = TRANSLATIONS.en["data.angenehmes_default"];
-  }
-
   // Initialize language — setLanguage calls translatePage() which
   // already runs renderAllSections() and renderContacts() internally.
-  setLanguage(detectedLang);
+  setLanguage(detectLanguage());
   calculateDays(true);
   document
     .getElementById("editor-textarea")
