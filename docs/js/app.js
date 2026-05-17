@@ -119,6 +119,18 @@ function exportCleanHTML() {
     "})();",
   ].join("\n");
 
+  // Embed full user data as JSON for import functionality
+  var exportData = {
+    version: 1,
+    startDate: DATA.startDate || "",
+    sectionConfig: SECTION_CONFIG,
+    data: DATA,
+    kontakte: KONTAKTE,
+    customSections: CUSTOM_SECTIONS,
+    language: currentLang,
+  };
+  var dataJSON = JSON.stringify(exportData, null, 2);
+
   const htmlParts = [
     "<!DOCTYPE html>",
     '<html lang="' + currentLang + '">',
@@ -138,6 +150,9 @@ function exportCleanHTML() {
     "<script>",
     viewerScript.trim(),
     exportScript,
+    "<" + "/script>",
+    '<script type="application/json" id="notfallplan-data">',
+    dataJSON,
     "<" + "/script>",
     "</body>",
     "<" + "/html>",
@@ -166,6 +181,145 @@ function showExportInstructions() {
 
 function hideExportModal() {
   document.getElementById("export-modal").style.display = "none";
+}
+
+// ==================== IMPORT ====================
+
+function triggerImport() {
+  document.getElementById("import-file-input").click();
+}
+
+function importFromHTML(event) {
+  var file = event.target.files && event.target.files[0];
+  // Reset input immediately so the same file can be selected again later
+  resetImportInput();
+  if (!file) {
+    showAlert(t("import.select_file"));
+    return;
+  }
+
+  showConfirm(
+    t("import.confirm"),
+    function () {
+      readAndImportFile(file);
+    },
+    t("import.title"),
+  );
+}
+
+function resetImportInput() {
+  var input = document.getElementById("import-file-input");
+  if (input) input.value = "";
+}
+
+function readAndImportFile(file) {
+  var reader = new FileReader();
+  reader.onload = function (e) {
+    try {
+      var html = e.target.result;
+      var data = extractNotfallplanData(html);
+      if (!data) {
+        showAlert(t("import.no_data"));
+        resetImportInput();
+        return;
+      }
+      applyImportedData(data);
+      showAlert(t("import.success"));
+    } catch (err) {
+      console.error("Import error:", err);
+      showAlert(t("import.error"));
+    }
+    resetImportInput();
+  };
+  reader.onerror = function () {
+    showAlert(t("import.error"));
+    resetImportInput();
+  };
+  reader.readAsText(file);
+}
+
+function extractNotfallplanData(html) {
+  // Try to extract the JSON data block from the exported file
+  var jsonMatch = html.match(
+    /<script\s+type="application\/json"\s+id="notfallplan-data"\s*>([\s\S]*?)<\/script>/i,
+  );
+  if (jsonMatch && jsonMatch[1]) {
+    var data = JSON.parse(jsonMatch[1].trim());
+    if (data && typeof data === "object" && data.version) {
+      return data;
+    }
+  }
+
+  // Fallback: try to find any JSON block with notfallplan data
+  var altMatch = html.match(/"notfallplan_data"\s*:\s*({[\s\S]*?})\s*[,;\n}]/i);
+  if (altMatch) {
+    try {
+      return JSON.parse(altMatch[1]);
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  return null;
+}
+
+function applyImportedData(data) {
+  // Restore start date
+  if (data.startDate) {
+    DATA.startDate = data.startDate;
+  }
+
+  // Restore section config (visibility + order)
+  if (Array.isArray(data.sectionConfig) && data.sectionConfig.length > 0) {
+    SECTION_CONFIG = data.sectionConfig;
+  }
+
+  // Restore section data (content for default sections)
+  if (data.data && typeof data.data === "object") {
+    var defaultKeys = [
+      "ausloeser",
+      "gruende",
+      "skills",
+      "staerken",
+      "mottos",
+      "angenehmes",
+    ];
+    defaultKeys.forEach(function (key) {
+      if (data.data[key] !== undefined) {
+        DATA[key] = data.data[key];
+      }
+    });
+  }
+
+  // Restore contacts
+  if (Array.isArray(data.kontakte)) {
+    KONTAKTE = data.kontakte;
+  }
+
+  // Restore custom sections
+  if (Array.isArray(data.customSections)) {
+    CUSTOM_SECTIONS = data.customSections;
+  }
+
+  // Restore language if available and different from current
+  if (data.language && data.language !== currentLang) {
+    setLanguage(data.language);
+  } else {
+    // Save and re-render everything
+    saveToLocalStorage();
+    renderAllSections();
+    applyDynamicTranslations();
+  }
+
+  // Always recalculate days and update date input after import
+  calculateDays(true);
+  var dateInput = document.getElementById("start-date");
+  if (dateInput && data.startDate) {
+    dateInput.value = data.startDate;
+  }
+
+  // Re-render the counter visibility
+  renderCounter();
 }
 
 // ==================== INIT ====================

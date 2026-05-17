@@ -12,6 +12,16 @@ const TRANSLATIONS = {
     "action.info": "Infos zum Datenschutz",
     "action.export": "Notfallplan exportieren",
     "action.language": "Sprache",
+    "action.import": "Notfallplan importieren",
+
+    "import.title": "Notfallplan importieren",
+    "import.success": "Notfallplan erfolgreich importiert!",
+    "import.error":
+      "Fehler beim Importieren. Die Datei scheint keine gültige Notfallplan-Datei zu sein.",
+    "import.confirm":
+      "Möchtest du wirklich deine aktuellen Daten mit der importierten Datei überschreiben?",
+    "import.no_data": "Keine Notfallplan-Daten in dieser Datei gefunden.",
+    "import.select_file": "Keine Datei ausgewählt.",
 
     "contacts.empty": "Noch keine Notfallkontakte hinzugefügt.",
     "contacts.add": "+ Neuen Kontakt hinzufügen",
@@ -185,6 +195,16 @@ const TRANSLATIONS = {
     "action.info": "Privacy Information",
     "action.export": "Export Emergency Plan",
     "action.language": "Language",
+    "action.import": "Import Emergency Plan",
+
+    "import.title": "Import Emergency Plan",
+    "import.success": "Emergency plan imported successfully!",
+    "import.error":
+      "Import failed. The file doesn't appear to be a valid emergency plan file.",
+    "import.confirm":
+      "Do you really want to overwrite your current data with the imported file?",
+    "import.no_data": "No emergency plan data found in this file.",
+    "import.select_file": "No file selected.",
 
     "contacts.empty": "No emergency contacts added yet.",
     "contacts.add": "+ Add New Contact",
