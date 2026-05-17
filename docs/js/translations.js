@@ -157,6 +157,10 @@ const TRANSLATIONS = {
       "Was du hier schreibst, bleibt deins. Es verlässt nie deinen Browser – versprochen!",
     "info.got_it": "Verstanden",
 
+    "info.self_hosting_title": "🌐 Open Source & Selbst hosten",
+    "info.self_hosting":
+      "Diese Seite wird auf GitHub Pages gehostet – du kannst sie aber auch selbst hosten, zum Beispiel auf einem eigenen Server oder einer unabhängigen Plattform. Dank der GPL v3-Lizenz darfst du die Anwendung weitergeben, anpassen und ganz nach deinen Vorstellungen betreiben.",
+
     "move.up": "Nach oben verschieben",
     "move.down": "Nach unten verschieben",
 
@@ -334,6 +338,10 @@ const TRANSLATIONS = {
     "info.summary":
       "What you write here stays yours. It never leaves your browser – promised!",
     "info.got_it": "Got it",
+
+    "info.self_hosting_title": "🌐 Open Source & Self-Hosting",
+    "info.self_hosting":
+      "This site is hosted on GitHub Pages – but you can also host it yourself, on your own server or an independent platform. Thanks to the GPL v3 license, you're free to share, modify, and run the application on your own terms.",
 
     "move.up": "Move up",
     "move.down": "Move down",
