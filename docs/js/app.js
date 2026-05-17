@@ -305,11 +305,12 @@ function applyImportedData(data) {
   if (data.language && data.language !== currentLang) {
     setLanguage(data.language);
   } else {
-    // Save and re-render everything
-    saveToLocalStorage();
     renderAllSections();
     applyDynamicTranslations();
   }
+
+  // Persist everything to localStorage
+  saveToLocalStorage();
 
   // Always recalculate days and update date input after import
   calculateDays(true);

@@ -163,6 +163,7 @@ function setDefaultIcons() {
     trash: SVGs.trash,
     pen: SVGs.pen,
     lang: SVGs.lang,
+    import: SVGs.import,
   };
   Object.entries(iconMap).forEach(([key, svg]) => {
     const el = document.getElementById(`icon-${key}`);
