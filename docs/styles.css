@@ -96,6 +96,26 @@
     --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ── PWA Standalone Mode ── */
+@media all and (display-mode: standalone) {
+    body {
+        /* Safe area padding for notched phones (iOS) */
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        /* Prevent pull-to-refresh overscroll in standalone mode */
+        overscroll-behavior: none;
+    }
+
+    .container {
+        /* Ensure the container fills the safe area */
+        min-height: calc(
+            100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+        );
+    }
+}
+
 body {
     font-family: "Inter", system-ui, sans-serif;
     background: var(--color-bg);

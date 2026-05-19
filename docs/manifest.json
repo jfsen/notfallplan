@@ -1,0 +1,63 @@
+{
+  "name": "Mein Notfallplan",
+  "short_name": "Notfallplan",
+  "description": "Dein persönlicher Notfallplan – privat, offline, für dich.",
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#18181b",
+  "theme_color": "#18181b",
+  "categories": ["health", "lifestyle", "utilities"],
+  "lang": "de",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "100x100",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "48x48 72x72 96x96 128x128 192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.svg",
+      "sizes": "256x256 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Tage zählen",
+      "short_name": "Counter",
+      "description": "Zähle deine Tage der Abstinenz",
+      "url": ".",
+      "icons": [
+        {
+          "src": "logo.svg",
+          "sizes": "100x100",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Atemübung",
+      "short_name": "Atmen",
+      "description": "Starte eine Atemübung",
+      "url": ".",
+      "icons": [
+        {
+          "src": "logo.svg",
+          "sizes": "100x100",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}
