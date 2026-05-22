@@ -903,18 +903,7 @@
 
                     const badge = document.createElement("div");
                     badge.className = "celebration-badge";
-                    const label =
-                        anniversaryYear === 1
-                            ? "1. Jubiläum! 🎉"
-                            : anniversaryYear === 5
-                              ? "5. Jubiläum! 🎉"
-                              : anniversaryYear === 10
-                                ? "10. Jubiläum! 🎉"
-                                : anniversaryYear === 25
-                                  ? "25. Jubiläum! 🎉"
-                                  : anniversaryYear === 50
-                                    ? "50. Jubiläum! 🎉"
-                                    : `${anniversaryYear}. Jubiläum! 🎉`;
+                    const label = `${anniversaryYear}. Jubiläum! 🎉`;
                     badge.textContent = label;
                     counter.appendChild(badge);
                 }
