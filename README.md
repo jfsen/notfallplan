@@ -6,48 +6,48 @@
 <h1 align="center">Mein Notfallplan</h1>
 
 <p align="center">
-  <strong>Dein persönlicher Notfallplan – privat, offline, für dich.</strong>
+  <strong>Your personal emergency plan – private, offline, for you.</strong>
   <br>
-  <a href="https://jfsen.github.io/notfallplan/"><strong>→ Zur App</strong></a>
+  <a href="https://jfsen.github.io/notfallplan/"><strong>→ Open the App</strong></a>
 </p>
 
 <p align="center">
   <a href="#features">Features</a> ·
-  <a href="#warum-das">Warum das?</a> ·
-  <a href="#selbst-hosten">Selbst hosten</a> ·
-  <a href="#lizenz">Lizenz</a>
+  <a href="#why">Why?</a> ·
+  <a href="#self-hosting">Self-Hosting</a> ·
+  <a href="#license">License</a>
 </p>
 
 ---
 
-**Mein Notfallplan** ist ein kleiner digitaler Begleiter für deine **mentale Gesundheit** – eine Web-App, mit der du festhalten kannst, was dir in akuten Krisen hilft: Gründe weiterzumachen, beruhigende Gedanken, wichtige Kontakte oder Atemübungen.
+**Mein Notfallplan** is a small digital companion for your **mental health** – a web app where you can record what helps you in acute crises: reasons to keep going, calming thoughts, important contacts, or breathing exercises.
 
-Alles läuft komplett in deinem Browser, nichts verlässt dein Gerät.
+Everything runs entirely in your browser, nothing leaves your device.
 
 ---
 
 ## Features
 
-- 📝 **Individuelle Sektionen** – Notiere, was dir guttut (Gründe, Skills, Mottos, …)
-- 📇 **Kontakte** – Wichtige Personen mit einem Klick anrufbar
-- 🌬 **Atemübungen** – Box Breathing, 4‑7‑8 und kohärentes Atmen
-- 🔒 **100 % privat** – Alle Daten bleiben im localStorage, kein Server, kein Tracking
-- 📤 **Export** – Erstelle eine eigenständige HTML-Datei für leichten Zugriff
-- 🌙 **Dark Mode** – Augenschonend, immer
+- 📝 **Custom sections** – Note what helps you (reasons, skills, mottos, …)
+- 📇 **Contacts** – Important people reachable with one click
+- 🌬 **Breathing exercises** – Box breathing, 4‑7‑8, and coherent breathing
+- 🔒 **100 % private** – All data stays in localStorage, no server, no tracking
+- 📤 **Export** – Create a standalone HTML file for easy access
+- 🌙 **Dark mode** – Easy on the eyes, always
 
-## Warum das?
+## Why?
 
-In einer akuten Krise fällt es schwer, klar zu denken. Mein Notfallplan gibt dir einen schnellen, strukturierten Zugriff auf das, was du dir in ruhigeren Momenten selbst erarbeitet hast – ohne dass du dich durch Notizen wühlen musst.
+In an acute crisis, it's hard to think clearly. Mein Notfallplan gives you quick, structured access to what you've prepared for yourself in calmer moments – without having to dig through notes.
 
-## Selbst hosten
+## Self-Hosting
 
-Die App wird auf [GitHub Pages](https://pages.github.com/) gehostet, ist aber kein lockdown – du kannst sie auf deinem eigenen Server oder einer unabhängigen Platform betreiben. Einfach das Repository klonen und die `docs/`-Ordner auf einen statischen Webserver legen.
+The app is hosted on [GitHub Pages](https://pages.github.com/), but it's not locked in – you can run it on your own server or an independent platform. Simply clone the repository and place the `docs/` folder on a static web server.
 
 ```bash
 git clone https://github.com/jfsen/notfallplan.git
-cp -r notfallplan/docs /pfad/zum/server/
+cp -r notfallplan/docs /path/to/server/
 ```
 
-## Lizenz
+## License
 
-GPL v3 – du darfst die Anwendung weitergeben, anpassen und selbst betreiben.
+GPL v3 – you may share, modify, and self-host the application.
