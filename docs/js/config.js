@@ -3,7 +3,7 @@ let SECTION_CONFIG = [
   {
     id: "counter",
     type: "counter",
-    visible: true,
+    visible: false,
   },
   {
     id: "breathing",
@@ -18,7 +18,7 @@ let SECTION_CONFIG = [
   {
     id: "gruende",
     type: "default",
-    visible: true,
+    visible: false,
   },
   {
     id: "kontakte",
