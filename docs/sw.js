@@ -6,7 +6,7 @@
 // Network-First strategy for external resources (if any).
 // ============================================================
 
-const CACHE_NAME = "notfallplan-v1";
+const CACHE_NAME = "notfallplan-v2";
 
 // Files to pre-cache during installation
 const PRECACHE_URLS = [
