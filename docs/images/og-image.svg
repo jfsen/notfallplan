@@ -34,7 +34,6 @@
 
   <!-- Icon: notfallplan cross in rings -->
   <circle cx="220" cy="315" r="140" fill="#ffffff" stroke="url(#ringGrad)" stroke-width="20"/>
-  <circle cx="220" cy="315" r="125" fill="none" stroke="#34d399" stroke-width="10"/>
   <rect x="136" y="279" width="168" height="72" rx="12" fill="url(#crossGrad)"/>
   <rect x="184" y="231" width="72" height="168" rx="12" fill="url(#crossGrad)"/>
 
